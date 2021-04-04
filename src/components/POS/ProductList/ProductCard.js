@@ -10,7 +10,7 @@ const ProductCard = ({classes}) => {
         <Paper className={classes.product} variant={'outlined'}>
             <img src={Phone} />
             <p>IPhone 4 asdlfkasldkfj</p>
-            <Button color={'primary'} variant='contained'>Copy Barcode</Button>
+            <Button color={'primary'} variant='contained'>Copy ID</Button>
         </Paper>
     )
 }

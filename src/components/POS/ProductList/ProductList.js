@@ -23,7 +23,6 @@ const style = makeStyles(() => ({
         }
     },
      products: {
-         marginRight: 10,
          display:'flex',
          flexWrap:'wrap',
          justifyContent:'center',
