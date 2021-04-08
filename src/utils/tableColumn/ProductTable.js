@@ -1,39 +1,35 @@
 import {Link} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 
-export const StoreTable = [
+export const ProductTable = [
     {
-        name: "name",
-        label: "Name"
+        name: "brand",
+        label: "Brand"
     },
     {
-        name: "email",
-        label: "Email",
+        name: "productName",
+        label: "Product Name",
 
     },
     {
-        name: "address",
-        label: "Address",
+        name: "type",
+        label: "Type",
     },
     {
-        name: "city",
-        label: "City",
+        name: "amount",
+        label: "Amount",
     },
     {
-        name: "state",
-        label: "State"
+        name: "supplier",
+        label: "Supplier Name"
     },
     {
-        name: "postalCode",
+        name: "store",
         label: "Store Name"
     },
     {
-        name: "mobile_no",
-        label: "Mobile No"
-    },
-    {
-        name: "telno",
-        label: "TelNo"
+        name: "status",
+        label: "Status"
     },
     {
         name: "update",
@@ -76,6 +72,6 @@ export const StoreTable = [
 
 ];
 
-export function InsertStore(id, name,email, address,city,state, postalCode,mobile_no,telno) {
-    return {id, name,email, address,city,state, postalCode,mobile_no,telno, update:id, delete: id}
+export function InsertProduct(id,brand,productName,type, amount, supplier, store,status) {
+    return {brand,productName,type, amount, supplier, store,status}
 }

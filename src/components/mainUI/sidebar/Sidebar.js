@@ -2,7 +2,6 @@
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import {ListItem, ListItemIcon, ListItemText, SwipeableDrawer} from "@material-ui/core";
-import ListSubheader from '@material-ui/core/ListSubheader';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
@@ -22,7 +21,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function Sidebar({open, handleDrawerClose, handleDrawerOpen,style}) {
+export default function Sidebar({open, handleDrawerClose, handleDrawerOpen}) {
 
     const classes = useStyles();
 
@@ -79,6 +78,12 @@ export default function Sidebar({open, handleDrawerClose, handleDrawerOpen,style
                                 <PeopleIcon/>
                             </ListItemIcon>
                             <ListItemText primary="Supplier"/>
+                        </ListItem>
+                        <ListItem component={NavLink} to="/customer" button>
+                            <ListItemIcon>
+                                <PeopleIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="Customer"/>
                         </ListItem>
                         <ListItem component={NavLink} to="/pos" button>
                             <ListItemIcon>

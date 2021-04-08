@@ -14,8 +14,9 @@ import {Supplier} from "../UI/supplier";
 import {Transaction} from "../UI/transaction";
 import {Users} from '../UI/users'
 import {Sales} from "../UI/sales";
+import {Customers} from "../UI/customer/CustomerTable";
 
-export default function MainUi({user}) {
+export default function MainUI({user}) {
 
     const classes = style();
 
@@ -39,7 +40,7 @@ export default function MainUi({user}) {
             <Sidebar
                 open={open}
                 handleDrawerClose={handleDrawerClose}
-                // handleDrawerOpen={handleDrawerOpen} role={user.userRole}
+                handleDrawerOpen={handleDrawerOpen}
             />
 
 
@@ -50,25 +51,28 @@ export default function MainUi({user}) {
                     <Suspense fallback={<Skeleton/>}>
                         <Switch>
 
-                           <Route exact path={"/users"} >
-                               <Users/>
-                           </Route>
+                            <Route exact path={"/users"}>
+                                <Users/>
+                            </Route>
                             <Route path={"/products"}>
                                 <Products/>
                             </Route>
 
-                            <Route exact path={"/stores"} >
+                            <Route exact path={"/stores"}>
                                 <StoreBranch/>
                             </Route>
                             <Route path={"/sales"}>
                                 <Sales/>
                             </Route>
 
-                            <Route exact path={"/transaction"} >
+                            <Route exact path={"/transaction"}>
                                 <Transaction/>
                             </Route>
                             <Route path={"/supplier"}>
                                 <Supplier/>
+                            </Route>
+                            <Route path={"/customer"}>
+                                <Customers/>
                             </Route>
 
                         </Switch>

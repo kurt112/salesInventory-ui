@@ -1,49 +1,74 @@
 import style, { TableOptions as options } from '../_style/TableStyle'
 import Button from "@material-ui/core/Button";
-import {Paper,Grid,Box,Toolbar} from "@material-ui/core";
-import { TransactionTable as columns, InsertTransaction as insert } from '../_utils/tableColumn/TransactionTable'
+import {Paper, Grid, Box, Toolbar, CircularProgress} from "@material-ui/core";
+import { TransactionTable as columns, InsertTransaction as insert } from '../../../utils/tableColumn/TransactionTable'
 import MUIDataTable from 'mui-datatables'
-const rowClicked = (id) => {
-}
+import {Fragment, useEffect, useState} from "react";
+import {Axios} from "../../../utils/axios/Axios";
+import {transactionList} from "../../../utils/ServerEndPoint";
+import SupplierRegister from "../supplier/SupplierRegister";
+import Typography from "@material-ui/core/Typography";
 
 
-const data = [
-    insert("123123", "Nestle", "BearBrand","Goods",99.5,"ako","Pink","Active"),
-    insert("123123", "Nestle", "BearBrand","Goods",99.5,"ako","Pink","Active"),
-    insert("123123", "Nestle", "BearBrand","Goods",99.5,"ako","Pink","Active"),
-    insert("123123", "Nestle", "BearBrand","Goods",99.5,"ako","Pink","Active"),
-    insert("123123", "Nestle", "BearBrand","Goods",99.5,"ako","Pink","Active"),
-    insert("123123", "Nestle", "BearBrand","Goods",99.5,"ako","Pink","Active"),
-    insert("123123", "Nestle", "BearBrand","Goods",99.5,"ako","Pink","Active"),
-    insert("123123", "Nestle", "BearBrand","Goods",99.5,"ako","Pink","Active"),
-    insert("123123", "Nestle", "BearBrand","Goods",99.5,"ako","Pink","Active"),
-]
 export const Transaction = () => {
     const classes = style()
-    return (
-        <Grid component="main" className={classes.root}>
-            <Grid item component={Paper} md={12} sm={12} xs={12} className={classes.tableNavbar}>
-                <Toolbar>
-                    <Box className={classes.tableNavbarBox}>
-                        <Button variant="outlined" color="primary">
-                            Show stock
-                        </Button>
+    const [dialog, setDialog] = useState(false);
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false)
 
-                    </Box>
-                    <Button variant="outlined" color="primary">
-                        Quit
-                    </Button>
-                </Toolbar>
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(async () => {
+        setLoading(true)
+        const temp = []
+        await Axios.get(transactionList).then((transactions) => {
+            transactions.data.map(transaction =>
+                temp.push(insert(transaction.id,`${transaction.User.firstName} ${transaction.User.lastName}`, transaction.amount,
+                    transaction.discount,`${transaction.Customer.firstName} ${transaction.Customer.lastName}`,transaction.Store.name,transaction.createdAt))
+            )
+        })
+        setData(...data,temp)
+        setLoading(false)
+    }, [])
+
+
+    const insertData = (supplier) => {
+        const newData = [supplier,...data]
+        setData(newData)
+    }
+
+    return (
+        <Fragment>
+            <SupplierRegister  dialog={dialog} closeDialog={() => setDialog(false)} insertData={insertData}/>
+            <Grid component="main" className={classes.root}>
+                <Grid item component={Paper} md={12} sm={12} xs={12} className={classes.tableNavbar}>
+                    <Toolbar>
+                        <Box className={classes.tableNavbarBox}>
+                            <Button onClick={() => setDialog(true)} variant="outlined" color="primary">
+                                View Transaction
+                            </Button>
+                            <Button onClick={() => setDialog(true)} style={{margin:'0px 20px'}} variant="outlined" color="secondary">
+                                Return Item
+                            </Button>
+
+                        </Box>
+
+                    </Toolbar>
+                </Grid>
+                <Grid item md={12} component={Paper} className={classes.tableContainerWrapper}>
+                    <MUIDataTable
+                        title={
+                            <Typography variant="h6">
+                                Transaction List
+                                {loading && <CircularProgress size={24} style={{ marginLeft: 15, position: 'relative', top: 4 }} />}
+                            </Typography>
+                        }
+                        data={data}
+                        columns={columns}
+                        options={options(loading)}
+                    />
+                </Grid>
             </Grid>
-            <Grid item md={12} component={Paper} className={classes.tableContainerWrapper}>
-                <MUIDataTable
-                    title={"Transaction List"}
-                    data={data}
-                    columns={columns}
-                    options={options(rowClicked)}
-                />
-            </Grid>
-        </Grid>
+        </Fragment>
     )
 }
 
