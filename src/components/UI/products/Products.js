@@ -8,7 +8,6 @@ import {useEffect, useState, Fragment} from "react";
 import {Axios} from "../../../utils/axios/Axios";
 import {productList} from "../../../utils/ServerEndPoint";
 import ProductRegister from "./ProductRegister";
-import StoreRegister from "../store_branch/StoreRegister";
 import ProductPhoto from "./ProductPhoto";
 
 
@@ -21,10 +20,7 @@ export const Products = () => {
 
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
-    const insertData = (supplier) => {
-        const newData = [supplier,...data]
-        setData(newData)
-    }
+
     useEffect(async () => {
         setLoading(true)
         const temp = []
@@ -38,6 +34,12 @@ export const Products = () => {
     }, [])
 
 
+    const insertData = (product) => {
+        const temp = data;
+        temp.unshift(product)
+        const newData = [product,...data]
+        setData(newData)
+    }
 
     return (
         <Fragment>

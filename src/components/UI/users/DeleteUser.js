@@ -79,6 +79,7 @@ const DeleteUser = (
                         <strong>User Can't find or the User is involve to transaction</strong>
                     </Alert> : null
                 }
+                <br/>
 
                 <Snackbar
                     anchorOrigin={{
@@ -111,7 +112,7 @@ const DeleteUser = (
             <DialogActions>
 
                 <Button type={"submit"} color='secondary' onClick={register}>
-                    Register
+                    Delete
                 </Button>
                 <Button onClick={() => closeDialog(false)} color='primary' >
                     Cancel

@@ -4,92 +4,124 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle,
+    DialogTitle, FormControl,
     Grid, Snackbar,
     TextField
 } from "@material-ui/core"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Axios} from "../../../utils/axios/Axios";
-import {supplierInsert} from "../../../utils/ServerEndPoint";
-import {Alert, AlertTitle} from "@material-ui/lab";
+import {productImages, productInsert, storeList, supplierInsert, supplierList} from "../../../utils/ServerEndPoint";
+import {Alert, AlertTitle, Autocomplete} from "@material-ui/lab";
 
 
-const SupplierRegister = (
+const ProductRegister = (
     {
         closeDialog,
         dialog,
         insertData
-
     }) => {
 
+    const [brand, setBrand] = useState('')
     const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [address, setAddress] = useState('')
-    const [city, setCity] = useState('')
-    const [state, setState] = useState('')
-    const [postalCode, setPostalCode] = useState('')
-    const [mobileNo, setMobileNo] = useState('')
-    const [telNo, setTelNo] = useState('')
+    const [type, setType] = useState('')
+    const [price, setPrice] = useState('')
+    const [qty, setQty] = useState(1)
+    const [supplier, setSupplier] = useState('')
+    const [store, setStore] = useState('')
+    const [photo, setPhoto] = useState()
+    const [code, setCode] = useState()
 
 
     // for snack bar
     const [show, setShow] = useState(false)
     const [error, setError] = useState(false)
 
+
+    // for autocomplete
+    const [stores, setStores] = useState([])
+    const [suppliers, setSuppliers] = useState([])
+    const [images, setImages] = useState([])
     const close = () => {
         setShow(false)
     }
 
 
     const register = (event) => {
-
-
         event.preventDefault()
-
-        if(name.trim() === '')  {
+        if (brand.trim() === '') {
             setError(true)
             return
         }
 
         const data = {
-            name: name,
-            email: email,
-            address: address,
-            city: city,
-            state: state,
-            postalCode: postalCode,
-            mobile_no: mobileNo,
-            tel_no: telNo
+            brand,
+            code,
+            name,
+            type,
+            price: parseFloat(price),
+            status:'Available',
+            photo,
+            SupplierId: parseInt(supplier.id),
+            StoreId: parseInt(store.id),
+            qty: parseInt(qty)
         }
 
+        const insert ={
+            amount: price,
+            brand,
+            productName:name,
+            status:'Available',
+            store: store.name,
+            supplier:supplier.name,
+            type:type
+        }
 
+        let i =parseInt(qty)
 
-        Axios.post(supplierInsert, data).then(e => {
-            insertData(data)
+        Axios.post(productInsert, data).then(e => {
+            setBrand('')
             setName('')
-            setEmail('')
-            setAddress('')
-            setState('')
-            setCity('')
-            setPostalCode('')
-            setTelNo('')
-            setMobileNo('')
+            setType('')
+            setPrice('')
+            setCode('')
+            setPhoto('')
+            setStore('')
+            setSupplier('')
             setError(false)
             setShow(true)
         }).catch(error => {
             setError(true)
         })
 
+        while ( i >1){
+            insertData(insert)
+
+            i--
+        }
 
     }
+    useEffect(async () => {
+        Axios.get(storeList).then(e => {
+            setStores(e.data)
+        })
 
+        Axios.get(supplierList).then(e => {
+            setSuppliers(e.data)
+        })
+
+
+        Axios.get(productImages).then(e => {
+            setImages(e.data)
+        })
+
+    }, [])
     return <Dialog
         open={dialog}
         onClose={closeDialog}
         aria-labelledby="add-student"
         maxWidth={"md"}
     >
-        <form onInvalid onSubmit={register} >
+        <form onInvalid onSubmit={register}>
 
 
             <DialogTitle id="add-student">Register Product</DialogTitle>
@@ -99,12 +131,13 @@ const SupplierRegister = (
                 </DialogContentText>
 
                 {
-                    error? <Alert variant="filled" severity="error">
+                    error ? <Alert variant="filled" severity="error">
                         <AlertTitle><strong>Error</strong></AlertTitle>
                         <strong>Hotdog</strong>
-                    </Alert>: null
+                    </Alert> : null
                 }
 
+                <br/>
                 <Snackbar
                     anchorOrigin={{
                         vertical: 'bottom',
@@ -118,115 +151,114 @@ const SupplierRegister = (
 
                 <Grid container spacing={1}>
                     <Grid item md={4} xs={12}>
+                        <FormControl variant="outlined" margin='dense' fullWidth>
+                            <Autocomplete
+                                size={"small"}
+                                options={images}
+                                getOptionLabel={(option) => option}
+                                getOptionSelected={(option, value) => option === value}
+                                onChange={(event, value) => setPhoto(value)}
+                                renderInput={(params) => <TextField {...params} label="Product Images"
+                                                                    variant="outlined"/>}
+                            />
+                        </FormControl>
+                    </Grid>
+                    <Grid item md={4} xs={12}>
                         <TextField autoFocus
                                    margin="dense"
-                                   id="supplier-name"
-                                   label="Supplier Name"
+                                   label="Product Brand"
                                    type="text"
                                    fullWidth
                                    variant="outlined"
-                                   name='supplier-name'
+                                   value={brand}
+                                   onChange={(e) => setBrand(e.target.value)}
+                        />
+
+                    </Grid>
+
+                    <Grid item md={4} xs={12}>
+                        <TextField autoFocus
+                                   margin="dense"
+                                   label="Product Name"
+                                   type="text"
+                                   fullWidth
+                                   variant="outlined"
                                    value={name}
                                    onChange={(e) => setName(e.target.value)}
                         />
-
                     </Grid>
 
                     <Grid item md={4} xs={12}>
                         <TextField autoFocus
                                    margin="dense"
-                                   id="supplier-email"
-                                   label="Supplier Email"
-                                   type="email"
-                                   fullWidth
-                                   variant="outlined"
-                                   name='supplier-email'
-                                   value={email}
-                                   onChange={(e) => setEmail(e.target.value)}
-                        />
-                    </Grid>
-
-                    <Grid item md={4} xs={12}>
-                        <TextField autoFocus
-                                   margin="dense"
-                                   id="address"
-                                   label="Home Address"
+                                   label="Product Type"
                                    type="text"
                                    fullWidth
                                    variant="outlined"
-                                   name='address'
-                                   value={address}
-                                   onChange={(e) => setAddress(e.target.value)}
+                                   value={type}
+                                   onChange={(e) => setType(e.target.value)}
                         />
                     </Grid>
 
                     <Grid item md={4} xs={12}>
                         <TextField autoFocus
                                    margin="dense"
-                                   id="city"
-                                   label="City"
+                                   label="Product Price"
+                                   type="number"
+                                   fullWidth
+                                   variant="outlined"
+                                   value={price}
+                                   onChange={(e) => setPrice(e.target.value <0? 1: e.target.value)}
+                        />
+                    </Grid>
+
+                    <Grid item md={4} xs={12}>
+                        <FormControl variant="outlined" margin='dense' fullWidth>
+                            <Autocomplete
+                                size={"small"}
+                                options={stores}
+                                getOptionLabel={(option) => option.name + ' ' + option.state}
+                                getOptionSelected={(option, value) => option.id === value.id}
+                                onChange={(event, value) => setStore(value)}
+                                renderInput={(params) => <TextField {...params} label="Store" variant="outlined"/>}
+                            />
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item md={4} xs={12}>
+                        <FormControl variant="outlined" margin='dense' fullWidth>
+                            <Autocomplete
+                                size={"small"}
+                                options={suppliers}
+                                getOptionLabel={(option) => option.name + ' ' + option.state}
+                                getOptionSelected={(option, value) => option.id === value.id}
+                                onChange={(event, value) => setSupplier(value)}
+                                renderInput={(params) => <TextField {...params} label="Supplier" variant="outlined"/>}
+                            />
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item md={4} xs={12}>
+                        <TextField autoFocus
+                                   margin="dense"
+                                   label="Product Code"
                                    type="text"
                                    fullWidth
                                    variant="outlined"
-                                   name='city'
-                                   value={city}
-                                   onChange={(e) => setCity(e.target.value)}
+                                   value={code}
+                                   onChange={e => setCode(e.target.value)}
                         />
                     </Grid>
 
                     <Grid item md={4} xs={12}>
                         <TextField autoFocus
                                    margin="dense"
-                                   id="state"
-                                   label="State"
-                                   type="text"
+                                   label="QTY"
+                                   type="number"
                                    fullWidth
                                    variant="outlined"
-                                   name='state'
-                                   value={state}
-                                   onChange={e => setState(e.target.value)}
-                        />
-                    </Grid>
-
-                    <Grid item md={4} xs={12}>
-                        <TextField autoFocus
-                                   margin="dense"
-                                   id="postal"
-                                   label="postal code"
-                                   type="text"
-                                   fullWidth
-                                   variant="outlined"
-                                   name='postal'
-                                   value={postalCode}
-                                   onChange={e => setPostalCode(e.target.value)}
-                        />
-                    </Grid>
-
-                    <Grid item md={6} xs={12}>
-                        <TextField autoFocus
-                                   margin="dense"
-                                   id="mobile-no"
-                                   label="Mobile No."
-                                   type="text"
-                                   fullWidth
-                                   variant="outlined"
-                                   name='mobile-no'
-                                   value={mobileNo}
-                                   onChange={e => setMobileNo(e.target.value)}
-                        />
-                    </Grid>
-
-                    <Grid item md={6} xs={12}>
-                        <TextField autoFocus
-                                   margin="dense"
-                                   id="telNo"
-                                   label="Telephone No."
-                                   type="text"
-                                   fullWidth
-                                   variant="outlined"
-                                   name='telNo'
-                                   value={telNo}
-                                   onChange={e => setTelNo(e.target.value)}
+                                   value={qty}
+                                   onChange={e => setQty(e.target.value < 0? 1: e.target.value)}
                         />
                     </Grid>
 
@@ -247,4 +279,4 @@ const SupplierRegister = (
 }
 
 
-export default SupplierRegister
+export default ProductRegister

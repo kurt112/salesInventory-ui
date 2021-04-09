@@ -8,11 +8,15 @@ export const
 
 
     //Product
-    storeList = 'store/list',
-    storeInsert = 'store/insert',
+
+    productList = 'product/list',
+    productImages ='product/images',
+    productInsert = 'product/insert',
+
 
     //stores
-    productList = 'product/list',
+    storeList = 'store/list',
+    storeInsert = 'store/insert',
 
     //User
     transactionList = 'transaction/list',
