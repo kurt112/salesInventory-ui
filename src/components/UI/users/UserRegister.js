@@ -99,10 +99,10 @@ const UserRegister = (
         aria-labelledby="add-student"
         maxWidth={"md"}
     >
-        <form onInvalid onSubmit={register}>
+        <form  onSubmit={register}>
 
 
-            <DialogTitle id="add-student">Register Supplier</DialogTitle>
+            <DialogTitle id="add-student">Register User</DialogTitle>
             <DialogContent>
                 <DialogContentText>
                     Insert if you have any note
@@ -217,7 +217,7 @@ const UserRegister = (
                                 getOptionLabel={(option) => option.name + ' ' + option.state}
                                 getOptionSelected={(option, value) => option.id === value.id}
                                 onChange={(event,value) => setStoreId(value.id)}
-                                renderInput={(params) => <TextField {...params}  label="Combo box" variant="outlined" />}
+                                renderInput={(params) => <TextField {...params}  label="Store Branch" variant="outlined" />}
                             />
                         </FormControl>
                     </Grid>

@@ -1,12 +1,13 @@
 import style, { TableOptions as options } from '../_style/TableStyle'
-import Button from "@material-ui/core/Button";
-import {Paper, Grid, Box, Toolbar, CircularProgress} from "@material-ui/core";
+import {Paper, Grid, Box, Toolbar, CircularProgress, Tooltip} from "@material-ui/core";
 import { SalesTable as columns, InsertSales as insert } from '../../../utils/tableColumn/SalesTable'
 import MUIDataTable from 'mui-datatables'
 import Typography from "@material-ui/core/Typography";
 import {useEffect, useState} from "react";
 import {Axios} from "../../../utils/axios/Axios";
 import {salesList} from "../../../utils/ServerEndPoint";
+import IconButton from "@material-ui/core/IconButton";
+import TimelineIcon from '@material-ui/icons/Timeline';
 
 export const Sales = () => {
     const classes = style()
@@ -26,20 +27,23 @@ export const Sales = () => {
 
         setData(...data,temp)
         setLoading(false)
-    }, [])
+    }, [data])
 
     return (
         <Grid component="main" className={classes.root}>
             <Grid item component={Paper} md={12} sm={12} xs={12} className={classes.tableNavbar}>
                 <Toolbar>
                     <Box className={classes.tableNavbarBox}>
-                        {/*<Button variant="outlined" color="primary">*/}
-                        {/*    Add Users*/}
-                        {/*</Button>*/}
+                        <Tooltip title="View Sales By Date" aria-label="add">
+                            <IconButton aria-label="addProduct"
+                                        color={"primary"}>
+                                <TimelineIcon fontSize={"large"}/>
+                            </IconButton>
+                        </Tooltip>
                     </Box>
-                    <Button variant="outlined" color="primary">
-                        Quit
-                    </Button>
+                    <p style={{margin: 0}}>
+                        <b>Total Sales:</b>
+                    </p>
                 </Toolbar>
             </Grid>
             <Grid item md={12} component={Paper} className={classes.tableContainerWrapper}>

@@ -1,15 +1,17 @@
 import style, { TableOptions as options } from '../_style/TableStyle'
 import Button from "@material-ui/core/Button";
-import {Paper, Grid, Box, Toolbar, CircularProgress} from "@material-ui/core";
+import {Paper, Grid, Box, Toolbar, CircularProgress, Tooltip} from "@material-ui/core";
 import { StoreTable as columns, InsertStore as insert } from '../../../utils/tableColumn/StoreTable'
 import MUIDataTable from 'mui-datatables'
 import {useEffect, useState, Fragment} from "react";
 import {Axios} from "../../../utils/axios/Axios";
-import {storeList, supplierList} from "../../../utils/ServerEndPoint";
+import {storeList} from "../../../utils/ServerEndPoint";
 import StoreRegister from "./StoreRegister";
 import Typography from "@material-ui/core/Typography";
-
-
+import IconButton from "@material-ui/core/IconButton";
+import StoreIcon from '@material-ui/icons/Store';
+import RemoveShoppingCartIcon from '@material-ui/icons/RemoveShoppingCart';
+import UpdateIcon from '@material-ui/icons/Update';
 export const StoreBranch = () => {
     const classes = style()
 
@@ -43,15 +45,28 @@ export const StoreBranch = () => {
                 <Grid item component={Paper} md={12} sm={12} xs={12} className={classes.tableNavbar}>
                     <Toolbar>
                         <Box className={classes.tableNavbarBox}>
-                            <Button onClick={() => setDialog(true)} variant="outlined" color="primary">
-                                Add Store
-                            </Button>
-                            <Button onClick={() => setDialog(true)} style={{margin:'0px 20px'}} variant="outlined" color="secondary">
-                                Delete Store
-                            </Button>
-                            <Button onClick={() => setDialog(true)} variant="outlined" color="primary">
-                                Update Store
-                            </Button>
+
+                            <Tooltip title="Add Store" aria-label="add">
+                                <IconButton onClick={() => setDialog(true)} aria-label="addProduct"
+                                            color={"primary"}>
+                                    <StoreIcon fontSize={"large"}/>
+                                </IconButton>
+                            </Tooltip>
+
+                            <Tooltip title="Delete Store" aria-label="add">
+                                <IconButton onClick={() => setDialog(true)} aria-label="addProduct"
+                                            color={"secondary"}>
+                                    <RemoveShoppingCartIcon fontSize={"large"}/>
+                                </IconButton>
+                            </Tooltip>
+
+                            <Tooltip title="Update Store" aria-label="add">
+                                <IconButton onClick={() => setDialog(true)} aria-label="addProduct"
+                                            color={"primary"}>
+                                    <UpdateIcon fontSize={"large"}/>
+                                </IconButton>
+                            </Tooltip>
+
                         </Box>
 
                     </Toolbar>

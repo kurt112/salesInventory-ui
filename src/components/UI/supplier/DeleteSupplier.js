@@ -42,9 +42,9 @@ const DeleteUser = (
         event.preventDefault()
 
         Axios.post(userDelete, {
-           email
+            email
         }).then(ignored => {
-            // deleted(email)
+            deleted(email)
             setEmail('')
 
             setError(false)
@@ -67,10 +67,10 @@ const DeleteUser = (
         <form onInvalid onSubmit={register}>
 
 
-            <DialogTitle id="add-student">Remove User</DialogTitle>
+            <DialogTitle id="add-student">Remove Supplier</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    Insert user Email to delete the user
+                    Insert Supplier Email to delete the supplier
                 </DialogContentText>
 
                 {
@@ -88,7 +88,7 @@ const DeleteUser = (
                     }}
                     open={show} autoHideDuration={3000} onClose={close}>
                     <Alert onClose={closeDialog} severity="success">
-                        User Delete Success
+                        Supplier Deleted Success
                     </Alert>
                 </Snackbar>
 

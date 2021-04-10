@@ -1,6 +1,6 @@
 import style, {TableOptions as options} from '../_style/TableStyle'
 import Button from "@material-ui/core/Button";
-import {Paper, Grid, Box, Toolbar, CircularProgress} from "@material-ui/core";
+import {Paper, Grid, Box, Toolbar, CircularProgress, Tooltip} from "@material-ui/core";
 import {ProductTable as columns, InsertProduct as insert} from '../../../utils/tableColumn/ProductTable'
 import MUIDataTable from 'mui-datatables'
 import Typography from "@material-ui/core/Typography";
@@ -12,7 +12,12 @@ import ProductPhoto from "./ProductPhoto";
 import DeleteProduct from "./DeleteProduct";
 import TransferProduct from "./TransferProduct";
 
-
+import IconButton from '@material-ui/core/IconButton';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import DeleteIcon from '@material-ui/icons/Delete';
+import UpdateIcon from '@material-ui/icons/Update';
+import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 export const Products = () => {
     const classes = style()
 
@@ -107,31 +112,46 @@ export const Products = () => {
                 deleteProduct={deleteProduct}
             />
 
-                <TransferProduct dialog={transferDialog} closeDialog={() => setTransferDialog(false)}/>
+            <TransferProduct dialog={transferDialog} closeDialog={() => setTransferDialog(false)}/>
 
             {/*Table*/}
             <Grid component="main" className={classes.root}>
                 <Grid item component={Paper} md={12} sm={12} xs={12} className={classes.tableNavbar}>
                     <Toolbar>
                         <Box className={classes.tableNavbarBox}>
-                            <Button onClick={() => openDialog(false)} variant="outlined" color="primary">
-                                Add Product
-                            </Button>
-                            <Button onClick={() => setDeleteDialog(true)} style={{margin: '0px 20px'}}
-                                    variant="outlined" color="secondary">
-                                Delete Product
-                            </Button>
-                            <Button onClick={() => openDialog(true)} variant="outlined" color="primary">
-                                Update Product
-                            </Button>
+                            <Tooltip title="Add Product" aria-label="add">
+                                <IconButton onClick={() => openDialog(false)} aria-label="addProduct" color={"primary"}>
+                                    <AddCircleIcon fontSize={"large"}/>
+                                </IconButton>
+                            </Tooltip>
+
+                            <Tooltip title="Delete Product" aria-label="add">
+                                <IconButton onClick={() => setDeleteDialog(true)} aria-label="deleteProduct"
+                                            color={"primary"}>
+                                    <DeleteIcon fontSize={"large"} aria-label="Delete Product" color={"secondary"}/>
+                                </IconButton>
+
+                            </Tooltip>
+
+                            <Tooltip title="Update Product" aria-label="add">
+                                <IconButton onClick={() => openDialog(true)} aria-label="addProduct" color={"primary"}>
+                                    <UpdateIcon fontSize={"large"}/>
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Transfer Product" aria-label="add">
+                                <IconButton onClick={() => setTransferDialog(true)} aria-label="addProduct"
+                                            color={"primary"}>
+                                    <CompareArrowsIcon fontSize={"large"}/>
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Upload Photo" aria-label="add">
+                                <IconButton onClick={() => setPhotoUpload(true)} aria-label="addProduct"
+                                            color={"primary"}>
+                                    <PhotoCameraIcon fontSize={"large"}/>
+                                </IconButton>
+                            </Tooltip>
                         </Box>
-                        <Button onClick={() => setTransferDialog(true)} variant="outlined" color="primary">
-                            Transfer Product
-                        </Button>
-                        <Button onClick={() => setPhotoUpload(true)} variant="outlined" color="primary"
-                                style={{marginLeft: 10}}>
-                            Upload Photo
-                        </Button>
+
                     </Toolbar>
                 </Grid>
                 <Grid item md={12} component={Paper} className={classes.tableContainerWrapper}>

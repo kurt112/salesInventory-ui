@@ -1,6 +1,5 @@
 import style, {TableOptions as options} from '../_style/TableStyle'
-import Button from "@material-ui/core/Button";
-import {Paper, Grid, Box, Toolbar, CircularProgress} from "@material-ui/core";
+import {Paper, Grid, Box, Toolbar, CircularProgress, Tooltip} from "@material-ui/core";
 import {UserTable as columns, InsertUser as insert} from '../../../utils/tableColumn/UserTable'
 import MUIDataTable from 'mui-datatables'
 import {Axios} from '../../../utils/axios/Axios'
@@ -9,7 +8,12 @@ import Typography from "@material-ui/core/Typography";
 import UserRegister from "./UserRegister";
 import {userList} from "../../../utils/ServerEndPoint";
 import DeleteUser from "./DeleteUser";
+import IconButton from "@material-ui/core/IconButton";
 
+// icons
+import PersonAddIcon from '@material-ui/icons/PersonAdd'
+import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled'
+import UpdateIcon from '@material-ui/icons/Update'
 export const Users = () => {
     const classes = style()
 
@@ -63,15 +67,27 @@ export const Users = () => {
                 <Grid item component={Paper} md={12} sm={12} xs={12} className={classes.tableNavbar}>
                     <Toolbar>
                         <Box className={classes.tableNavbarBox}>
-                            <Button onClick={() => setDialog(true)} variant="outlined" color="primary">
-                                Add User
-                            </Button>
-                            <Button onClick={() => setDeleteUser(true)} style={{margin:'0px 20px'}} variant="outlined" color="secondary">
-                                Delete User
-                            </Button>
-                            <Button onClick={() => setDialog(true)} variant="outlined" color="primary">
-                                Update User
-                            </Button>
+                            <Tooltip title="Add User" aria-label="add">
+                                <IconButton onClick={() => setDialog(true)} aria-label="addProduct"
+                                            color={"primary"}>
+                                    <PersonAddIcon fontSize={"large"}/>
+                                </IconButton>
+                            </Tooltip>
+
+                            <Tooltip title="Remove User" aria-label="add">
+                                <IconButton  onClick={() => setDeleteUser(true)} aria-label="addProduct"
+                                            color={"secondary"}>
+                                    <PersonAddDisabledIcon fontSize={"large"}/>
+                                </IconButton>
+                            </Tooltip>
+
+                            <Tooltip title="Update User" aria-label="add">
+                                <IconButton onClick={() => setDialog(true)} aria-label="addProduct"
+                                            color={"primary"}>
+                                    <UpdateIcon fontSize={"large"}/>
+                                </IconButton>
+                            </Tooltip>
+
                         </Box>
 
                     </Toolbar>

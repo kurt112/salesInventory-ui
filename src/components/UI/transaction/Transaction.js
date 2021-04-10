@@ -1,6 +1,6 @@
 import style, { TableOptions as options } from '../_style/TableStyle'
 import Button from "@material-ui/core/Button";
-import {Paper, Grid, Box, Toolbar, CircularProgress} from "@material-ui/core";
+import {Paper, Grid, Box, Toolbar, CircularProgress, Tooltip} from "@material-ui/core";
 import { TransactionTable as columns, InsertTransaction as insert } from '../../../utils/tableColumn/TransactionTable'
 import MUIDataTable from 'mui-datatables'
 import {Fragment, useEffect, useState} from "react";
@@ -8,8 +8,9 @@ import {Axios} from "../../../utils/axios/Axios";
 import {transactionList} from "../../../utils/ServerEndPoint";
 import SupplierRegister from "../supplier/SupplierRegister";
 import Typography from "@material-ui/core/Typography";
-
-
+import ReceiptIcon from '@material-ui/icons/Receipt';
+import IconButton from "@material-ui/core/IconButton";
+import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 export const Transaction = () => {
     const classes = style()
     const [dialog, setDialog] = useState(false);
@@ -43,12 +44,19 @@ export const Transaction = () => {
                 <Grid item component={Paper} md={12} sm={12} xs={12} className={classes.tableNavbar}>
                     <Toolbar>
                         <Box className={classes.tableNavbarBox}>
-                            <Button onClick={() => setDialog(true)} variant="outlined" color="primary">
-                                View Transaction
-                            </Button>
-                            <Button onClick={() => setDialog(true)} style={{margin:'0px 20px'}} variant="outlined" color="secondary">
-                                Return Item
-                            </Button>
+                            <Tooltip title="View Transaction" aria-label="add">
+                                <IconButton onClick={() => setDialog(true)} aria-label="addProduct"
+                                            color={"primary"}>
+                                    <ReceiptIcon fontSize={"large"}/>
+                                </IconButton>
+                            </Tooltip>
+
+                            <Tooltip title="Return Item" aria-label="add">
+                                <IconButton onClick={() => setDialog(true)} aria-label="addProduct"
+                                            color={"primary"}>
+                                    <CompareArrowsIcon fontSize={"large"}/>
+                                </IconButton>
+                            </Tooltip>
 
                         </Box>
 

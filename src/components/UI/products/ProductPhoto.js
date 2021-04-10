@@ -3,7 +3,6 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle,
     Grid, Snackbar,
     TextField
@@ -41,12 +40,11 @@ const SupplierRegister = (
         event.preventDefault()
         const formData = new FormData()
         formData.append('picture', file)
-        // console.log(file)
-        Axios.post(productPhoto, formData).then(e => {
-            console.log(e)
-        }).catch(error => {
-            console.log(error)
-            // setError(true)
+        Axios.post(productPhoto, formData).then(ignored => {
+            setError(false)
+            setShow(true)
+        }).catch(ignored => {
+            setError(true)
         })
     }
 
@@ -57,19 +55,15 @@ const SupplierRegister = (
         maxWidth={"sm"}
         fullWidth={true}
     >
-        <form onInvalid onSubmit={register} encType="multipart/form-data">
+        <form onSubmit={register} encType="multipart/form-data">
 
 
-            <DialogTitle id="add-student">Register Product</DialogTitle>
+            <DialogTitle id="add-student">Upload Photo For Prouduct</DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    Insert if you have any note
-                </DialogContentText>
-
                 {
                     error ? <Alert variant="filled" severity="error">
-                        <AlertTitle><strong>Error</strong></AlertTitle>
-                        <strong>Hotdog</strong>
+                        <AlertTitle><strong>Can't upload photo</strong></AlertTitle>
+                        <strong>Please Select Proper Photo</strong>
                     </Alert> : null
                 }
 
@@ -80,7 +74,7 @@ const SupplierRegister = (
                     }}
                     open={show} autoHideDuration={3000} onClose={close}>
                     <Alert onClose={closeDialog} severity="success">
-                        Product Register Success
+                        Photo Upload Success
                     </Alert>
                 </Snackbar>
 
