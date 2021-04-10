@@ -10,7 +10,14 @@ import {
 } from "@material-ui/core"
 import {useEffect, useState} from "react";
 import {Axios} from "../../../utils/axios/Axios";
-import {productImages, productInsert, storeList, supplierInsert, supplierList} from "../../../utils/ServerEndPoint";
+import {
+    productImages,
+    productInsert,
+    productUpdate,
+    storeList,
+    supplierInsert,
+    supplierList
+} from "../../../utils/ServerEndPoint";
 import {Alert, AlertTitle, Autocomplete} from "@material-ui/lab";
 
 
@@ -18,7 +25,11 @@ const ProductRegister = (
     {
         closeDialog,
         dialog,
-        insertData
+        insertData,
+        update,
+        stores,
+        suppliers,
+        images
     }) => {
 
     const [brand, setBrand] = useState('')
@@ -37,10 +48,6 @@ const ProductRegister = (
     const [error, setError] = useState(false)
 
 
-    // for autocomplete
-    const [stores, setStores] = useState([])
-    const [suppliers, setSuppliers] = useState([])
-    const [images, setImages] = useState([])
     const close = () => {
         setShow(false)
     }
@@ -59,26 +66,27 @@ const ProductRegister = (
             name,
             type,
             price: parseFloat(price),
-            status:'Available',
+            status: 'Available',
             photo,
             SupplierId: parseInt(supplier.id),
             StoreId: parseInt(store.id),
             qty: parseInt(qty)
         }
 
-        const insert ={
+        const insert = {
             amount: price,
+            code,
             brand,
-            productName:name,
-            status:'Available',
+            productName: name,
+            status: 'Available',
             store: store.name,
-            supplier:supplier.name,
-            type:type
+            supplier: supplier.name,
+            type: type
         }
 
-        let i =parseInt(qty)
+        let i = parseInt(qty)
 
-        Axios.post(productInsert, data).then(e => {
+        Axios.post(update ? productUpdate : productInsert, data).then(e => {
             setBrand('')
             setName('')
             setType('')
@@ -93,41 +101,26 @@ const ProductRegister = (
             setError(true)
         })
 
-        while ( i >1){
+        while (i > 1) {
             insertData(insert)
 
             i--
         }
 
     }
-    useEffect(async () => {
-        Axios.get(storeList).then(e => {
-            setStores(e.data)
-        })
 
-        Axios.get(supplierList).then(e => {
-            setSuppliers(e.data)
-        })
-
-
-        Axios.get(productImages).then(e => {
-            setImages(e.data)
-        })
-
-    }, [])
     return <Dialog
         open={dialog}
         onClose={closeDialog}
         aria-labelledby="add-student"
         maxWidth={"md"}
     >
-        <form onInvalid onSubmit={register}>
+        <form  onSubmit={register}>
 
-
-            <DialogTitle id="add-student">Register Product</DialogTitle>
+            <DialogTitle id="add-student">{update ? 'Update Product' : 'Register Product'}</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    Insert if you have any note
+                    {update ? 'The product will just override the data' : 'Insert if you have any note'}
                 </DialogContentText>
 
                 {
@@ -153,18 +146,19 @@ const ProductRegister = (
                     <Grid item md={4} xs={12}>
                         <FormControl variant="outlined" margin='dense' fullWidth>
                             <Autocomplete
+                                autoSelect
                                 size={"small"}
                                 options={images}
                                 getOptionLabel={(option) => option}
                                 getOptionSelected={(option, value) => option === value}
                                 onChange={(event, value) => setPhoto(value)}
-                                renderInput={(params) => <TextField {...params} label="Product Images"
+                                renderInput={(params) => <TextField autoFocus {...params} label="Product Images"
                                                                     variant="outlined"/>}
                             />
                         </FormControl>
                     </Grid>
                     <Grid item md={4} xs={12}>
-                        <TextField autoFocus
+                        <TextField
                                    margin="dense"
                                    label="Product Brand"
                                    type="text"
@@ -177,7 +171,7 @@ const ProductRegister = (
                     </Grid>
 
                     <Grid item md={4} xs={12}>
-                        <TextField autoFocus
+                        <TextField
                                    margin="dense"
                                    label="Product Name"
                                    type="text"
@@ -189,7 +183,7 @@ const ProductRegister = (
                     </Grid>
 
                     <Grid item md={4} xs={12}>
-                        <TextField autoFocus
+                        <TextField
                                    margin="dense"
                                    label="Product Type"
                                    type="text"
@@ -201,14 +195,14 @@ const ProductRegister = (
                     </Grid>
 
                     <Grid item md={4} xs={12}>
-                        <TextField autoFocus
+                        <TextField
                                    margin="dense"
                                    label="Product Price"
                                    type="number"
                                    fullWidth
                                    variant="outlined"
                                    value={price}
-                                   onChange={(e) => setPrice(e.target.value <0? 1: e.target.value)}
+                                   onChange={(e) => setPrice(e.target.value < 0 ? 1 : e.target.value)}
                         />
                     </Grid>
 
@@ -225,7 +219,7 @@ const ProductRegister = (
                         </FormControl>
                     </Grid>
 
-                    <Grid item md={4} xs={12}>
+                    <Grid item md={update?6:4} xs={12}>
                         <FormControl variant="outlined" margin='dense' fullWidth>
                             <Autocomplete
                                 size={"small"}
@@ -238,8 +232,8 @@ const ProductRegister = (
                         </FormControl>
                     </Grid>
 
-                    <Grid item md={4} xs={12}>
-                        <TextField autoFocus
+                    <Grid item md={update?6:4} xs={12}>
+                        <TextField
                                    margin="dense"
                                    label="Product Code"
                                    type="text"
@@ -250,17 +244,20 @@ const ProductRegister = (
                         />
                     </Grid>
 
-                    <Grid item md={4} xs={12}>
-                        <TextField autoFocus
-                                   margin="dense"
-                                   label="QTY"
-                                   type="number"
-                                   fullWidth
-                                   variant="outlined"
-                                   value={qty}
-                                   onChange={e => setQty(e.target.value < 0? 1: e.target.value)}
-                        />
-                    </Grid>
+                    {
+                        update ? null :
+                            <Grid item md={4} xs={12}>
+                                <TextField
+                                           margin="dense"
+                                           label="QTY"
+                                           type="number"
+                                           fullWidth
+                                           variant="outlined"
+                                           value={qty}
+                                           onChange={e => setQty(e.target.value < 0 ? 1 : e.target.value)}
+                                />
+                            </Grid>
+                    }
 
                 </Grid>
             </DialogContent>

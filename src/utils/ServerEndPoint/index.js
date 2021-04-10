@@ -12,6 +12,8 @@ export const
     productList = 'product/list',
     productImages ='product/images',
     productInsert = 'product/insert',
+    productDelete = 'product/delete',
+    productUpdate = 'product/update',
 
 
     //stores

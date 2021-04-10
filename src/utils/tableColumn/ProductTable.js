@@ -3,6 +3,10 @@ import Button from "@material-ui/core/Button";
 
 export const ProductTable = [
     {
+      name:"code",
+      label: "Item Code"
+    },
+    {
         name: "brand",
         label: "Brand"
     },
@@ -30,48 +34,9 @@ export const ProductTable = [
     {
         name: "status",
         label: "Status"
-    },
-    {
-        name: "update",
-        label: "Update",
-        options: {
-            filter: false,
-            sort: false,
-            customBodyRender: (value) => {
-                return value === undefined ? null :
-                    <Link to={`/student/profile/`+value} style={{textDecoration: 'none'}}>
-                        <Button variant="outlined" color="primary">
-                            Update
-                        </Button>
-                    </Link>
-            },
-            filterOptions: {
-                fullWidth: false
-            }
-        }
-    },
-    {
-        name: "delete",
-        label: "Delete",
-        options: {
-            filter: false,
-            sort: false,
-            customBodyRender: (value) => {
-                return value === undefined ? null :
-                    <Link to={`/student/profile/`+value} style={{textDecoration: 'none'}}>
-                        <Button variant="outlined" color="secondary">
-                            Delete
-                        </Button>
-                    </Link>
-            },
-            filterOptions: {
-                fullWidth: false
-            }
-        }
-    },
-
+    }
 ];
 
-export function InsertProduct(id,brand,productName,type, amount, supplier, store,status) {
-    return {brand,productName,type, amount, supplier, store,status}
+export function InsertProduct(code,brand,productName,type, amount, supplier, store,status) {
+    return {code,brand,productName,type, amount, supplier, store,status}
 }
