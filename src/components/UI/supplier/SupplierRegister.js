@@ -5,13 +5,12 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Grid, Snackbar,
-    TextField
+    Grid, TextField
 } from "@material-ui/core"
 import {useState} from "react";
 import {Axios} from "../../../utils/axios/Axios";
 import {supplierInsert} from "../../../utils/ServerEndPoint";
-import {Alert, AlertTitle} from "@material-ui/lab";
+import Response from '../../../utils/Response/Response'
 
 
 const SupplierRegister = (
@@ -35,6 +34,8 @@ const SupplierRegister = (
     // for snack bar
     const [show, setShow] = useState(false)
     const [error, setError] = useState(false)
+    const [errorTitle, setErrorTitle] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
 
     const close = () => {
         setShow(false)
@@ -46,7 +47,7 @@ const SupplierRegister = (
 
         event.preventDefault()
 
-        if(name.trim() === '')  {
+        if (name.trim() === '') {
             setError(true)
             return
         }
@@ -63,7 +64,6 @@ const SupplierRegister = (
         }
 
 
-
         Axios.post(supplierInsert, data).then(e => {
             insertData(data)
             setName('')
@@ -77,6 +77,9 @@ const SupplierRegister = (
             setError(false)
             setShow(true)
         }).catch(error => {
+            const response = error.response.data
+            setErrorMessage(response.message)
+            setErrorTitle(response.title)
             setError(true)
         })
 
@@ -98,23 +101,13 @@ const SupplierRegister = (
                     Insert if you have any note
                 </DialogContentText>
 
-                {
-                    error? <Alert variant="filled" severity="error">
-                        <AlertTitle><strong>Error</strong></AlertTitle>
-                        <strong>Hotdog</strong>
-                    </Alert>: null
-                }
-
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    open={show} autoHideDuration={3000} onClose={close}>
-                    <Alert onClose={closeDialog} severity="success">
-                        Supplier Register Success
-                    </Alert>
-                </Snackbar>
+                <Response showError={error}
+                          errorTitle={errorTitle}
+                          errorMessage={errorMessage}
+                          showSnackBar={show}
+                          successMessage='Supplier Register Success'
+                          closeSnackBar={close}
+                />
 
                 <Grid container spacing={1}>
                     <Grid item md={4} xs={12}>

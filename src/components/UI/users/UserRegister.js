@@ -12,6 +12,7 @@ import {useEffect, useState} from "react";
 import {Axios} from "../../../utils/axios/Axios";
 import {storeList, userInsert} from "../../../utils/ServerEndPoint";
 import {Alert, AlertTitle, Autocomplete} from "@material-ui/lab";
+import Response from "../../../utils/Response/Response";
 
 
 const UserRegister = (
@@ -36,10 +37,11 @@ const UserRegister = (
     // for snack bar
     const [show, setShow] = useState(false)
     const [error, setError] = useState(false)
-
+    const [errorTitle, setErrorTitle] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
 
     // for auto compelte
-    const [stores,setStore] = useState([])
+    const [stores, setStore] = useState([])
 
     const close = () => {
         setShow(false)
@@ -51,7 +53,7 @@ const UserRegister = (
 
         event.preventDefault()
 
-        if(firstName.trim() === '')  {
+        if (firstName.trim() === '') {
             setError(true)
             return
         }
@@ -67,7 +69,6 @@ const UserRegister = (
         }
 
 
-
         Axios.post(userInsert, data).then(e => {
             insertData(data)
             setFirstName('')
@@ -80,6 +81,9 @@ const UserRegister = (
             setError(false)
             setShow(true)
         }).catch(error => {
+            const response = error.response.data
+            setErrorMessage(response.message)
+            setErrorTitle(response.title)
             setError(true)
         })
 
@@ -89,7 +93,7 @@ const UserRegister = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
         Axios.get(storeList).then(e => {
-           setStore(e.data)
+            setStore(e.data)
         })
     }, [])
 
@@ -99,7 +103,7 @@ const UserRegister = (
         aria-labelledby="add-student"
         maxWidth={"md"}
     >
-        <form  onSubmit={register}>
+        <form onSubmit={register}>
 
 
             <DialogTitle id="add-student">Register User</DialogTitle>
@@ -108,23 +112,13 @@ const UserRegister = (
                     Insert if you have any note
                 </DialogContentText>
 
-                {
-                    error? <Alert variant="filled" severity="error">
-                        <AlertTitle><strong>Error</strong></AlertTitle>
-                        <strong>Hotdog</strong>
-                    </Alert>: null
-                }
-
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    open={show} autoHideDuration={3000} onClose={close}>
-                    <Alert onClose={closeDialog} severity="success">
-                        Supplier Register Success
-                    </Alert>
-                </Snackbar>
+                <Response showError={error}
+                          errorTitle={errorTitle}
+                          errorMessage={errorMessage}
+                          showSnackBar={show}
+                          successMessage='User Register Success'
+                          closeSnackBar={close}
+                />
 
                 <Grid container spacing={1}>
                     <Grid item md={4} xs={12}>
@@ -189,7 +183,7 @@ const UserRegister = (
                     </Grid>
 
                     <Grid item md={6} xs={12}>
-                        <FormControl variant="outlined"  margin='dense' fullWidth>
+                        <FormControl variant="outlined" margin='dense' fullWidth>
                             <InputLabel htmlFor="Major">Role</InputLabel>
                             <Select
                                 native
@@ -209,15 +203,16 @@ const UserRegister = (
                     </Grid>
 
                     <Grid item md={6} xs={12}>
-                        <FormControl variant="outlined"  margin='dense' fullWidth>
+                        <FormControl variant="outlined" margin='dense' fullWidth>
                             <Autocomplete
                                 size={"small"}
                                 id="combo-box-demo"
                                 options={stores}
                                 getOptionLabel={(option) => option.name + ' ' + option.state}
                                 getOptionSelected={(option, value) => option.id === value.id}
-                                onChange={(event,value) => setStoreId(value.id)}
-                                renderInput={(params) => <TextField {...params}  label="Store Branch" variant="outlined" />}
+                                onChange={(event, value) => setStoreId(value.id)}
+                                renderInput={(params) => <TextField {...params} label="Store Branch"
+                                                                    variant="outlined"/>}
                             />
                         </FormControl>
                     </Grid>

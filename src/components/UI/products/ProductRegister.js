@@ -8,17 +8,14 @@ import {
     Grid, Snackbar,
     TextField
 } from "@material-ui/core"
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {Axios} from "../../../utils/axios/Axios";
 import {
-    productImages,
     productInsert,
     productUpdate,
-    storeList,
-    supplierInsert,
-    supplierList
 } from "../../../utils/ServerEndPoint";
 import {Alert, AlertTitle, Autocomplete} from "@material-ui/lab";
+import Response from "../../../utils/Response/Response";
 
 
 const ProductRegister = (
@@ -46,7 +43,8 @@ const ProductRegister = (
     // for snack bar
     const [show, setShow] = useState(false)
     const [error, setError] = useState(false)
-
+    const [errorTitle, setErrorTitle] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
 
     const close = () => {
         setShow(false)
@@ -98,6 +96,9 @@ const ProductRegister = (
             setError(false)
             setShow(true)
         }).catch(error => {
+            const response = error.response.data
+            setErrorMessage(response.message)
+            setErrorTitle(response.title)
             setError(true)
         })
 
@@ -122,6 +123,14 @@ const ProductRegister = (
                 <DialogContentText>
                     {update ? 'The product will just override the data' : 'Insert if you have any note'}
                 </DialogContentText>
+
+                <Response showError={error}
+                          errorTitle={errorTitle}
+                          errorMessage={errorMessage}
+                          showSnackBar={show}
+                          successMessage='   Supplier Register Success'
+                          closeSnackBar={close}
+                />
 
                 {
                     error ? <Alert variant="filled" severity="error">

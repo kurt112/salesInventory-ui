@@ -12,6 +12,7 @@ import {useState} from "react";
 import {Axios} from "../../../utils/axios/Axios";
 import {Alert, AlertTitle} from "@material-ui/lab";
 import {userDelete} from "../../../utils/ServerEndPoint";
+import Response from "../../../utils/Response/Response";
 
 
 const DeleteUser = (
@@ -29,8 +30,8 @@ const DeleteUser = (
     // for snack bar
     const [show, setShow] = useState(false)
     const [error, setError] = useState(false)
-
-
+    const [errorTitle, setErrorTitle] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
     const close = () => {
         setShow(false)
     }
@@ -44,13 +45,12 @@ const DeleteUser = (
         Axios.post(userDelete, {
             email
         }).then(ignored => {
-            deleted(email)
-            setEmail('')
-
-            setError(false)
-            setShow(true)
+            // deleted(email)
+            // setEmail('')
         }).catch(error => {
-            console.log(error)
+            const response = error.response.data
+            setErrorMessage(response.message)
+            setErrorTitle(response.title)
             setError(true)
         })
 
@@ -72,7 +72,13 @@ const DeleteUser = (
                 <DialogContentText>
                     Insert Supplier Email to delete the supplier
                 </DialogContentText>
-
+                <Response showError={error}
+                          errorTitle={errorTitle}
+                          errorMessage={errorMessage}
+                          showSnackBar={show}
+                          successMessage='Supplier Register Success'
+                          closeSnackBar={close}
+                />
                 {
                     error ? <Alert variant="filled" severity="error">
                         <AlertTitle><strong>Can't Delete User</strong></AlertTitle>

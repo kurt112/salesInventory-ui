@@ -12,6 +12,7 @@ import {useEffect, useState} from "react";
 import {Axios} from "../../../utils/axios/Axios";
 import {productDelete} from "../../../utils/ServerEndPoint";
 import {Alert, AlertTitle} from "@material-ui/lab";
+import Response from "../../../utils/Response/Response";
 
 
 const DeleteProduct = (
@@ -28,7 +29,8 @@ const DeleteProduct = (
     // for snack bar
     const [show, setShow] = useState(false)
     const [error, setError] = useState(false)
-    const [errorMessage, setErrorMessage] = useState()
+    const [errorTitle, setErrorTitle] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
 
     const close = () => {
         setShow(false)
@@ -49,16 +51,13 @@ const DeleteProduct = (
             deleteProduct(data)
         }).catch(error => {
             const response = error.response.data
-            setErrorMessage(response)
+            setErrorMessage(response.message)
+            setErrorTitle(response.title)
             setError(true)
         })
 
 
     }
-    useEffect(async () => {
-
-
-    }, [])
     return <Dialog
         open={dialog}
         onClose={closeDialog}
@@ -75,24 +74,13 @@ const DeleteProduct = (
                     Delete Product Note
                 </DialogContentText>
 
-                {
-                    error ? <Alert variant="filled" severity="error">
-                        <AlertTitle><strong>{errorMessage.name}</strong></AlertTitle>
-                        <strong>{errorMessage.message}</strong>
-                    </Alert> : null
-                }
-
-                <br/>
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    open={show} autoHideDuration={3000} onClose={close}>
-                    <Alert onClose={closeDialog} severity="success">
-                        Product Delete Success
-                    </Alert>
-                </Snackbar>
+                <Response showError={error}
+                          errorTitle={errorTitle}
+                          errorMessage={errorMessage}
+                          showSnackBar={show}
+                          successMessage='Product Deleted Success'
+                          closeSnackBar={close}
+                />
 
                 <Grid container spacing={1}>
 
