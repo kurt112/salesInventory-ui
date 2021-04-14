@@ -17,6 +17,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateIcon from '@material-ui/icons/Update';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+
 export const Products = () => {
     const classes = style()
 
@@ -25,6 +26,7 @@ export const Products = () => {
     const [photoUpload, setPhotoUpload] = useState(false)
     const [deleteDialog, setDeleteDialog] = useState(false)
     const [transferDialog, setTransferDialog] = useState(false)
+    const [findProductDialog, setFindProductDialog] = useState(false)
 
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
@@ -77,7 +79,6 @@ export const Products = () => {
         })
 
 
-
     }
 
 
@@ -104,7 +105,12 @@ export const Products = () => {
         setData(tempData)
     }
 
-    const transferProduct = async () => {
+    const updateProduct = () => {
+        setFindProductDialog(true)
+        openDialog(true)
+    }
+
+    const Reload = async () => {
         const temp = []
         await Axios.get(productList).then((products) => {
             products.data.map(product =>
@@ -115,13 +121,24 @@ export const Products = () => {
         setData(temp)
     }
 
+
     return (
         <Fragment>
             {/*Pop up*/}
 
-            <ProductRegister images={images} stores={stores} suppliers={suppliers} update={update}
-                             dialog={registerDialog} closeDialog={() => setRegisterDialog(false)}
-                             insertData={insertData}/>
+            <ProductRegister images={images}
+                             stores={stores}
+                             suppliers={suppliers}
+                             update={update}
+                             dialog={registerDialog}
+                             closeDialog={() => setRegisterDialog(false)}
+                             insertData={insertData}
+                             setUpdate={setUpdate}
+                             reload={Reload}
+                             findProduct={findProductDialog}
+                             setFindDialog={setFindProductDialog}
+            />
+
             <ProductPhoto insertPicture={insertImage} dialog={photoUpload} closeDialog={() => setPhotoUpload(false)}/>
 
             <DeleteProduct
@@ -130,7 +147,8 @@ export const Products = () => {
                 deleteProduct={deleteProduct}
             />
 
-            <TransferProduct transfer={transferProduct} dialog={transferDialog} closeDialog={() => setTransferDialog(false)}/>
+            <TransferProduct transfer={Reload} dialog={transferDialog}
+                             closeDialog={() => setTransferDialog(false)}/>
 
             {/*Table*/}
             <Grid component="main" className={classes.root}>
@@ -152,7 +170,7 @@ export const Products = () => {
                             </Tooltip>
 
                             <Tooltip title="Update Product" aria-label="add">
-                                <IconButton onClick={() => openDialog(true)} aria-label="addProduct" color={"primary"}>
+                                <IconButton onClick={updateProduct} aria-label="addProduct" color={"primary"}>
                                     <UpdateIcon fontSize={"large"}/>
                                 </IconButton>
                             </Tooltip>

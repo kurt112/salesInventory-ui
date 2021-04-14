@@ -14,6 +14,7 @@ export const
     productDelete = 'product/delete',
     productUpdate = 'product/update',
     productTransfer = 'product/transfer',
+    productFind = 'product/find',
 
 
     // stores

@@ -5,7 +5,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle, FormControl,
-    Grid, Snackbar,
+    Grid,
     TextField
 } from "@material-ui/core"
 import {useState} from "react";
@@ -14,8 +14,9 @@ import {
     productInsert,
     productUpdate,
 } from "../../../utils/ServerEndPoint";
-import {Alert, AlertTitle, Autocomplete} from "@material-ui/lab";
+import {Autocomplete} from "@material-ui/lab";
 import Response from "../../../utils/Response/Response";
+import FindProduct from "./FindProduct";
 
 
 const ProductRegister = (
@@ -26,9 +27,11 @@ const ProductRegister = (
         update,
         stores,
         suppliers,
-        images
+        images,
+        findProduct,
+        reload,
+        setFindDialog
     }) => {
-
     const [brand, setBrand] = useState('')
     const [name, setName] = useState('')
     const [type, setType] = useState('')
@@ -41,17 +44,13 @@ const ProductRegister = (
 
 
     // for snack bar
-    const [show, setShow] = useState(false)
+    const [showing, setShowing] = useState(false)
     const [error, setError] = useState(false)
     const [errorTitle, setErrorTitle] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
 
-    const close = () => {
-        setShow(false)
-    }
 
-
-    const register = (event) => {
+    const register = async (event) => {
         event.preventDefault()
         if (brand.trim() === '') {
             setError(true)
@@ -84,7 +83,7 @@ const ProductRegister = (
 
         let i = parseInt(qty)
 
-        Axios.post(update ? productUpdate : productInsert, data).then(e => {
+        await Axios.post(update ? productUpdate : productInsert, data).then(ignored => {
             setBrand('')
             setName('')
             setType('')
@@ -94,7 +93,7 @@ const ProductRegister = (
             setStore('')
             setSupplier('')
             setError(false)
-            setShow(true)
+            setShowing(true)
         }).catch(error => {
             const response = error.response.data
             setErrorMessage(response.message)
@@ -108,181 +107,206 @@ const ProductRegister = (
             i--
         }
 
+
+        if (update === true) {
+            reload()
+            setFindDialog(true)
+            alert("Product Update Success")
+        }
+
+
     }
 
-    return <Dialog
-        open={dialog}
-        onClose={closeDialog}
-        aria-labelledby="add-student"
-        maxWidth={"md"}
-    >
-        <form  onSubmit={register}>
 
-            <DialogTitle id="add-student">{update ? 'Update Product' : 'Register Product'}</DialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                    {update ? 'The product will just override the data' : 'Insert if you have any note'}
-                </DialogContentText>
+    // update
 
-                <Response showError={error}
-                          errorTitle={errorTitle}
-                          errorMessage={errorMessage}
-                          showSnackBar={show}
-                          successMessage='   Supplier Register Success'
-                          closeSnackBar={close}
-                />
+    const updateProduct = (product) => {
+        setBrand(product.brand)
+        setCode(product.code)
+        setName(product.name)
+        setType(product.type)
+        setPrice(product.price)
 
-                {
-                    error ? <Alert variant="filled" severity="error">
-                        <AlertTitle><strong>Error</strong></AlertTitle>
-                        <strong>Hotdog</strong>
-                    </Alert> : null
-                }
+        const storeTemp = stores.find(e => e.id === product.StoreId)
+        const photoTemp = images.find(e => e === product.photo)
+        const supplierTemp = suppliers.find(e => e.id === product.SupplierId)
 
-                <br/>
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    open={show} autoHideDuration={3000} onClose={close}>
-                    <Alert onClose={closeDialog} severity="success">
-                        Product Register Success
-                    </Alert>
-                </Snackbar>
+        setSupplier(supplierTemp)
+        setStore(storeTemp)
+        setPhoto(photoTemp)
+        setFindDialog(false)
+    }
 
-                <Grid container spacing={1}>
-                    <Grid item md={4} xs={12}>
-                        <FormControl variant="outlined" margin='dense' fullWidth>
-                            <Autocomplete
-                                autoSelect
-                                size={"small"}
-                                options={images}
-                                getOptionLabel={(option) => option}
-                                getOptionSelected={(option, value) => option === value}
-                                onChange={(event, value) => setPhoto(value)}
-                                renderInput={(params) => <TextField autoFocus {...params} label="Product Images"
-                                                                    variant="outlined"/>}
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item md={4} xs={12}>
-                        <TextField
-                                   margin="dense"
-                                   label="Product Brand"
-                                   type="text"
-                                   fullWidth
-                                   variant="outlined"
-                                   value={brand}
-                                   onChange={(e) => setBrand(e.target.value)}
-                        />
+    const closeFind = () => {
+        setFindDialog(false)
+        closeDialog()
+    }
 
-                    </Grid>
+    return update === true && findProduct === true ?
+        <FindProduct closeDialog={() => closeFind()} updateProduct={updateProduct} dialog={findProduct}/> :
 
-                    <Grid item md={4} xs={12}>
-                        <TextField
-                                   margin="dense"
-                                   label="Product Name"
-                                   type="text"
-                                   fullWidth
-                                   variant="outlined"
-                                   value={name}
-                                   onChange={(e) => setName(e.target.value)}
-                        />
-                    </Grid>
+        <Dialog
+            open={dialog}
+            onClose={closeDialog}
+            aria-labelledby="add-student"
+            maxWidth={"md"}
+        >
+            <form onSubmit={register}>
 
-                    <Grid item md={4} xs={12}>
-                        <TextField
-                                   margin="dense"
-                                   label="Product Type"
-                                   type="text"
-                                   fullWidth
-                                   variant="outlined"
-                                   value={type}
-                                   onChange={(e) => setType(e.target.value)}
-                        />
-                    </Grid>
-
-                    <Grid item md={4} xs={12}>
-                        <TextField
-                                   margin="dense"
-                                   label="Product Price"
-                                   type="number"
-                                   fullWidth
-                                   variant="outlined"
-                                   value={price}
-                                   onChange={(e) => setPrice(e.target.value < 0 ? 1 : e.target.value)}
-                        />
-                    </Grid>
-
-                    <Grid item md={4} xs={12}>
-                        <FormControl variant="outlined" margin='dense' fullWidth>
-                            <Autocomplete
-                                size={"small"}
-                                options={stores}
-                                getOptionLabel={(option) => option.name + ' ' + option.state}
-                                getOptionSelected={(option, value) => option.id === value.id}
-                                onChange={(event, value) => setStore(value)}
-                                renderInput={(params) => <TextField {...params} label="Store" variant="outlined"/>}
-                            />
-                        </FormControl>
-                    </Grid>
-
-                    <Grid item md={update?6:4} xs={12}>
-                        <FormControl variant="outlined" margin='dense' fullWidth>
-                            <Autocomplete
-                                size={"small"}
-                                options={suppliers}
-                                getOptionLabel={(option) => option.name + ' ' + option.state}
-                                getOptionSelected={(option, value) => option.id === value.id}
-                                onChange={(event, value) => setSupplier(value)}
-                                renderInput={(params) => <TextField {...params} label="Supplier" variant="outlined"/>}
-                            />
-                        </FormControl>
-                    </Grid>
-
-                    <Grid item md={update?6:4} xs={12}>
-                        <TextField
-                                   margin="dense"
-                                   label="Product Code"
-                                   type="text"
-                                   fullWidth
-                                   variant="outlined"
-                                   value={code}
-                                   onChange={e => setCode(e.target.value)}
-                        />
-                    </Grid>
+                <DialogTitle id="add-student">{update ? 'Update Product' : 'Register Product'}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        {update ? 'The product will just override the data' : 'Insert if you have any note'}
+                    </DialogContentText>
 
                     {
-                        update ? null :
-                            <Grid item md={4} xs={12}>
-                                <TextField
-                                           margin="dense"
-                                           label="QTY"
-                                           type="number"
-                                           fullWidth
-                                           variant="outlined"
-                                           value={qty}
-                                           onChange={e => setQty(e.target.value < 0 ? 1 : e.target.value)}
-                                />
-                            </Grid>
+                        showing === true ?
+                            <Response showError={error}
+                                      errorTitle={errorTitle}
+                                      errorMessage={errorMessage}
+                                      showSnackBar={showing}
+                                      successMessage={update === true ? "Product Update Success" : 'Product Insert Success'}
+                                      closeSnackBar={() => setShowing(false)}
+                            />
+                        : false
                     }
 
-                </Grid>
-            </DialogContent>
 
-            <DialogActions>
+                    <Grid container spacing={1}>
+                        <Grid item md={4} xs={12}>
+                            <FormControl variant="outlined" margin='dense' fullWidth>
+                                <Autocomplete
+                                    autoSelect
+                                    size={"small"}
+                                    options={images}
+                                    value={photo}
+                                    getOptionLabel={(option) => option}
+                                    getOptionSelected={(option, value) => option === value}
+                                    onChange={(event, value) => setPhoto(value)}
+                                    renderInput={(params) => <TextField autoFocus {...params} label="Product Images"
+                                                                        variant="outlined"/>}
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item md={4} xs={12}>
+                            <TextField
+                                margin="dense"
+                                label="Product Brand"
+                                type="text"
+                                fullWidth
+                                variant="outlined"
+                                value={brand}
+                                onChange={(e) => setBrand(e.target.value)}
+                            />
 
-                <Button type={"submit"} color='primary' onClick={register}>
-                    Register
-                </Button>
-                <Button onClick={() => closeDialog(false)} color='secondary'>
-                    Cancel
-                </Button>
-            </DialogActions>
-        </form>
-    </Dialog>
+                        </Grid>
+
+                        <Grid item md={4} xs={12}>
+                            <TextField
+                                margin="dense"
+                                label="Product Name"
+                                type="text"
+                                fullWidth
+                                variant="outlined"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        </Grid>
+
+                        <Grid item md={4} xs={12}>
+                            <TextField
+                                margin="dense"
+                                label="Product Type"
+                                type="text"
+                                fullWidth
+                                variant="outlined"
+                                value={type}
+                                onChange={(e) => setType(e.target.value)}
+                            />
+                        </Grid>
+
+                        <Grid item md={4} xs={12}>
+                            <TextField
+                                margin="dense"
+                                label="Product Price"
+                                type="number"
+                                fullWidth
+                                variant="outlined"
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value < 0 ? 1 : e.target.value)}
+                            />
+                        </Grid>
+
+                        <Grid item md={4} xs={12}>
+                            <FormControl variant="outlined" margin='dense' fullWidth>
+                                <Autocomplete
+                                    size={"small"}
+                                    value={store}
+                                    options={stores}
+                                    getOptionLabel={(option) => option.name + ' ' + option.state}
+                                    getOptionSelected={(option, value) => option.id === value.id}
+                                    onChange={(event, value) => setStore(value)}
+                                    renderInput={(params) => <TextField {...params} label="Store" variant="outlined"/>}
+                                />
+                            </FormControl>
+                        </Grid>
+
+                        <Grid item md={update ? 6 : 4} xs={12}>
+                            <FormControl variant="outlined" margin='dense' fullWidth>
+                                <Autocomplete
+                                    size={"small"}
+                                    options={suppliers}
+                                    value={supplier}
+                                    getOptionLabel={(option) => option.name + ' ' + option.state}
+                                    getOptionSelected={(option, value) => option.id === value.id}
+                                    onChange={(event, value) => setSupplier(value)}
+                                    renderInput={(params) => <TextField {...params} label="Supplier"
+                                                                        variant="outlined"/>}
+                                />
+                            </FormControl>
+                        </Grid>
+
+                        <Grid item md={update ? 6 : 4} xs={12}>
+                            <TextField
+                                margin="dense"
+                                label="Product Code"
+                                type="text"
+                                fullWidth
+                                variant="outlined"
+                                value={code}
+                                onChange={e => setCode(e.target.value)}
+                            />
+                        </Grid>
+
+                        {
+                            update ? null :
+                                <Grid item md={4} xs={12}>
+                                    <TextField
+                                        margin="dense"
+                                        label="QTY"
+                                        type="number"
+                                        fullWidth
+                                        variant="outlined"
+                                        value={qty}
+                                        onChange={e => setQty(e.target.value < 0 ? 1 : e.target.value)}
+                                    />
+                                </Grid>
+                        }
+
+                    </Grid>
+                </DialogContent>
+
+                <DialogActions>
+
+                    <Button type={"submit"} color='primary' onClick={register}>
+                        Register
+                    </Button>
+                    <Button onClick={() => closeDialog(false)} color='secondary'>
+                        Cancel
+                    </Button>
+                </DialogActions>
+            </form>
+        </Dialog>
 }
-
 
 export default ProductRegister
