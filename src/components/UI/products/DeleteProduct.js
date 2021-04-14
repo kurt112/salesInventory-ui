@@ -5,13 +5,12 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Grid, Snackbar,
+    Grid,
     TextField
 } from "@material-ui/core"
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {Axios} from "../../../utils/axios/Axios";
 import {productDelete} from "../../../utils/ServerEndPoint";
-import {Alert, AlertTitle} from "@material-ui/lab";
 import Response from "../../../utils/Response/Response";
 
 

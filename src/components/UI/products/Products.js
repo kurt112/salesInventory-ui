@@ -1,5 +1,4 @@
 import style, {TableOptions as options} from '../_style/TableStyle'
-import Button from "@material-ui/core/Button";
 import {Paper, Grid, Box, Toolbar, CircularProgress, Tooltip} from "@material-ui/core";
 import {ProductTable as columns, InsertProduct as insert} from '../../../utils/tableColumn/ProductTable'
 import MUIDataTable from 'mui-datatables'
@@ -77,6 +76,8 @@ export const Products = () => {
             setImages(e.data)
         })
 
+
+
     }
 
 
@@ -103,6 +104,17 @@ export const Products = () => {
         setData(tempData)
     }
 
+    const transferProduct = async () => {
+        const temp = []
+        await Axios.get(productList).then((products) => {
+            products.data.map(product =>
+                temp.push(insert(product.code, product.brand, product.name, product.type, product.price, product.Supplier.name, product.Store.name, product.status))
+            )
+        })
+
+        setData(temp)
+    }
+
     return (
         <Fragment>
             {/*Pop up*/}
@@ -118,7 +130,7 @@ export const Products = () => {
                 deleteProduct={deleteProduct}
             />
 
-            <TransferProduct dialog={transferDialog} closeDialog={() => setTransferDialog(false)}/>
+            <TransferProduct transfer={transferProduct} dialog={transferDialog} closeDialog={() => setTransferDialog(false)}/>
 
             {/*Table*/}
             <Grid component="main" className={classes.root}>

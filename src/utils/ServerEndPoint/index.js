@@ -13,6 +13,7 @@ export const
     productInsert = 'product/insert',
     productDelete = 'product/delete',
     productUpdate = 'product/update',
+    productTransfer = 'product/transfer',
 
 
     // stores
