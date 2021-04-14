@@ -67,10 +67,16 @@ export const Products = () => {
     }
 
     const insertData = (product) => {
-        const temp = data;
-        temp.unshift(product)
         const newData = [product, ...data]
         setData(newData)
+    }
+
+    const insertImage = () => {
+
+        Axios.get(productImages).then(e => {
+            setImages(e.data)
+        })
+
     }
 
 
@@ -104,7 +110,7 @@ export const Products = () => {
             <ProductRegister images={images} stores={stores} suppliers={suppliers} update={update}
                              dialog={registerDialog} closeDialog={() => setRegisterDialog(false)}
                              insertData={insertData}/>
-            <ProductPhoto dialog={photoUpload} closeDialog={() => setPhotoUpload(false)}/>
+            <ProductPhoto insertPicture={insertImage} dialog={photoUpload} closeDialog={() => setPhotoUpload(false)}/>
 
             <DeleteProduct
                 dialog={deleteDialog}

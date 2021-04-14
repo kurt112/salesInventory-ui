@@ -7,8 +7,7 @@ export const
     userDelete = 'user/delete',
 
 
-    //Product
-
+    // Product
     productList = 'product/list',
     productImages ='product/images',
     productInsert = 'product/insert',
@@ -16,21 +15,21 @@ export const
     productUpdate = 'product/update',
 
 
-    //stores
+    // stores
     storeList = 'store/list',
     storeInsert = 'store/insert',
 
-    //User
+    // User
     transactionList = 'transaction/list',
 
-    //Sales
+    // Sales
     salesList = 'sales/list',
 
-    //Supplier
+    // Supplier
     supplierList ='supplier/list',
     supplierInsert ='supplier/insert',
 
-    //Customer
+    // Customer
     CustomerList = 'customer/list',
 
     // upload
