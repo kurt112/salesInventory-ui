@@ -13,14 +13,15 @@ import {Axios} from "../../../utils/axios/Axios";
 import {
     productFind,
 } from "../../../utils/ServerEndPoint";
-import {Alert, AlertTitle} from "@material-ui/lab";
+import Response from "../../../utils/Response/Response";
 
 
 const FindProduct = (
     {
         closeDialog,
         dialog,
-        updateProduct
+        updateProduct,
+        updateClose
     }) => {
 
 
@@ -31,7 +32,7 @@ const FindProduct = (
     const [error, setError] = useState(false)
     const [errorTitle, setErrorTitle] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
-
+    const [show,setShow] = useState(false)
 
 
     const register = async (event) => {
@@ -41,6 +42,8 @@ const FindProduct = (
             setCode('')
             setError(false)
             updateProduct(e.data[0])
+            setShow(true)
+            closeDialog(false)
         }).catch(error => {
             const response = error.response.data
             setErrorMessage(response.message)
@@ -48,6 +51,11 @@ const FindProduct = (
             setError(true)
         })
 
+    }
+
+    const cancel = () => {
+        updateClose(false)
+        closeDialog(false)
     }
 
     return <Dialog
@@ -65,12 +73,14 @@ const FindProduct = (
                     Enter your product code
                 </DialogContentText>
 
-                {
-                    error ? <Alert variant="filled" severity="error">
-                        <AlertTitle><strong>{errorTitle}</strong></AlertTitle>
-                        <strong>{errorMessage}</strong>
-                    </Alert>: null
-                }
+                <Response showError={error}
+                          errorTitle={errorTitle}
+                          errorMessage={errorMessage}
+                          showSnackBar={show}
+                          successMessage={"Product Find Success"}
+                          closeSnackBar={() => setShow(false)}
+                />
+
 
                 <br/>
 
@@ -95,7 +105,7 @@ const FindProduct = (
                 <Button type={"submit"} color='primary' onClick={register}>
                     Next
                 </Button>
-                <Button onClick={() => closeDialog(false)} color='secondary'>
+                <Button onClick={cancel} color='secondary'>
                     Cancel
                 </Button>
             </DialogActions>

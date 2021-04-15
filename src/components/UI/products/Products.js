@@ -17,6 +17,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateIcon from '@material-ui/icons/Update';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+import UpdateProduct from "./UpdateProduct";
 
 export const Products = () => {
     const classes = style()
@@ -26,11 +27,11 @@ export const Products = () => {
     const [photoUpload, setPhotoUpload] = useState(false)
     const [deleteDialog, setDeleteDialog] = useState(false)
     const [transferDialog, setTransferDialog] = useState(false)
-    const [findProductDialog, setFindProductDialog] = useState(false)
+    const [updateDialog, setUpdateDialog] = useState(false)
+
 
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
-    const [update, setUpdate] = useState(false);
 
     // for autoComplete in Dialog
     const [stores, setStores] = useState([])
@@ -62,15 +63,6 @@ export const Products = () => {
 
     }, [])
 
-    const openDialog = (isUpdate) => {
-        setUpdate(isUpdate)
-        setRegisterDialog(true)
-    }
-
-    const insertData = (product) => {
-        const newData = [product, ...data]
-        setData(newData)
-    }
 
     const insertImage = () => {
 
@@ -105,10 +97,6 @@ export const Products = () => {
         setData(tempData)
     }
 
-    const updateProduct = () => {
-        setFindProductDialog(true)
-        openDialog(true)
-    }
 
     const Reload = async () => {
         const temp = []
@@ -121,7 +109,6 @@ export const Products = () => {
         setData(temp)
     }
 
-
     return (
         <Fragment>
             {/*Pop up*/}
@@ -129,15 +116,17 @@ export const Products = () => {
             <ProductRegister images={images}
                              stores={stores}
                              suppliers={suppliers}
-                             update={update}
                              dialog={registerDialog}
                              closeDialog={() => setRegisterDialog(false)}
-                             insertData={insertData}
-                             setUpdate={setUpdate}
                              reload={Reload}
-                             findProduct={findProductDialog}
-                             setFindDialog={setFindProductDialog}
             />
+
+            <UpdateProduct images={images}
+                           stores={stores}
+                           suppliers={suppliers}
+                           dialog={updateDialog}
+                           closeDialog={() => setUpdateDialog(false)}
+                           reload={Reload}/>
 
             <ProductPhoto insertPicture={insertImage} dialog={photoUpload} closeDialog={() => setPhotoUpload(false)}/>
 
@@ -150,13 +139,15 @@ export const Products = () => {
             <TransferProduct transfer={Reload} dialog={transferDialog}
                              closeDialog={() => setTransferDialog(false)}/>
 
+
             {/*Table*/}
             <Grid component="main" className={classes.root}>
                 <Grid item component={Paper} md={12} sm={12} xs={12} className={classes.tableNavbar}>
                     <Toolbar>
                         <Box className={classes.tableNavbarBox}>
                             <Tooltip title="Add Product" aria-label="add">
-                                <IconButton onClick={() => openDialog(false)} aria-label="addProduct" color={"primary"}>
+                                <IconButton onClick={() => setRegisterDialog(true)} aria-label="addProduct"
+                                            color={"primary"}>
                                     <AddCircleIcon fontSize={"large"}/>
                                 </IconButton>
                             </Tooltip>
@@ -170,7 +161,8 @@ export const Products = () => {
                             </Tooltip>
 
                             <Tooltip title="Update Product" aria-label="add">
-                                <IconButton onClick={updateProduct} aria-label="addProduct" color={"primary"}>
+                                <IconButton onClick={() => setUpdateDialog(true)} aria-label="addProduct"
+                                            color={"primary"}>
                                     <UpdateIcon fontSize={"large"}/>
                                 </IconButton>
                             </Tooltip>
