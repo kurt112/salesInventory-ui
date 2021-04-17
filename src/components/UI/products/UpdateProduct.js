@@ -109,6 +109,8 @@ const ProductRegister = (
         setPhoto(photoTemp)
     }
 
+
+
     return <Fragment>
         {
             findProductDialog === true?<FindProduct updateClose={closeDialog} closeDialog={setFindProductDialog} updateProduct={updateProduct} dialog={findProductDialog}/>

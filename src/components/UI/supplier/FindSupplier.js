@@ -11,21 +11,21 @@ import {
 import {useState} from "react";
 import {Axios} from "../../../utils/axios/Axios";
 import {
-    productFind,
+    supplierUpdate,
+    supplierFind
 } from "../../../utils/ServerEndPoint";
 import Response from "../../../utils/Response/Response";
 
 
-const FindProduct = (
+const FindSupplier = (
     {
         closeDialog,
         dialog,
-        updateProduct,
+        updateSupplier,
         updateClose
     }) => {
 
-
-    const [code, setCode] = useState('')
+    const [email, setEmail] = useState('')
 
 
     // for snack bar
@@ -38,12 +38,13 @@ const FindProduct = (
     const register = async (event) => {
         event.preventDefault()
 
-        await Axios.post(productFind, {code}).then(e => {
-            setCode('')
-            setError(false)
-            updateProduct(e.data[0])
-            setShow(true)
-            closeDialog(false)
+        await Axios.post(supplierFind, {email}).then(e => {
+            // setEmail('')
+
+            // setError(false)
+            updateSupplier(e.data[0])
+            // setShow(true)
+            // closeDialog(false)
         }).catch(error => {
             const response = error.response.data
             setErrorMessage(response.message)
@@ -67,10 +68,10 @@ const FindProduct = (
     >
         <form onSubmit={register}>
 
-            <DialogTitle id="add-student">Find Product</DialogTitle>
+            <DialogTitle id="add-student">Find Supplier</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    Enter your product code
+                    if you have note for this add  or delete it
                 </DialogContentText>
 
                 <Response showError={error}
@@ -89,12 +90,12 @@ const FindProduct = (
                         <TextField
                             autoFocus
                             margin="dense"
-                            label="Product Code"
+                            label="Enter Supplier Email"
                             type="text"
                             fullWidth
                             variant="outlined"
-                            value={code}
-                            onChange={(e) => setCode(e.target.value)}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </Grid>
                 </Grid>
@@ -114,4 +115,4 @@ const FindProduct = (
 }
 
 
-export default FindProduct
+export default FindSupplier

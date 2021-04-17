@@ -30,6 +30,9 @@ export const
     // Supplier
     supplierList ='supplier/list',
     supplierInsert ='supplier/insert',
+    supplierDelete = 'supplier/delete',
+    supplierUpdate=  'supplier/update',
+    supplierFind = 'supplier/find',
 
     // Customer
     CustomerList = 'customer/list',
