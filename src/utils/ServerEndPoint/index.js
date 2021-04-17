@@ -5,7 +5,8 @@ export const
     userList = 'user/list',
     userInsert ='user/insert',
     userDelete = 'user/delete',
-
+    userUpdate = 'user/update',
+    userFind = 'user/find',
 
     // Product
     productList = 'product/list',
