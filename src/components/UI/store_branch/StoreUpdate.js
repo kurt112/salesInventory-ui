@@ -11,13 +11,13 @@ import {
 import {useState, Fragment, useEffect} from "react";
 import {Axios} from "../../../utils/axios/Axios";
 import {
-    supplierUpdate,
+    storeUpdate,
 } from "../../../utils/ServerEndPoint";
 import Response from "../../../utils/Response/Response";
-import FindSupplier from "./FindSupplier";
+import StoreFind from "./StoreFind";
 
 
-const UpdateSupplier = (
+const StoreUpdate = (
     {
         closeDialog,
         dialog,
@@ -37,7 +37,7 @@ const UpdateSupplier = (
     const [telNo, setTelNo] = useState('')
 
 
-    const [findSupplierDialog, setFindSupplierDialog] = useState(false)
+    const [findStoreDialog, setFindStoreDialog] = useState(false)
 
     // for snack bar
     const [show, setShow] = useState(false)
@@ -62,12 +62,11 @@ const UpdateSupplier = (
         }
 
 
-        await Axios.post(supplierUpdate, data).then(ignored => {
+        await Axios.post(storeUpdate, data).then(ignored => {
             setError(false)
             Reload()
             alert("Update Success")
-            setFindSupplierDialog(true)
-
+            setFindStoreDialog(true)
         }).catch(error => {
             const response = error.response.data
             setErrorMessage(response.message)
@@ -78,30 +77,30 @@ const UpdateSupplier = (
     }
 
     useEffect(() => {
-        setFindSupplierDialog(dialog)
+        setFindStoreDialog(dialog)
     }, [dialog])
 
     // update
-    const updateSupplier = (supplier) => {
-        console.log(supplier)
-        setId(supplier.id)
-        setName(supplier.name)
-        setAddress(supplier.address)
-        setCity(supplier.city)
-        setEmail(supplier.email)
-        setMobileNo(supplier.mobile_no)
-        setPostalCode(supplier.postalCode)
-        setState(supplier.state)
-        setTelNo(supplier.tel_no)
-        setFindSupplierDialog(false)
+    const updateStore = (store) => {
+
+        setId(store.id)
+        setName(store.name)
+        setAddress(store.address)
+        setCity(store.city)
+        setEmail(store.email)
+        setMobileNo(store.mobile_no)
+        setPostalCode(store.postalCode)
+        setState(store.state)
+        setTelNo(store.tel_no)
+        setFindStoreDialog(false)
     }
 
 
     return <Fragment>
         {
-            findSupplierDialog === true ?
-                <FindSupplier updateClose={closeDialog} closeDialog={() => setFindSupplierDialog(false)}
-                              updateSupplier={updateSupplier} dialog={findSupplierDialog}/>
+            findStoreDialog === true ?
+                <StoreFind updateClose={closeDialog} closeDialog={() => setFindStoreDialog(false)}
+                           updateStore={updateStore} dialog={findStoreDialog}/>
                 :
                 <Dialog
                     open={dialog}
@@ -131,7 +130,7 @@ const UpdateSupplier = (
                                     <TextField autoFocus
                                                margin="dense"
                                                id="supplier-name"
-                                               label="Supplier Name"
+                                               label="Store Name"
                                                type="text"
                                                fullWidth
                                                variant="outlined"
@@ -146,7 +145,7 @@ const UpdateSupplier = (
                                     <TextField
                                         margin="dense"
                                         id="supplier-email"
-                                        label="Supplier Email"
+                                        label="Store Email"
                                         type="email"
                                         fullWidth
                                         variant="outlined"
@@ -246,7 +245,7 @@ const UpdateSupplier = (
                         <DialogActions>
 
                             <Button type={"submit"} color='primary' onClick={register}>
-                                Register
+                                Update
                             </Button>
                             <Button onClick={() => closeDialog(false)} color='secondary'>
                                 Cancel
@@ -259,4 +258,4 @@ const UpdateSupplier = (
 
 }
 
-export default UpdateSupplier
+export default StoreUpdate

@@ -11,16 +11,16 @@ import {
 import {useState} from "react";
 import {Axios} from "../../../utils/axios/Axios";
 import {
-    supplierFind
+    storeFind
 } from "../../../utils/ServerEndPoint";
 import Response from "../../../utils/Response/Response";
 
 
-const FindSupplier = (
+const FindStore = (
     {
         closeDialog,
         dialog,
-        updateSupplier,
+        updateStore,
         updateClose
     }) => {
 
@@ -37,9 +37,9 @@ const FindSupplier = (
     const register = async (event) => {
         event.preventDefault()
 
-        await Axios.post(supplierFind, {email}).then(e => {
+        await Axios.post(storeFind, {email}).then(e => {
             setError(false)
-            updateSupplier(e.data[0])
+            updateStore(e.data[0])
             closeDialog(false)
         }).catch(error => {
             const response = error.response.data
@@ -64,7 +64,7 @@ const FindSupplier = (
     >
         <form onSubmit={register}>
 
-            <DialogTitle id="add-student">Find Supplier</DialogTitle>
+            <DialogTitle id="add-student">Find Store</DialogTitle>
             <DialogContent>
                 <DialogContentText>
                     if you have note for this add  or delete it
@@ -74,7 +74,7 @@ const FindSupplier = (
                           errorTitle={errorTitle}
                           errorMessage={errorMessage}
                           showSnackBar={show}
-                          successMessage={"Product Find Success"}
+                          successMessage={"Store Find Success"}
                           closeSnackBar={() => setShow(false)}
                 />
 
@@ -86,7 +86,7 @@ const FindSupplier = (
                         <TextField
                             autoFocus
                             margin="dense"
-                            label="Enter Supplier Email"
+                            label="Enter Store Email"
                             type="text"
                             fullWidth
                             variant="outlined"
@@ -111,4 +111,4 @@ const FindSupplier = (
 }
 
 
-export default FindSupplier
+export default FindStore

@@ -21,6 +21,9 @@ export const
     // stores
     storeList = 'store/list',
     storeInsert = 'store/insert',
+    storeFind = 'store/find',
+    storeUpdate = 'store/update',
+    storeDelete = 'store/delete',
 
     // User
     transactionList = 'transaction/list',

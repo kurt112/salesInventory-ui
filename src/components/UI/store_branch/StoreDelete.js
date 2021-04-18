@@ -10,15 +10,16 @@ import {
 } from "@material-ui/core"
 import {useState} from "react"
 import {Axios} from "../../../utils/axios/Axios"
-import {supplierDelete} from "../../../utils/ServerEndPoint"
+import {storeDelete} from "../../../utils/ServerEndPoint"
 import Response from "../../../utils/Response/Response"
 
-const DeleteSupplier = (
+const StoreDelete = (
     {
         closeDialog,
         dialog,
         Reload
     }) => {
+
 
     // user data
     const [email, setEmail] = useState('')
@@ -39,7 +40,7 @@ const DeleteSupplier = (
 
         event.preventDefault()
 
-        Axios.post(supplierDelete, {email}).then(ignored => {
+        Axios.post(storeDelete, {email}).then(ignored => {
             setEmail('')
             setShow(true)
             Reload()
@@ -63,7 +64,7 @@ const DeleteSupplier = (
         <form onInvalid onSubmit={register}>
 
 
-            <DialogTitle id="add-student">Remove Supplier</DialogTitle>
+            <DialogTitle id="add-student">Remove Store</DialogTitle>
             <DialogContent>
                 <DialogContentText>
                     Insert Supplier Email to delete the supplier
@@ -72,7 +73,7 @@ const DeleteSupplier = (
                           errorTitle={errorTitle}
                           errorMessage={errorMessage}
                           showSnackBar={show}
-                          successMessage='Supplier Register Success'
+                          successMessage='Store Deleted Success'
                           closeSnackBar={close}
                 />
 
@@ -107,4 +108,4 @@ const DeleteSupplier = (
 }
 
 
-export default DeleteSupplier
+export default StoreDelete
