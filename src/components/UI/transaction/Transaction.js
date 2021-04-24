@@ -17,21 +17,22 @@ export const Transaction = () => {
     const [loading, setLoading] = useState(false)
 
     useEffect( () => {
-
+        const temp = []
         const get = async () => {
             setLoading(true)
-            const temp = []
+
             await Axios.get(transactionList).then((transactions) => {
                 transactions.data.map(transaction =>
                     temp.push(insert(transaction.id,`${transaction.User.firstName} ${transaction.User.lastName}`, transaction.amount,
                         transaction.discount,`${transaction.Customer.firstName} ${transaction.Customer.lastName}`,transaction.Store.name,transaction.createdAt))
                 )
             })
-            setData(...data,temp)
-            setLoading(false)
-        }
 
+        }
         get().then(ignored => {})
+
+        setData(...data,temp)
+        setLoading(false)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

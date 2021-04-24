@@ -37,15 +37,14 @@ export const Users = () => {
 
         const item = []
 
-        await Axios.get(userList).then(e => {
+        await Axios.get(userList).then(e =>
             e.data.map(user =>
                 item.push(insert(user.id,user.email,user.firstName,user.lastName,user.role, user.Store.name, user.status))
             )
-        })
+        )
 
-        await Axios.get(storeList).then(e => {
-            setStore(e.data)
-        })
+        await Axios.get(storeList).then(e => setStore(e.data)
+        )
 
         setData(item)
         setLoading(false)

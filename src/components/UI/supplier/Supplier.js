@@ -48,11 +48,11 @@ export const Supplier = () => {
     const Reload = async () => {
         setLoading(true)
         const temp = []
-        await Axios.get(supplierList).then((suppliers) => {
+        await Axios.get(supplierList).then((suppliers) =>
             suppliers.data.map(supplier =>
                 temp.push(insert(supplier.id, supplier.name, supplier.email, supplier.address, supplier.city, supplier.state, supplier.postalCode, supplier.mobile_no, supplier.tel_no))
             )
-        })
+        )
 
         setData(temp)
         setLoading(false)
@@ -60,7 +60,10 @@ export const Supplier = () => {
 
     return (
         <Fragment>
-            <DeleteSupplier Reload={Reload} dialog={deleteDialog} closeDialog={() => setDeleteDialog(false)}/>
+            <DeleteSupplier
+                Reload={Reload}
+                dialog={deleteDialog}
+                closeDialog={() => setDeleteDialog(false)}/>
             <SupplierRegister dialog={dialog} closeDialog={() => setDialog(false)} insertData={insertData}/>
             <UpdateSupplier Reload={Reload} dialog={supplierDialog} closeDialog={() => setSupplierDialog(false)}
                             insertData={insertData}/>
