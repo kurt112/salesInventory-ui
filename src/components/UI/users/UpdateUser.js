@@ -11,7 +11,7 @@ import {
 import {useState, Fragment, useEffect} from "react";
 import {Axios} from "../../../utils/axios/Axios";
 import {
-   userUpdate,
+    userUpdate,
 } from "../../../utils/ServerEndPoint";
 import Response from "../../../utils/Response/Response";
 import FindUser from "./FindUser";
@@ -28,17 +28,32 @@ const UpdateUser = (
 
 
     // data
-    const [id,setId] = useState()
+    const [id, setId] = useState()
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
     const [role, setRole] = useState(1)
     const [password, setPassword] = useState('')
     const [reTypePassword, setRetypePassword] = useState('')
-    const [store, setStore] = useState('')
+    const [storeId, setStoreId] = useState('')
 
 
     const [findUserDialog, setFindUserDialog] = useState(false)
+
+    const RemoveError = () => {
+        setFirstNameError(false)
+        setLastNameError(false)
+        setEmailError(false)
+        setStoreError(false)
+        setPasswordError(false)
+        setPasswordReError(false)
+        setFirstNameErrorMessage('')
+        setLastNameErrorMessage('')
+        setEmailErrorMessage('')
+        setPasswordErrorMessage('')
+        setPasswordReErrorMessage('')
+        setStoreErrorMessage('')
+    }
 
     // for snack bar
     const [show, setShow] = useState(false)
@@ -46,34 +61,98 @@ const UpdateUser = (
     const [errorTitle, setErrorTitle] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
 
+    // error state
+    const [firstNameError, setFirstNameError] = useState(false)
+    const [lastNameError, setLastNameError] = useState(false)
+    const [emailError, setEmailError] = useState(false)
+    const [passwordError, setPasswordError] = useState(false)
+    const [passwordReError, setPasswordReError] = useState(false)
+    const [storeError, setStoreError] = useState(false)
+
+
+    // error message
+    const [firstNameErrorMessage, setFirstNameErrorMessage] = useState('')
+    const [lastNameErrorMessage, setLastNameErrorMessage] = useState('')
+    const [emailErrorMessage, setEmailErrorMessage] = useState('')
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('')
+    const [passwordReErrorMessage, setPasswordReErrorMessage] = useState('')
+    const [storeErrorMessage, setStoreErrorMessage] = useState('')
+
 
     const register = async (event) => {
         event.preventDefault()
 
-        const data = {
-            id,
-            email,
-            password,
-            firstName,
-            lastName,
-            role,
-            StoreId: store.id,
-            status: 1
+        RemoveError()
+        let error = false
+
+        if (password !== reTypePassword || reTypePassword !== password) {
+            setPasswordReError(true)
+            setPasswordReErrorMessage('Password Do Not Match')
+            setPasswordError(true)
+            setPasswordErrorMessage('Password Do Not Match')
+            error = true
         }
 
+        if (firstName.trim().length === 0) {
+            error = true
+            setFirstNameError(true)
+            setFirstNameErrorMessage('Please Insert Firstname')
+        }
 
-        await Axios.post(userUpdate, data).then(ignored => {
-            setError(false)
-            Reload()
-            alert("Update Success")
-            setFindUserDialog(true)
+        if (lastName.trim().length === 0) {
+            error = true
+            setLastNameError(true)
+            setLastNameErrorMessage('Please Insert LastName')
+        }
 
-        }).catch(error => {
-            const response = error.response.data
-            setErrorMessage(response.message)
-            setErrorTitle(response.title)
-        })
+        if (email.trim().length === 0) {
+            error = true
+            setEmailError(true)
+            setEmailErrorMessage('Please Insert Email')
+        }
+        if (storeId.length === 0) {
+            setStoreError(true)
+            error = true
+            setStoreErrorMessage('Please Select Branch')
+        }
 
+        if (password.trim().length === 0) {
+            error = true
+            setPasswordError(true)
+            setPasswordErrorMessage('Please Enter Password')
+        }
+
+        if (reTypePassword.length === 0) {
+            error = true
+            setPasswordReError(true)
+            setPasswordReErrorMessage('Please Enter Password')
+        }
+
+        if (!error) {
+            const data = {
+                id,
+                email,
+                password,
+                firstName,
+                lastName,
+                role,
+                StoreId: storeId.id,
+                status: 1
+            }
+
+
+            await Axios.post(userUpdate, data).then(ignored => {
+                setError(false)
+                Reload()
+                alert("Update Success")
+                setFindUserDialog(true)
+
+            }).catch(error => {
+                const response = error.response.data
+                setErrorMessage(response.message)
+                setErrorTitle(response.title)
+            })
+        }
 
     }
 
@@ -92,7 +171,7 @@ const UpdateUser = (
         setRetypePassword(user.password)
         setFindUserDialog(false)
         const storeTemp = stores.find(e => e.id === user.StoreId)
-        setStore(storeTemp)
+        setStoreId(storeTemp)
     }
 
 
@@ -124,20 +203,27 @@ const UpdateUser = (
 
                         <Grid container spacing={1}>
                             <Grid item md={4} xs={12}>
-                                <TextField autoFocus
-                                           margin="dense"
-                                           label="First Name"
-                                           type="text"
-                                           fullWidth
-                                           variant="outlined"
-                                           value={firstName}
-                                           onChange={(e) => setFirstName(e.target.value)}
+                                <TextField
+                                    error={firstNameError}
+                                    helperText={firstNameErrorMessage}
+                                    required
+                                    autoFocus
+                                    margin="dense"
+                                    label="First Name"
+                                    type="text"
+                                    fullWidth
+                                    variant="outlined"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
                                 />
 
                             </Grid>
 
                             <Grid item md={4} xs={12}>
                                 <TextField
+                                    error={lastNameError}
+                                    helperText={lastNameErrorMessage}
+                                    required
                                     margin="dense"
                                     label="Last Name"
                                     type="text"
@@ -150,6 +236,9 @@ const UpdateUser = (
 
                             <Grid item md={4} xs={12}>
                                 <TextField
+                                    required
+                                    error={emailError}
+                                    helperText={emailErrorMessage}
                                     margin="dense"
                                     label="Email"
                                     type="email"
@@ -162,6 +251,9 @@ const UpdateUser = (
 
                             <Grid item md={6} xs={12}>
                                 <TextField
+                                    required
+                                    error={passwordError}
+                                    helperText={passwordErrorMessage}
                                     margin="dense"
                                     label="Password"
                                     type="password"
@@ -174,6 +266,9 @@ const UpdateUser = (
 
                             <Grid item md={6} xs={12}>
                                 <TextField
+                                    error={passwordReError}
+                                    helperText={passwordReErrorMessage}
+                                    required
                                     margin="dense"
                                     label="Re-type Password"
                                     type="password"
@@ -186,14 +281,16 @@ const UpdateUser = (
 
                             <Grid item md={6} xs={12}>
                                 <FormControl variant="outlined" margin='dense' fullWidth>
-                                    <InputLabel htmlFor="Major">Role</InputLabel>
+                                    <InputLabel
+                                        htmlFor="role">{'Role'}</InputLabel>
                                     <Select
+                                        required
                                         native
                                         value={role}
-                                        label="Major"
+                                        label={'Role'}
                                         inputProps={{
-                                            name: 'age',
-                                            id: 'Major',
+                                            name: 'role',
+                                            id: 'role',
                                         }}
                                         onChange={(event => setRole(parseInt(event.target.value)))}
                                     >
@@ -209,13 +306,15 @@ const UpdateUser = (
                                     <Autocomplete
                                         size={"small"}
                                         id="combo-box-demo"
-                                        value={store}
                                         options={stores}
                                         getOptionLabel={(option) => option.name + ' ' + option.state}
                                         getOptionSelected={(option, value) => option.id === value.id}
-                                        onChange={(event, value) => setStore(value.id)}
-                                        renderInput={(params) => <TextField {...params} label="Store Branch"
-                                                                            variant="outlined"/>}
+                                        onChange={(event, value) => setStoreId(value !== null ? value.id : '')}
+                                        renderInput={(params) =>
+                                            <TextField error={storeError} helperText={storeErrorMessage}
+                                                       required {...params}
+                                                       label="Store Branch"
+                                                       variant="outlined"/>}
                                     />
                                 </FormControl>
                             </Grid>
