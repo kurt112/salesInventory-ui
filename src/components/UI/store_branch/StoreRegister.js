@@ -5,7 +5,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Grid, Snackbar,
+    Grid,
     TextField
 } from "@material-ui/core"
 import {useState} from "react";
@@ -65,7 +65,7 @@ const StoreRegister = (
             tel_no: telNo
         }
 
-        Axios.post(storeInsert, data).then(e => {
+        Axios.post(storeInsert, data).then(ignored => {
             Reload()
             setName('')
             setEmail('')

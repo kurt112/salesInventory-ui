@@ -13,7 +13,6 @@ import PersonAddDisabledIcon from "@material-ui/icons/PersonAddDisabled";
 import UpdateIcon from "@material-ui/icons/Update";
 import DeleteSupplier from "./DeleteSupplier";
 import UpdateSupplier from "./UpdateSupplier";
-import {Update} from "@material-ui/icons";
 
 export const Supplier = () => {
     const classes = style()
@@ -29,8 +28,14 @@ export const Supplier = () => {
 
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(async () => {
-        await Reload()
+    useEffect(() => {
+        const data = async () => {
+            await Reload()
+        }
+
+        data().then(ignored => {
+        })
+
     }, [reload])
 
 
@@ -55,9 +60,10 @@ export const Supplier = () => {
 
     return (
         <Fragment>
-            <DeleteSupplier Reload={Reload}  dialog={deleteDialog} closeDialog={() => setDeleteDialog(false)}/>
-            <SupplierRegister  dialog={dialog} closeDialog={() => setDialog(false)} insertData={insertData}/>
-            <UpdateSupplier Reload={Reload}  dialog={supplierDialog} closeDialog={() => setSupplierDialog(false)} insertData={insertData}/>
+            <DeleteSupplier Reload={Reload} dialog={deleteDialog} closeDialog={() => setDeleteDialog(false)}/>
+            <SupplierRegister dialog={dialog} closeDialog={() => setDialog(false)} insertData={insertData}/>
+            <UpdateSupplier Reload={Reload} dialog={supplierDialog} closeDialog={() => setSupplierDialog(false)}
+                            insertData={insertData}/>
             <Grid component="main" className={classes.root}>
                 <Grid item component={Paper} md={12} sm={12} xs={12} className={classes.tableNavbar}>
                     <Toolbar>

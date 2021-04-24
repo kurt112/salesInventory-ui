@@ -67,7 +67,6 @@ const ProductRegister = (
             qty
         }
 
-
         await Axios.post(productInsert, data).then(ignored => {
             setError(false)
             setShowing(true)

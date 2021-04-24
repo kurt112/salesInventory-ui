@@ -2,7 +2,6 @@
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import {ListItem, ListItemIcon, ListItemText, SwipeableDrawer} from "@material-ui/core";
-import PeopleIcon from '@material-ui/icons/People';
 import {makeStyles} from '@material-ui/core/styles';
 import {NavLink} from "react-router-dom";
 
@@ -14,6 +13,8 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SettingsCellIcon from '@material-ui/icons/SettingsCell';
 import GroupIcon from '@material-ui/icons/Group';
 import ComputerIcon from '@material-ui/icons/Computer';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import ListIcon from '@material-ui/icons/List';
 const useStyles = makeStyles({
     list: {
         width: 240,
@@ -49,6 +50,12 @@ export default function Sidebar({open, handleDrawerClose, handleDrawerOpen}) {
                 <List>
                     <div>
                         {/*<ListSubheader className={style} inset>TEACHER</ListSubheader>*/}
+                        <ListItem component={NavLink} to="/" button>
+                            <ListItemIcon>
+                                <DashboardIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="DashBoard"/>
+                        </ListItem>
                         <ListItem component={NavLink} to="/products" button>
                             <ListItemIcon>
                                 <SettingsCellIcon/>
@@ -96,6 +103,12 @@ export default function Sidebar({open, handleDrawerClose, handleDrawerOpen}) {
                                 <ComputerIcon/>
                             </ListItemIcon>
                             <ListItemText primary="Pos"/>
+                        </ListItem>
+                        <ListItem component={NavLink} to="/audit" button>
+                            <ListItemIcon>
+                                <ListIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="Audit Trail"/>
                         </ListItem>
 
                     </div>

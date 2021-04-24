@@ -90,9 +90,9 @@ const Navbar = ({handleDrawerOpen}) => {
                     Sales and Inventory System
                 </Typography>
 
-                <Link  style={{textDecoration: 'none', color: 'white'}} >
+                <Link to="/"  style={{textDecoration: 'none', color: 'white'}} >
                     <Typography variant="h6" noWrap style={{marginRight: '10px'}}>
-                        {`Current Login user`}
+                        {`John Doe`}
                     </Typography>
                 </Link>
 

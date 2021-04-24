@@ -71,7 +71,7 @@ const ProductList = ({loading, data}) => {
             <div className={classes.products}>
                 {
                     loading ? <CircularProgress style={{marginTop: 20}}/> :
-                        data.map(product =>
+                        data.slice(0,15).map(product =>
                             <ProductCard key={product.id} price={product.price} classes={classes} name={product.name} id={product.code} picture={product.photo}/>)
                 }
 

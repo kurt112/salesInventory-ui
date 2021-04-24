@@ -6,6 +6,7 @@ import {style} from "./PosStyle";
 import {useEffect, useRef, useState} from "react";
 import {Axios} from "../../utils/axios/Axios";
 import {productList} from "../../utils/ServerEndPoint";
+
 const Pos = () => {
 
     const classes = style()
@@ -16,15 +17,26 @@ const Pos = () => {
     const [itemBuy, setItemBuy] = useState([])
     const [qty, setQty] = useState(1)
     let ref = useRef()
-    useEffect(async () => {
+    useEffect(() => {
         setLoading(true)
         const temp = []
-        await Axios.get(productList).then((products) => {
-            products.data.map(product =>
-                temp.push(product)
-            )
-        })
-        setProducts(...products, temp)
+        const getData = async () => {
+
+            await Axios.get(productList, {
+                params: {
+                    branch: 1
+                }
+            }).then(async (products) => {
+                products.data.map(product =>
+                    temp.push(product)
+                )
+                setProducts(...products, temp)
+            })
+
+        }
+
+        getData().then(ignored=> {})
+
         setLoading(false)
     }, [])
 
@@ -50,14 +62,14 @@ const Pos = () => {
             let last = null
 
             while (tempQ !== 0) {
-                let current;
+                let current = null;
 
                 const product = tempData.find((e, index) => {
                     current = index
                     return e.code.toString() === code
                 })
 
-                if (current !== undefined && product !== undefined) {
+                if (current === null && product !== undefined) {
                     last = tempData.splice(current, 1)
                 } else {
                     alert("We don't have enough Supply")
@@ -75,8 +87,6 @@ const Pos = () => {
                 setProducts(tempData)
                 setQty(1)
                 setCode('')
-                console.log(ref)
-                // ref.current.focus()
             }
         }
 
@@ -89,7 +99,9 @@ const Pos = () => {
                 <Divider className={classes.divider} light/>
 
                 <ItemList items={itemBuy} classes={classes}/>
-                <InputItem ref={ref} qty={qty} setQty={setQty} code={code} setCode={setCode} buy={buy} classes={classes}/>
+
+                <InputItem ref={ref} qty={qty} setQty={setQty} code={code} setCode={setCode} buy={buy}
+                           classes={classes}/>
             </Grid>
             <Grid container item md={9} className={classes.right}>
 

@@ -15,6 +15,8 @@ import {Transaction} from "../UI/transaction";
 import {Users} from '../UI/users'
 import {Sales} from "../UI/sales";
 import {Customers} from "../UI/customer/CustomerTable";
+import DashBoard from "../UI/DashBoard/DashBoard";
+import AuditTrail from "../UI/AuditTrail/AuditTrail";
 
 export default function MainUI({user}) {
 
@@ -50,7 +52,9 @@ export default function MainUI({user}) {
                 {
                     <Suspense fallback={<Skeleton/>}>
                         <Switch>
-
+                            <Route exact path={'/'}>
+                                <DashBoard/>
+                            </Route>
                             <Route exact path={"/users"}>
                                 <Users/>
                             </Route>
@@ -74,6 +78,9 @@ export default function MainUI({user}) {
                             </Route>
                             <Route path={"/customer"}>
                                 <Customers/>
+                            </Route>
+                            <Route path={"/audit"}>
+                                <AuditTrail/>
                             </Route>
 
                         </Switch>
