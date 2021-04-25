@@ -20,7 +20,7 @@ export const Supplier = () => {
     // dialog
     const [dialog, setDialog] = useState(false);
     const [deleteDialog, setDeleteDialog] = useState(false)
-    const [reload, setReload] = useState(false)
+    const [reload] = useState(false)
     const [supplierDialog, setSupplierDialog] = useState(false)
 
     const [data, setData] = useState([])

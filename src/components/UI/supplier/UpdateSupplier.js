@@ -48,7 +48,15 @@ const UpdateSupplier = (
 
     const register = async (event) => {
         event.preventDefault()
+        if (name.trim().length === 0) {
+            alert("Please enter store name")
+            return
+        }
 
+        if(email.trim().length === 0){
+            alert("Please enter a email")
+            return
+        }
         const data = {
             id,
             name: name,
@@ -56,7 +64,7 @@ const UpdateSupplier = (
             address: address,
             city: city,
             state: state,
-            postalCode: postalCode,
+            postalCode: postalCode.length ===0? 1: postalCode,
             mobile_no: mobileNo,
             tel_no: telNo
         }

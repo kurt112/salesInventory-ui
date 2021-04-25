@@ -68,6 +68,18 @@ export default function Sidebar({open, handleDrawerClose, handleDrawerOpen}) {
                             </ListItemIcon>
                             <ListItemText primary="Users"/>
                         </ListItem>
+                        <ListItem component={NavLink} to="/customer" button>
+                            <ListItemIcon>
+                                <GroupIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="Customer"/>
+                        </ListItem>
+                        <ListItem component={NavLink} to="/supplier" button>
+                            <ListItemIcon>
+                                <SupervisedUserCircleIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="Supplier"/>
+                        </ListItem>
                         <ListItem component={NavLink} to="/stores" button>
                             <ListItemIcon>
                                 <StoreIcon/>
@@ -86,18 +98,8 @@ export default function Sidebar({open, handleDrawerClose, handleDrawerOpen}) {
                             </ListItemIcon>
                             <ListItemText primary="Transaction"/>
                         </ListItem>
-                        <ListItem component={NavLink} to="/supplier" button>
-                            <ListItemIcon>
-                                <SupervisedUserCircleIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary="Supplier"/>
-                        </ListItem>
-                        <ListItem component={NavLink} to="/customer" button>
-                            <ListItemIcon>
-                                <GroupIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary="Customer"/>
-                        </ListItem>
+
+
                         <ListItem component={NavLink} to="/pos" button>
                             <ListItemIcon>
                                 <ComputerIcon/>

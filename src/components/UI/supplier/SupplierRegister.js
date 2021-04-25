@@ -47,8 +47,13 @@ const SupplierRegister = (
 
         event.preventDefault()
 
-        if (name.trim() === '') {
-            setError(true)
+        if (name.trim().length === 0) {
+            alert("Please enter store name")
+            return
+        }
+
+        if(email.trim().length === 0){
+            alert("Please enter a email")
             return
         }
 
@@ -58,7 +63,7 @@ const SupplierRegister = (
             address: address,
             city: city,
             state: state,
-            postalCode: postalCode,
+            postalCode: postalCode.length ===0? 1: postalCode,
             mobile_no: mobileNo,
             tel_no: telNo
         }

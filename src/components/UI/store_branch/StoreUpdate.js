@@ -48,19 +48,27 @@ const StoreUpdate = (
 
     const register = async (event) => {
         event.preventDefault()
+        if(name.trim().length === 0){
+            alert("Please enter a name")
+            return
+        }
+
+        if(email.trim().length === 0){
+            alert("Please enter a email")
+            return
+        }
 
         const data = {
             id,
             name: name,
             email: email,
-            address: address,
-            city: city,
-            state: state,
-            postalCode: postalCode,
-            mobile_no: mobileNo,
-            tel_no: telNo
+            address: address.trim().length === 0? '':address,
+            city: city.trim().length ===0?'':city,
+            state: state.trim().length ===0? '': state,
+            postalCode: postalCode.length ===0? 1: postalCode,
+            mobile_no: mobileNo.trim().length===0? '': mobileNo,
+            tel_no: telNo.trim().length === 0? '': telNo
         }
-
 
         await Axios.post(storeUpdate, data).then(ignored => {
             setError(false)
