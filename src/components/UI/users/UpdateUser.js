@@ -16,6 +16,8 @@ import {
 import Response from "../../../utils/Response/Response";
 import FindUser from "./FindUser";
 import {Autocomplete} from "@material-ui/lab";
+import CreateError from "../../../utils/FormError/CreateError";
+import RemoveError from "../../../utils/FormError/RemoveError";
 
 
 const UpdateUser = (
@@ -40,19 +42,13 @@ const UpdateUser = (
 
     const [findUserDialog, setFindUserDialog] = useState(false)
 
-    const RemoveError = () => {
-        setFirstNameError(false)
-        setLastNameError(false)
-        setEmailError(false)
-        setStoreError(false)
-        setPasswordError(false)
-        setPasswordReError(false)
-        setFirstNameErrorMessage('')
-        setLastNameErrorMessage('')
-        setEmailErrorMessage('')
-        setPasswordErrorMessage('')
-        setPasswordReErrorMessage('')
-        setStoreErrorMessage('')
+    const RemoveFormError = () => {
+        RemoveError(setFirstNameError,setFirstNameErrorMessage);
+        RemoveError(setLastNameError, setLastNameErrorMessage)
+        RemoveError(setEmailError,setEmailErrorMessage)
+        RemoveError(setStoreError,setStoreErrorMessage)
+        RemoveError(setPasswordError,setPasswordErrorMessage)
+        RemoveError(setPasswordReError,setPasswordReErrorMessage)
     }
 
     // for snack bar
@@ -82,50 +78,45 @@ const UpdateUser = (
     const register = async (event) => {
         event.preventDefault()
 
-        RemoveError()
+        RemoveFormError()
         let error = false
 
         if (password !== reTypePassword || reTypePassword !== password) {
-            setPasswordReError(true)
-            setPasswordReErrorMessage('Password Do Not Match')
-            setPasswordError(true)
-            setPasswordErrorMessage('Password Do Not Match')
+            CreateError(setPasswordReError,setPasswordReErrorMessage,'Password Do Not Match')
+            CreateError(setPasswordError,setPasswordErrorMessage,'Password Do Not Match')
+
             error = true
         }
 
-        if (firstName.trim().length === 0) {
+        if(firstName.trim().length === 0){
             error = true
-            setFirstNameError(true)
-            setFirstNameErrorMessage('Please Insert Firstname')
+            CreateError(setFirstNameError,setFirstNameErrorMessage, 'Please Insert Firstname')
+
         }
 
-        if (lastName.trim().length === 0) {
+        if(lastName.trim().length === 0){
             error = true
-            setLastNameError(true)
-            setLastNameErrorMessage('Please Insert LastName')
+            CreateError(setLastNameError,setLastNameErrorMessage,'Please Insert LastName')
+
         }
 
-        if (email.trim().length === 0) {
+        if(email.trim().length===0){
             error = true
-            setEmailError(true)
-            setEmailErrorMessage('Please Insert Email')
+            CreateError(setEmailError, setEmailErrorMessage, 'Please Insert Email')
         }
-        if (storeId.length === 0) {
-            setStoreError(true)
+        if(storeId.length===0){
             error = true
-            setStoreErrorMessage('Please Select Branch')
+            CreateError(setStoreError, setStoreErrorMessage,'Please Select Branch')
         }
 
-        if (password.trim().length === 0) {
-            error = true
-            setPasswordError(true)
-            setPasswordErrorMessage('Please Enter Password')
+        if(password.trim().length ===0){
+            error =true
+            CreateError(setPasswordError, setPasswordErrorMessage, 'Please Enter Password')
         }
 
-        if (reTypePassword.length === 0) {
+        if(reTypePassword.length===0){
             error = true
-            setPasswordReError(true)
-            setPasswordReErrorMessage('Please Enter Password')
+            CreateError(setPasswordReError, setPasswordReErrorMessage, 'Please Enter Password')
         }
 
         if (!error) {
@@ -146,7 +137,6 @@ const UpdateUser = (
                 Reload()
                 alert("Update Success")
                 setFindUserDialog(true)
-
             }).catch(error => {
                 const response = error.response.data
                 setErrorMessage(response.message)
