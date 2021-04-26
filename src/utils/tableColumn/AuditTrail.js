@@ -13,6 +13,10 @@ export const AuditTrailTable = [
         label: "Action",
     },
     {
+        name: "branch",
+        label: "Branch"
+    },
+    {
         name: "date",
         label: "Date",
     },
@@ -23,6 +27,6 @@ export const AuditTrailTable = [
 
 ];
 
-export function InsertAudit(id, name,action,date,value) {
-    return {id, name, action,date,value}
+export function InsertAudit(id, name,action,branch,date,value) {
+    return {id, name, action,branch,date,value}
 }

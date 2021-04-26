@@ -232,11 +232,13 @@ const UserRegister = (
                             variant="outlined"
                             value={password}
                             onChange={e => setPassword(e.target.value)}
+                            autoComplete={"on"}
                         />
                     </Grid>
 
                     <Grid item md={6} xs={12}>
                         <TextField
+                            autoComplete="on"
                             error={passwordReError}
                             helperText={passwordReErrorMessage}
                             required

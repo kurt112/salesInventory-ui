@@ -208,7 +208,7 @@ export const Products = () => {
                                     <option value='0'>All</option>
                                     {
                                         stores.map((e) => {
-                                            return <option value={e.id}>{e.name}</option>
+                                            return <option key={e.id} value={e.id}>{e.name}</option>
                                         })
                                     }
                                 </Select>

@@ -30,6 +30,7 @@ const ProductRegister = (
         reload,
     }) => {
 
+
     const [brand, setBrand] = useState('')
     const [name, setName] = useState('')
     const [type, setType] = useState('')
@@ -39,6 +40,7 @@ const ProductRegister = (
     const [store, setStore] = useState('')
     const [photo, setPhoto] = useState('')
     const [code, setCode] = useState('')
+    const [oldCode,setOldCode] = useState('')
 
     const [findProductDialog, setFindProductDialog] = useState(false)
 
@@ -111,6 +113,7 @@ const ProductRegister = (
 
         if(!error){
             const data = {
+                oldCode,
                 brand,
                 code,
                 name,
@@ -127,7 +130,7 @@ const ProductRegister = (
                 setBrand('')
                 setName('')
                 setType('')
-                setPrice('')
+                setPrice(1)
                 setCode('')
                 setPhoto('')
                 alert("Update Success")
@@ -178,6 +181,7 @@ const ProductRegister = (
         setSupplier(supplierTemp)
         setStore(storeTemp)
         setPhoto(photoTemp)
+        setOldCode(product.code)
     }
 
 

@@ -41,9 +41,9 @@ const FindProduct = (
         await Axios.post(productFind, {code}).then(e => {
             setCode('')
             setError(false)
-            updateProduct(e.data[0])
             setShow(true)
             closeDialog(false)
+            updateProduct(e.data[0])
         }).catch(error => {
             const response = error.response.data
             setErrorMessage(response.message)

@@ -38,13 +38,12 @@ const FindUser = (
         event.preventDefault()
 
         await Axios.post(userFind, {email}).then(e => {
-            console.log(e)
-            // setEmail('')
-
-            setError(false)
-            updateUser(e.data[0])
             setShow(true)
+            setError(false)
             closeDialog(false)
+
+            updateUser(e.data[0])
+
         }).catch(error => {
             const response = error.response.data
             setErrorMessage(response.message)

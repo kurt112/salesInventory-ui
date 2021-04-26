@@ -14,19 +14,22 @@ export const Customers = () => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
 
-    useEffect( () => {
+    useEffect(() => {
         setLoading(true)
         const temp = []
-        const data = async () => {
+        const getData = async () => {
             await Axios.get(CustomerList).then((customers) => {
                 customers.data.map(customer =>
                     temp.push(insert(customer.id, customer.name, customer.email, customer.address, customer.city, customer.state, customer.postalCode, customer.mobile_no, customer.tel_no))
                 )
             })
-            setData(...data, temp)
+            setData(temp)
             setLoading(false)
         }
 
+        getData().then(ignored => {})
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 

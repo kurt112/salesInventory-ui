@@ -42,7 +42,13 @@ export const
     CustomerList = 'customer/list',
 
     // upload
-    productPhoto = 'upload'
+    productPhoto = 'upload',
+
+    // auditTrail
+    auditTrailList = 'audit/list',
+
+    // dashboard
+    dashBoardData = 'dashboard/data'
 
 
 

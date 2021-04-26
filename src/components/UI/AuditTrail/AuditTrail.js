@@ -5,8 +5,7 @@ import MUIDataTable from 'mui-datatables'
 import Typography from "@material-ui/core/Typography";
 import {useEffect, useState} from "react";
 import {Axios} from "../../../utils/axios/Axios";
-import {CustomerList} from "../../../utils/ServerEndPoint";
-
+import {auditTrailList} from "../../../utils/ServerEndPoint";
 
 export const AuditTrail = () => {
     const classes = style()
@@ -16,18 +15,22 @@ export const AuditTrail = () => {
 
     useEffect(() => {
 
-        const data =async () => {
+        const getData = async () => {
             setLoading(true)
             const temp = []
-            await Axios.get(CustomerList).then((customers) => {
-                customers.data.map(customer =>
-                    temp.push(insert(customer.id, customer.name, customer.email, customer.address, customer.city, customer.state, customer.postalCode, customer.mobile_no, customer.tel_no))
+            await Axios.get(auditTrailList).then((audits) => {
+                audits.data.map(audit =>
+                    temp.push(insert(audit.id, `${audit.User.lastName} ${audit.User.firstName}`, audit.action, audit.Store.name, audit.createdAt, audit.value))
                 )
             })
             setData(...data, temp)
             setLoading(false)
         }
 
+        getData().then(ignored => {
+        })
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 

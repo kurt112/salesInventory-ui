@@ -91,7 +91,6 @@ const UpdateSupplier = (
 
     // update
     const updateSupplier = (supplier) => {
-        console.log(supplier)
         setId(supplier.id)
         setName(supplier.name)
         setAddress(supplier.address)
@@ -117,7 +116,7 @@ const UpdateSupplier = (
                     aria-labelledby="add-student"
                     maxWidth={"md"}
                 >
-                    <form onInvalid onSubmit={register}>
+                    <form noValidate={false} onSubmit={register}>
 
 
                         <DialogTitle id="add-student">Update Supplier</DialogTitle>

@@ -60,7 +60,7 @@ const DeleteSupplier = (
         maxWidth={"sm"}
         fullWidth
     >
-        <form onInvalid onSubmit={register}>
+        <form noValidate={false} onSubmit={register}>
 
 
             <DialogTitle id="add-student">Remove Supplier</DialogTitle>
