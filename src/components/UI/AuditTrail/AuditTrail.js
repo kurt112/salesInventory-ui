@@ -4,7 +4,7 @@ import {AuditTrailTable as columns, InsertAudit as insert} from '../../../utils/
 import MUIDataTable from 'mui-datatables'
 import Typography from "@material-ui/core/Typography";
 import {useEffect, useState} from "react";
-import {Axios} from "../../../utils/axios/Axios";
+import {baseUrl} from "../../../utils/axios/BaseUrl";
 import {auditTrailList} from "../../../utils/ServerEndPoint";
 
 export const AuditTrail = () => {
@@ -18,7 +18,7 @@ export const AuditTrail = () => {
         const getData = async () => {
             setLoading(true)
             const temp = []
-            await Axios.get(auditTrailList).then((audits) => {
+            await baseUrl.get(auditTrailList).then((audits) => {
                 audits.data.map(audit =>
                     temp.push(insert(audit.id, `${audit.User.lastName} ${audit.User.firstName}`, audit.action, audit.Store.name, audit.createdAt, audit.value))
                 )

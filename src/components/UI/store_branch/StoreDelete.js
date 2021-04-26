@@ -9,7 +9,7 @@ import {
     TextField
 } from "@material-ui/core"
 import {useState} from "react"
-import {Axios} from "../../../utils/axios/Axios"
+import {baseUrl} from "../../../utils/axios/BaseUrl"
 import {storeDelete} from "../../../utils/ServerEndPoint"
 import Response from "../../../utils/Response/Response"
 
@@ -40,7 +40,7 @@ const StoreDelete = (
 
         event.preventDefault()
 
-        Axios.post(storeDelete, {email}).then(ignored => {
+        baseUrl.post(storeDelete, {email}).then(ignored => {
             setEmail('')
             setShow(true)
             Reload()

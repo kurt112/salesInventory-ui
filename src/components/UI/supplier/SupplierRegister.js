@@ -8,7 +8,7 @@ import {
     Grid, TextField
 } from "@material-ui/core"
 import {useState} from "react";
-import {Axios} from "../../../utils/axios/Axios";
+import {baseUrl} from "../../../utils/axios/BaseUrl";
 import {supplierInsert} from "../../../utils/ServerEndPoint";
 import Response from '../../../utils/Response/Response'
 
@@ -69,7 +69,7 @@ const SupplierRegister = (
         }
 
 
-        Axios.post(supplierInsert, data).then(e => {
+        baseUrl.post(supplierInsert, data).then(e => {
             insertData(data)
             setName('')
             setEmail('')

@@ -9,7 +9,7 @@ import {
     TextField
 } from "@material-ui/core"
 import {useState} from "react";
-import {Axios} from "../../../utils/axios/Axios";
+import {baseUrl} from "../../../utils/axios/BaseUrl";
 import {storeInsert} from "../../../utils/ServerEndPoint";
 import Response from "../../../utils/Response/Response";
 
@@ -67,7 +67,7 @@ const StoreRegister = (
             mobile_no: mobileNo.trim().length===0? '': mobileNo,
             tel_no: telNo.trim().length === 0? '': telNo
         }
-        Axios.post(storeInsert, data).then(ignored => {
+        baseUrl.post(storeInsert, data).then(ignored => {
             Reload()
             setName('')
             setEmail('')

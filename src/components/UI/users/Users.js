@@ -2,7 +2,7 @@ import style, {TableOptions as options} from '../_style/TableStyle'
 import {Paper, Grid, Box, Toolbar, CircularProgress, Tooltip} from "@material-ui/core";
 import {UserTable as columns, InsertUser as insert} from '../../../utils/tableColumn/UserTable'
 import MUIDataTable from 'mui-datatables'
-import {Axios} from '../../../utils/axios/Axios'
+import {baseUrl} from '../../../utils/axios/BaseUrl'
 import {useEffect, useState,Fragment} from "react";
 import Typography from "@material-ui/core/Typography";
 import UserRegister from "./UserRegister";
@@ -38,13 +38,13 @@ export const Users = () => {
 
         const item = []
 
-        await Axios.get(userList).then(e =>
+        await baseUrl.get(userList).then(e =>
             e.data.map(user =>
                 item.push(insert(user.id,user.email,user.firstName,user.lastName,user.role, user.Store.name, user.status))
             )
         )
 
-        await Axios.get(storeList).then(e => setStore(e.data)
+        await baseUrl.get(storeList).then(e => setStore(e.data)
         )
 
         setData(item)

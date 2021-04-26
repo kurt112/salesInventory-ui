@@ -1,6 +1,10 @@
 export const
     serverEndpoint = 'http://localhost:3001',
 
+    // Auth
+    login = 'login',
+    logout = 'logout',
+
     // User
     userList = 'user/list',
     userInsert ='user/insert',

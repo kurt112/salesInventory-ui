@@ -9,7 +9,7 @@ import {
     TextField
 } from "@material-ui/core"
 import {useState} from "react";
-import {Axios} from "../../../utils/axios/Axios";
+import {baseUrl} from "../../../utils/axios/BaseUrl";
 import {userInsert} from "../../../utils/ServerEndPoint";
 import {Autocomplete} from "@material-ui/lab";
 import Response from "../../../utils/Response/Response";
@@ -126,7 +126,7 @@ const UserRegister = (
                 status: 1
             }
 
-            Axios.post(userInsert, data).then(ignored => {
+            baseUrl.post(userInsert, data).then(ignored => {
                 Reload()
                 setFirstName('')
                 setEmail('')

@@ -9,7 +9,7 @@ import {
     TextField
 } from "@material-ui/core"
 import {useState} from "react";
-import {Axios} from "../../../utils/axios/Axios";
+import {baseUrl} from "../../../utils/axios/BaseUrl";
 import {
     productFind,
 } from "../../../utils/ServerEndPoint";
@@ -38,7 +38,7 @@ const FindProduct = (
     const register = async (event) => {
         event.preventDefault()
 
-        await Axios.post(productFind, {code}).then(e => {
+        await baseUrl.post(productFind, {code}).then(e => {
             setCode('')
             setError(false)
             setShow(true)

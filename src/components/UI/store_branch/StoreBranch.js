@@ -3,7 +3,7 @@ import {Paper, Grid, Box, Toolbar, CircularProgress, Tooltip} from "@material-ui
 import {StoreTable as columns, InsertStore as insert} from '../../../utils/tableColumn/StoreTable'
 import MUIDataTable from 'mui-datatables'
 import {useEffect, useState, Fragment} from "react";
-import {Axios} from "../../../utils/axios/Axios";
+import {baseUrl} from "../../../utils/axios/BaseUrl";
 import {storeList} from "../../../utils/ServerEndPoint";
 import StoreRegister from "./StoreRegister";
 import Typography from "@material-ui/core/Typography";
@@ -32,7 +32,7 @@ const StoreBranch = () => {
     const Reload = async () => {
         setLoading(true)
         const temp = []
-        await Axios.get(storeList).then((stores) => {
+        await baseUrl.get(storeList).then((stores) => {
             stores.data.map(store =>
                 temp.push(insert(store.id, store.name, store.email, store.address, store.city, store.state, store.postalCode, store.mobile_no, store.tel_no))
             )

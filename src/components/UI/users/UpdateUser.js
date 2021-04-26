@@ -9,7 +9,7 @@ import {
     TextField
 } from "@material-ui/core"
 import {useState, Fragment, useEffect} from "react";
-import {Axios} from "../../../utils/axios/Axios";
+import {baseUrl} from "../../../utils/axios/BaseUrl";
 import {
     userUpdate,
 } from "../../../utils/ServerEndPoint";
@@ -132,7 +132,7 @@ const UpdateUser = (
             }
 
 
-            await Axios.post(userUpdate, data).then(ignored => {
+            await baseUrl.post(userUpdate, data).then(ignored => {
                 setError(false)
                 Reload()
                 alert("Update Success")

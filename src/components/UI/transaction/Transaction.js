@@ -3,7 +3,7 @@ import {Paper, Grid, Box, Toolbar, CircularProgress, Tooltip} from "@material-ui
 import { TransactionTable as columns, InsertTransaction as insert } from '../../../utils/tableColumn/TransactionTable'
 import MUIDataTable from 'mui-datatables'
 import {Fragment, useEffect, useState} from "react";
-import {Axios} from "../../../utils/axios/Axios";
+import {baseUrl} from "../../../utils/axios/BaseUrl";
 import {transactionList} from "../../../utils/ServerEndPoint";
 import SupplierRegister from "../supplier/SupplierRegister";
 import Typography from "@material-ui/core/Typography";
@@ -21,7 +21,7 @@ export const Transaction = () => {
         const get = async () => {
             setLoading(true)
 
-            await Axios.get(transactionList).then((transactions) => {
+            await baseUrl.get(transactionList).then((transactions) => {
                 transactions.data.map(transaction =>
                     temp.push(insert(transaction.id,`${transaction.User.firstName} ${transaction.User.lastName}`, transaction.amount,
                         transaction.discount,`${transaction.Customer.name}`,transaction.Store.name,transaction.createdAt))

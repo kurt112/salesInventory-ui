@@ -4,7 +4,7 @@ import InputItem from "./InputItem/InputItem";
 import ProductList from "./ProductList/ProductList";
 import {style} from "./PosStyle";
 import {useEffect, useRef, useState} from "react";
-import {Axios} from "../../utils/axios/Axios";
+import {baseUrl} from "../../utils/axios/BaseUrl";
 import {productList} from "../../utils/ServerEndPoint";
 
 const Pos = () => {
@@ -22,7 +22,7 @@ const Pos = () => {
         const temp = []
         const getData = async () => {
 
-            await Axios.get(productList, {
+            await baseUrl.get(productList, {
                 params: {
                     branch: 1
                 }

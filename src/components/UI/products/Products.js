@@ -4,7 +4,7 @@ import {ProductTable as columns, InsertProduct as insert} from '../../../utils/t
 import MUIDataTable from 'mui-datatables'
 import Typography from "@material-ui/core/Typography";
 import {useEffect, useState, Fragment} from "react";
-import {Axios} from "../../../utils/axios/Axios";
+import {baseUrl} from "../../../utils/axios/BaseUrl";
 import {productImages, productList, storeList, supplierList} from "../../../utils/ServerEndPoint";
 import ProductRegister from "./ProductRegister";
 import ProductPhoto from "./ProductPhoto";
@@ -44,15 +44,15 @@ export const Products = () => {
         const  data = async () => {
             await changeBranch('0')
 
-            await Axios.get(storeList).then(e => {
+            await baseUrl.get(storeList).then(e => {
                 setStores(e.data)
             })
 
-            await Axios.get(supplierList).then(e => {
+            await baseUrl.get(supplierList).then(e => {
                 setSuppliers(e.data)
             })
 
-            await Axios.get(productImages).then(e => {
+            await baseUrl.get(productImages).then(e => {
                 setImages(e.data)
             })
 
@@ -65,7 +65,7 @@ export const Products = () => {
 
     const insertImage = () => {
 
-        Axios.get(productImages).then(e => {
+        baseUrl.get(productImages).then(e => {
             setImages(e.data)
         })
 
@@ -101,7 +101,7 @@ export const Products = () => {
         setLoading(true)
         setBranch(branch)
         const temp = []
-        await Axios.get(productList,{
+        await baseUrl.get(productList,{
             params: {
                 branch: branch
             }

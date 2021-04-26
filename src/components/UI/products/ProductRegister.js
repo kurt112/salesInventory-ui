@@ -9,7 +9,7 @@ import {
     TextField
 } from "@material-ui/core"
 import {useState} from "react";
-import {Axios} from "../../../utils/axios/Axios";
+import {baseUrl} from "../../../utils/axios/BaseUrl";
 import {
     productInsert
 } from "../../../utils/ServerEndPoint";
@@ -123,7 +123,7 @@ const ProductRegister = (
                 qty
             }
 
-            await Axios.post(productInsert, data).then(ignored => {
+            await baseUrl.post(productInsert, data).then(ignored => {
                 setError(false)
                 setShowing(true)
                 setBrand('')
