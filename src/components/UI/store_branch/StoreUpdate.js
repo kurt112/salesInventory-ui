@@ -116,7 +116,7 @@ const StoreUpdate = (
                     aria-labelledby="add-student"
                     maxWidth={"md"}
                 >
-                    <form onInvalid onSubmit={register}>
+                    <form noValidate={false} onSubmit={register}>
 
 
                         <DialogTitle id="add-student">Update Supplier</DialogTitle>

@@ -95,7 +95,7 @@ const StoreRegister = (
         aria-labelledby="add-student"
         maxWidth={"md"}
     >
-        <form onInvalid onSubmit={register}>
+        <form noValidate={false} onSubmit={register}>
 
 
             <DialogTitle id="add-student">Register Store Branch</DialogTitle>

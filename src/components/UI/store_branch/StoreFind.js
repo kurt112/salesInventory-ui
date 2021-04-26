@@ -62,7 +62,7 @@ const FindStore = (
         maxWidth={"md"}
         fullWidth
     >
-        <form onSubmit={register}>
+        <form noValidate={false} onSubmit={register}>
 
             <DialogTitle id="add-student">Find Store</DialogTitle>
             <DialogContent>
