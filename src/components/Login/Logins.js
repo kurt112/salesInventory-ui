@@ -18,6 +18,7 @@ const Login = ({setToken, setUser}) => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
 
     const auth = {
         username: email,
@@ -28,9 +29,16 @@ const Login = ({setToken, setUser}) => {
             setToken(e.data.accessToken)
             setUser(e.data.user)
             localStorage.setItem('jars-token', e.data.accessToken)
+            setError('')
         }).catch(error => {
-            console.log(error)
+            setError(`Account ${error.response.data}`)
         })
+    }
+
+    const enter = (e) => {
+        if (e.code === "Enter") {
+            login()
+        }
     }
 
     return (
@@ -54,6 +62,7 @@ const Login = ({setToken, setUser}) => {
 
                     <form className={classes.form} noValidate>
                         <TextField
+                            onKeyPress={e => enter(e)}
                             value={email}
                             onChange={e => setEmail(e.target.value)}
                             variant="outlined"
@@ -68,6 +77,7 @@ const Login = ({setToken, setUser}) => {
                             autoFocus
                         />
                         <TextField
+                            onKeyPress={e => enter(e)}
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                             variant="outlined"
@@ -80,13 +90,11 @@ const Login = ({setToken, setUser}) => {
                             id="password"
                             autoComplete="current-password"
                         />
-                        {/*<Box className={classes.util}>*/}
-                        {/*    <FormControlLabel*/}
-                        {/*        control={<Checkbox value="remember" color="primary"/>}*/}
-                        {/*        label="Remember me"*/}
-                        {/*    />*/}
-                        {/*    /!*<p>No Account Found</p>*!/*/}
-                        {/*</Box>*/}
+                        <Box className={classes.util}>
+                            {
+                                error.length === 0 ? null : <p style={{margin: 0, marginTop: 10}}>No Account Found</p>
+                            }
+                        </Box>
                         <Button
                             fullWidth
                             variant="contained"
