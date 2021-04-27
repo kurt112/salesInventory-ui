@@ -8,7 +8,7 @@ import {
     TextField
 } from "@material-ui/core"
 import {useState} from "react";
-import {baseUrl} from "../../../utils/axios/BaseUrl";
+import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
 import {productPhoto} from "../../../utils/ServerEndPoint";
 import {Alert, AlertTitle} from "@material-ui/lab";
 
@@ -40,7 +40,7 @@ const SupplierRegister = (
         event.preventDefault()
         const formData = new FormData()
         formData.append('picture', file)
-        baseUrl.post(productPhoto, formData).then(ignored => {
+        baseUrlWithAuth.post(productPhoto, formData).then(ignored => {
             setError(false)
             setShow(true)
             insertPicture()

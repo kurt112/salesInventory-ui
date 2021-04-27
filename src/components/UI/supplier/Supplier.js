@@ -4,7 +4,7 @@ import {SupplierTable as columns, InsertSupplier as insert} from '../../../utils
 import MUIDataTable from 'mui-datatables'
 import SupplierRegister from "./SupplierRegister";
 import {Fragment, useEffect, useState} from "react";
-import {baseUrl} from "../../../utils/axios/BaseUrl";
+import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
 import {supplierList} from "../../../utils/ServerEndPoint";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
@@ -48,7 +48,7 @@ export const Supplier = () => {
     const Reload = async () => {
         setLoading(true)
         const temp = []
-        await baseUrl.get(supplierList).then((suppliers) =>
+        await baseUrlWithAuth.get(supplierList).then((suppliers) =>
             suppliers.data.map(supplier =>
                 temp.push(insert(supplier.id, supplier.name, supplier.email, supplier.address, supplier.city, supplier.state, supplier.postalCode, supplier.mobile_no, supplier.tel_no))
             )

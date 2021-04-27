@@ -10,7 +10,7 @@ import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
 import FaceIcon from '@material-ui/icons/Face';
 
 //
-import {baseUrl} from "../../../utils/axios/BaseUrl";
+import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
 import {dashBoardData} from "../../../utils/ServerEndPoint";
 
 const Card = () => {
@@ -29,7 +29,7 @@ const Card = () => {
     useEffect(() => {
         const getData = async () => {
             let temp = {}
-            await baseUrl.get(dashBoardData).then(e => {
+            await baseUrlWithAuth.get(dashBoardData).then(e => {
                 temp = e.data;
             })
             setData(temp)

@@ -9,7 +9,7 @@ import {
     TextField
 } from "@material-ui/core"
 import {useState} from "react";
-import {baseUrl} from "../../../utils/axios/BaseUrl";
+import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
 import {productDelete} from "../../../utils/ServerEndPoint";
 import Response from "../../../utils/Response/Response";
 
@@ -44,7 +44,7 @@ const DeleteProduct = (
             qty: parseInt(qty)
         }
 
-        baseUrl.post(productDelete, data).then(e => {
+        baseUrlWithAuth.post(productDelete, data).then(e => {
             setError(false)
             setShow(true)
             deleteProduct(data)

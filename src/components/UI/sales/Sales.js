@@ -4,7 +4,7 @@ import {SalesTable as columns, InsertSales as insert} from '../../../utils/table
 import MUIDataTable from 'mui-datatables'
 import Typography from "@material-ui/core/Typography";
 import {useEffect, useState} from "react";
-import {baseUrl} from "../../../utils/axios/BaseUrl";
+import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
 import {salesList} from "../../../utils/ServerEndPoint";
 import IconButton from "@material-ui/core/IconButton";
 import TimelineIcon from '@material-ui/icons/Timeline';
@@ -20,7 +20,7 @@ export const Sales = () => {
         const getData = async () => {
             setLoading(true)
             const temp = []
-            await baseUrl.get(salesList).then((sales) => {
+            await baseUrlWithAuth.get(salesList).then((sales) => {
                 sales.data.map(sale =>
                     temp.push(insert(sale.id, sale.Product.name, sale.Product.price, sale.qty, sale.total, sale.Transaction.id, sale.createdAt))
                 )

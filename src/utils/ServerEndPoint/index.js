@@ -4,6 +4,7 @@ export const
     // Auth
     login = 'login',
     logout = 'logout',
+    tokenData ='token',
 
     // User
     userList = 'user/list',

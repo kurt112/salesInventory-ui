@@ -1,12 +1,12 @@
 import {makeStyles} from "@material-ui/core/styles";
-import ue from '../../assets/img/logo/ue.png'
-// import bg from '../../assets/img/logo/bg.jpg'
+// import ue from '../../assets/img/logo/ue.png'
+import bg from '../../assets/img/logo/leftLogo.jpg'
 const useStyles = makeStyles((theme) => ({
     root: {
         height: '100vh',
     },
     image: {
-        backgroundImage: `url(${ue})`,
+        backgroundImage: `url(${bg})`,
         backgroundRepeat: 'no-repeat',
         backgroundColor:
             theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],

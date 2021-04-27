@@ -9,7 +9,7 @@ import {
     TextField
 } from "@material-ui/core"
 import {useEffect, useState} from "react";
-import {baseUrl} from "../../../utils/axios/BaseUrl";
+import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
 import {productTransfer, storeList} from "../../../utils/ServerEndPoint";
 import {Autocomplete} from "@material-ui/lab";
 import Response from "../../../utils/Response/Response";
@@ -55,7 +55,7 @@ const TransferProduct = (
             storeID: store.id
         }
 
-        baseUrl.post(productTransfer, data).then(e => {
+        baseUrlWithAuth.post(productTransfer, data).then(e => {
             setError(false)
             setShow(true)
             transfer()
@@ -69,7 +69,7 @@ const TransferProduct = (
 
     }
     useEffect(() => {
-        baseUrl.get(storeList).then(e => {
+        baseUrlWithAuth.get(storeList).then(e => {
             setStores(e.data)
         })
     }, [])

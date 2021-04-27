@@ -4,7 +4,7 @@ import {ProductTable as columns, InsertProduct as insert} from '../../../utils/t
 import MUIDataTable from 'mui-datatables'
 import Typography from "@material-ui/core/Typography";
 import {useEffect, useState, Fragment} from "react";
-import {baseUrl} from "../../../utils/axios/BaseUrl";
+import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
 import {productImages, productList, storeList, supplierList} from "../../../utils/ServerEndPoint";
 import ProductRegister from "./ProductRegister";
 import ProductPhoto from "./ProductPhoto";
@@ -44,15 +44,15 @@ export const Products = () => {
         const  data = async () => {
             await changeBranch('0')
 
-            await baseUrl.get(storeList).then(e => {
+            await baseUrlWithAuth.get(storeList).then(e => {
                 setStores(e.data)
             })
 
-            await baseUrl.get(supplierList).then(e => {
+            await baseUrlWithAuth.get(supplierList).then(e => {
                 setSuppliers(e.data)
             })
 
-            await baseUrl.get(productImages).then(e => {
+            await baseUrlWithAuth.get(productImages).then(e => {
                 setImages(e.data)
             })
 
@@ -65,7 +65,7 @@ export const Products = () => {
 
     const insertImage = () => {
 
-        baseUrl.get(productImages).then(e => {
+        baseUrlWithAuth.get(productImages).then(e => {
             setImages(e.data)
         })
 
@@ -101,7 +101,7 @@ export const Products = () => {
         setLoading(true)
         setBranch(branch)
         const temp = []
-        await baseUrl.get(productList,{
+        await baseUrlWithAuth.get(productList,{
             params: {
                 branch: branch
             }

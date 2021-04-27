@@ -9,7 +9,7 @@ import {
     TextField
 } from "@material-ui/core"
 import {useState} from "react";
-import {baseUrl} from "../../../utils/axios/BaseUrl";
+import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
 import {userInsert} from "../../../utils/ServerEndPoint";
 import {Autocomplete} from "@material-ui/lab";
 import Response from "../../../utils/Response/Response";
@@ -126,7 +126,7 @@ const UserRegister = (
                 status: 1
             }
 
-            baseUrl.post(userInsert, data).then(ignored => {
+            baseUrlWithAuth.post(userInsert, data).then(ignored => {
                 Reload()
                 setFirstName('')
                 setEmail('')

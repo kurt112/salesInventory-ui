@@ -18,7 +18,7 @@ import {Customers} from "../UI/customer/CustomerTable";
 import DashBoard from "../UI/DashBoard/DashBoard";
 import AuditTrail from "../UI/AuditTrail/AuditTrail";
 
-export default function MainUI({user}) {
+export default function MainUI({user,setUser}) {
 
     const classes = style();
 
@@ -33,12 +33,11 @@ export default function MainUI({user}) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-
     return (
         <div className={classes.root}>
             <CssBaseline/>
 
-            <Navbar open={open} handleDrawerOpen={handleDrawerOpen}/>
+            <Navbar setUser={setUser} name={user} open={open} handleDrawerOpen={handleDrawerOpen}/>
             <Sidebar
                 open={open}
                 handleDrawerClose={handleDrawerClose}

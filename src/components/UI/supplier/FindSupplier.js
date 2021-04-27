@@ -9,7 +9,7 @@ import {
     TextField
 } from "@material-ui/core"
 import {useState} from "react";
-import {baseUrl} from "../../../utils/axios/BaseUrl";
+import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
 import {
     supplierFind
 } from "../../../utils/ServerEndPoint";
@@ -37,7 +37,7 @@ const FindSupplier = (
     const register = async (event) => {
         event.preventDefault()
 
-        await baseUrl.post(supplierFind, {email}).then(e => {
+        await baseUrlWithAuth.post(supplierFind, {email}).then(e => {
             setError(false)
             updateSupplier(e.data[0])
             closeDialog(false)

@@ -8,10 +8,30 @@ import Typography from '@material-ui/core/Typography';
 import style from './LoginStyle'
 import SignLogo from '../../assets/img/logo/SignLogo.jpg'
 import {Avatar} from "@material-ui/core";
+import {useState} from "react";
+import {baseUrlNoAuth} from "../../utils/axios/BaseUrl";
+import {login as loginEndpoint} from "../../utils/ServerEndPoint";
 
-const Login = () => {
+const Login = ({setToken, setUser}) => {
 
     const classes = style();
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const auth = {
+        username: email,
+        password
+    }
+    const login = async () => {
+        await baseUrlNoAuth.post(loginEndpoint, auth).then(e => {
+            setToken(e.data.accessToken)
+            setUser(e.data.user)
+            localStorage.setItem('jars-token', e.data.accessToken)
+        }).catch(error => {
+            console.log(error)
+        })
+    }
 
     return (
         <Grid container component="main" className={classes.root}>
@@ -25,16 +45,17 @@ const Login = () => {
 
 
                 <div className={classes.paper}>
-                    <Avatar alt="Cindy Baker" className={classes.avatarLarge} src={SignLogo} />
+                    <Avatar alt="Cindy Baker" className={classes.avatarLarge} src={SignLogo}/>
 
                     <Typography component="h1" variant="h5" className={classes.text}>
-                         Login Now
+                        Login Now
                     </Typography>
 
 
                     <form className={classes.form} noValidate>
                         <TextField
-
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
                             variant="outlined"
                             margin="normal"
                             required
@@ -47,6 +68,8 @@ const Login = () => {
                             autoFocus
                         />
                         <TextField
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
                             variant="outlined"
                             margin="normal"
                             required
@@ -69,19 +92,20 @@ const Login = () => {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
+                            onClick={login}
                         >
                             Sign In
                         </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Grid item>
-                                    <Button color="primary">Forgot Password</Button>
-                                </Grid>
-                            </Grid>
-                            <Grid item>
-                                <Button color="primary" >Sign Up</Button>
-                            </Grid>
-                        </Grid>
+                        {/*<Grid container>*/}
+                        {/*    <Grid item xs>*/}
+                        {/*        <Grid item>*/}
+                        {/*            <Button color="primary">Forgot Password</Button>*/}
+                        {/*        </Grid>*/}
+                        {/*    </Grid>*/}
+                        {/*    <Grid item>*/}
+                        {/*        <Button color="primary">Sign Up</Button>*/}
+                        {/*    </Grid>*/}
+                        {/*</Grid>*/}
                         <Box mt={5}>
                             {/*<Copyright/>*/}
                         </Box>

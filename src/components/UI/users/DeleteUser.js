@@ -9,7 +9,7 @@ import {
     TextField
 } from "@material-ui/core"
 import {useState} from "react";
-import {baseUrl} from "../../../utils/axios/BaseUrl";
+import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
 import {Alert, AlertTitle} from "@material-ui/lab";
 import {userDelete} from "../../../utils/ServerEndPoint";
 
@@ -41,7 +41,7 @@ const DeleteUser = (
 
         event.preventDefault()
 
-        baseUrl.post(userDelete, {
+        baseUrlWithAuth.post(userDelete, {
            email
         }).then(ignored => {
             setEmail('')

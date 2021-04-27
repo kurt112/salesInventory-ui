@@ -3,10 +3,9 @@ import ItemList from "./ItemBuy/ItemList";
 import InputItem from "./InputItem/InputItem";
 import ProductList from "./ProductList/ProductList";
 import {style} from "./PosStyle";
-import {useEffect, useRef, useState} from "react";
-import {baseUrl} from "../../utils/axios/BaseUrl";
+import {useEffect, useState} from "react";
+import baseUrlWithAuth from "../../utils/axios/BaseUrlWithAuth";
 import {productList} from "../../utils/ServerEndPoint";
-
 const Pos = () => {
 
     const classes = style()
@@ -16,21 +15,22 @@ const Pos = () => {
     const [code, setCode] = useState('')
     const [itemBuy, setItemBuy] = useState([])
     const [qty, setQty] = useState(1)
-    let ref = useRef()
+
     useEffect(() => {
         setLoading(true)
         const temp = []
         const getData = async () => {
 
-            await baseUrl.get(productList, {
+            await baseUrlWithAuth.get(productList, {
                 params: {
                     branch: 1
                 }
             }).then(async (products) => {
+                console.log(products)
                 products.data.map(product =>
                     temp.push(product)
                 )
-                setProducts(...products, temp)
+                setProducts(temp)
             })
 
         }
@@ -50,8 +50,6 @@ const Pos = () => {
         }
     }
 
-    console.log("The res")
-    console.log(ref)
 
     const buy = (event) => {
 
@@ -100,7 +98,7 @@ const Pos = () => {
 
                 <ItemList items={itemBuy} classes={classes}/>
 
-                <InputItem ref={ref} qty={qty} setQty={setQty} code={code} setCode={setCode} buy={buy}
+                <InputItem  qty={qty} setQty={setQty} code={code} setCode={setCode} buy={buy}
                            classes={classes}/>
             </Grid>
             <Grid container item md={9} className={classes.right}>

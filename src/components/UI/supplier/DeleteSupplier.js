@@ -9,7 +9,7 @@ import {
     TextField
 } from "@material-ui/core"
 import {useState} from "react"
-import {baseUrl} from "../../../utils/axios/BaseUrl"
+import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth"
 import {supplierDelete} from "../../../utils/ServerEndPoint"
 import Response from "../../../utils/Response/Response"
 
@@ -39,7 +39,7 @@ const DeleteSupplier = (
 
         event.preventDefault()
 
-        baseUrl.post(supplierDelete, {email}).then(ignored => {
+        baseUrlWithAuth.post(supplierDelete, {email}).then(ignored => {
             setEmail('')
             setShow(true)
             Reload()
