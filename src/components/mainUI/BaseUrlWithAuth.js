@@ -1,16 +1,13 @@
 import axios from 'axios'
-import {serverEndpoint} from '../ServerEndPoint'
+import {serverEndpoint} from '../../utils/ServerEndPoint'
 
 let token = localStorage.getItem('jars-token')
-
-
- const baseUrlWithAuth = axios.create({
+export const baseUrlWithAuth = axios.create({
     headers: {
         Authorization: "Bearer " + token
     },
     baseURL: serverEndpoint
 })
 
-export default baseUrlWithAuth
 
 

@@ -4,10 +4,11 @@ const InputItem = ({classes, buy, code, setCode,qty,setQty}) => {
 
     return (
         <div className={classes.inputItem}>
-            <TextField style={{width: '100%', marginLeft: 10}} value={code} onKeyPress={e => buy(e)} onChange={(e) => setCode(e.target.value)}
+            <TextField autoFocus
+                style={{width: '100%', marginLeft: 10}} value={code} onKeyPress={e => buy(e)} onChange={(e) => setCode(e.target.value)}
                        placeholder="Barcode here" variant="outlined"
            />
-            <TextField style={{width: '90px', marginRight: 10}}
+            <TextField style={{width: '90px',backgroundColor:'white'}}
                        value={qty}
                        onKeyPress={e => buy(e)}
                        onChange={(e) =>setQty(e.target.value <0?1: e.target.value)}

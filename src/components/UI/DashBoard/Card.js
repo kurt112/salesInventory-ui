@@ -10,7 +10,7 @@ import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
 import FaceIcon from '@material-ui/icons/Face';
 
 //
-import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
+import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {dashBoardData} from "../../../utils/ServerEndPoint";
 
 const Card = () => {

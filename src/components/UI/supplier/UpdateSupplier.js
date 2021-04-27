@@ -9,7 +9,7 @@ import {
     TextField
 } from "@material-ui/core"
 import {useState, Fragment, useEffect} from "react";
-import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
+import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {
     supplierUpdate,
 } from "../../../utils/ServerEndPoint";

@@ -9,7 +9,7 @@ import {
     TextField
 } from "@material-ui/core"
 import {useEffect, useState} from "react";
-import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
+import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {productTransfer, storeList} from "../../../utils/ServerEndPoint";
 import {Autocomplete} from "@material-ui/lab";
 import Response from "../../../utils/Response/Response";

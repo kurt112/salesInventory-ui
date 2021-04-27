@@ -2,7 +2,7 @@ import style, {TableOptions as options} from '../_style/TableStyle'
 import {Paper, Grid, Box, Toolbar, CircularProgress, Tooltip} from "@material-ui/core";
 import {UserTable as columns, InsertUser as insert} from '../../../utils/tableColumn/UserTable'
 import MUIDataTable from 'mui-datatables'
-import baseUrlWithAuth from '../../../utils/axios/BaseUrlWithAuth'
+import {baseUrlWithAuth} from '../../mainUI/BaseUrlWithAuth'
 import {useEffect, useState,Fragment} from "react";
 import Typography from "@material-ui/core/Typography";
 import UserRegister from "./UserRegister";

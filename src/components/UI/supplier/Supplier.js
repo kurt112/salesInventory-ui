@@ -4,7 +4,7 @@ import {SupplierTable as columns, InsertSupplier as insert} from '../../../utils
 import MUIDataTable from 'mui-datatables'
 import SupplierRegister from "./SupplierRegister";
 import {Fragment, useEffect, useState} from "react";
-import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
+import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {supplierList} from "../../../utils/ServerEndPoint";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";

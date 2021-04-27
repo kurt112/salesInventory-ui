@@ -4,7 +4,7 @@ import {ProductTable as columns, InsertProduct as insert} from '../../../utils/t
 import MUIDataTable from 'mui-datatables'
 import Typography from "@material-ui/core/Typography";
 import {useEffect, useState, Fragment} from "react";
-import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
+import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {productImages, productList, storeList, supplierList} from "../../../utils/ServerEndPoint";
 import ProductRegister from "./ProductRegister";
 import ProductPhoto from "./ProductPhoto";

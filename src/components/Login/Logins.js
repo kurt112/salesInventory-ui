@@ -27,9 +27,9 @@ const Login = ({setToken, setUser}) => {
     const login = async () => {
         await baseUrlNoAuth.post(loginEndpoint, auth).then(e => {
             setToken(e.data.accessToken)
-            setUser(e.data.user)
             localStorage.setItem('jars-token', e.data.accessToken)
             setError('')
+            setUser(e.data.user)
         }).catch(error => {
             setError(`Account ${error.response.data}`)
         })

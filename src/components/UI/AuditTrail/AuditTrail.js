@@ -4,7 +4,7 @@ import {AuditTrailTable as columns, InsertAudit as insert} from '../../../utils/
 import MUIDataTable from 'mui-datatables'
 import Typography from "@material-ui/core/Typography";
 import {useEffect, useState} from "react";
-import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
+import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {auditTrailList} from "../../../utils/ServerEndPoint";
 
 export const AuditTrail = () => {

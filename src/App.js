@@ -2,19 +2,22 @@ import {
     BrowserRouter as Router, Route,
     Redirect
 } from "react-router-dom";
-import MainUI from './components/mainUI/MainUI'
-import Pos from "./components/POS/Pos";
 import Login from "./components/Login/Logins";
 import {Switch} from 'react-router';
-import {useEffect, useState} from 'react'
+import {useEffect, Fragment, Suspense, useState, lazy} from 'react'
 import {baseUrlNoAuth} from "./utils/axios/BaseUrl";
 import {tokenData} from "./utils/ServerEndPoint";
+
+const MainUi = lazy(() => import('./components/mainUI/MainUI'));
+const Pos = lazy(() => import('./components/POS/Pos'))
+
 
 const App = () => {
 
     const [token, setToken] = useState(null)
     const [user, setUser] = useState()
     const [posOn, setPosOn] = useState(false)
+
 
     // localStorage.clear()
 
@@ -43,23 +46,29 @@ const App = () => {
 
     return (
         <Router>
-            {
-                token === null ? <Login setUser={setUser}
-                                        setToken={setToken}/> :
+            <Suspense fallback={'loding'}>
+                {
+                    token === null ? <Login setUser={setUser}
+                                            setToken={setToken}/> :
+                        <Switch>
 
-                    <Switch>
+                            {
+                                posOn === true ?
+                                    <Route exact path="/">
+                                        <Pos user={user}/>
+                                    </Route>
 
-                        {
-                            posOn === true ?
-                                <Route exact path="/">
-                                    <Pos/>
-                                </Route> :
-                                <MainUI setUser={setUser} user={user}/>
-                        }
+                                    :
 
-                    </Switch>
+                                    <Fragment>
+                                        <MainUi setUser={setUser} user={user}/>
+                                    </Fragment>
+                            }
 
-            }
+                        </Switch>
+
+                }
+            </Suspense>
 
             <Redirect to={"/"}/>
         </Router>

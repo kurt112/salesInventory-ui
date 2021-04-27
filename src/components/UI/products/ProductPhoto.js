@@ -8,7 +8,7 @@ import {
     TextField
 } from "@material-ui/core"
 import {useState} from "react";
-import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
+import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {productPhoto} from "../../../utils/ServerEndPoint";
 import {Alert, AlertTitle} from "@material-ui/lab";
 

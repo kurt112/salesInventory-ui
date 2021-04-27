@@ -3,7 +3,7 @@ import {Paper, Grid, Box, Toolbar, CircularProgress, Tooltip} from "@material-ui
 import { TransactionTable as columns, InsertTransaction as insert } from '../../../utils/tableColumn/TransactionTable'
 import MUIDataTable from 'mui-datatables'
 import {Fragment, useEffect, useState} from "react";
-import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
+import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {transactionList} from "../../../utils/ServerEndPoint";
 import SupplierRegister from "../supplier/SupplierRegister";
 import Typography from "@material-ui/core/Typography";

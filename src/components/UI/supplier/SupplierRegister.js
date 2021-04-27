@@ -8,7 +8,7 @@ import {
     Grid, TextField
 } from "@material-ui/core"
 import {useState} from "react";
-import baseUrlWithAuth from "../../../utils/axios/BaseUrlWithAuth";
+import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {supplierInsert} from "../../../utils/ServerEndPoint";
 import Response from '../../../utils/Response/Response'
 

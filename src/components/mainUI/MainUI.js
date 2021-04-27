@@ -19,7 +19,6 @@ import DashBoard from "../UI/DashBoard/DashBoard";
 import AuditTrail from "../UI/AuditTrail/AuditTrail";
 
 export default function MainUI({user,setUser}) {
-
     const classes = style();
 
 

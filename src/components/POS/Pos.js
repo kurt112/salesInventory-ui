@@ -4,20 +4,19 @@ import InputItem from "./InputItem/InputItem";
 import ProductList from "./ProductList/ProductList";
 import {style} from "./PosStyle";
 import {useEffect, useState} from "react";
-import baseUrlWithAuth from "../../utils/axios/BaseUrlWithAuth";
+import {baseUrlWithAuth} from "../mainUI/BaseUrlWithAuth";
 import {productList} from "../../utils/ServerEndPoint";
-const Pos = () => {
 
+const Pos = ({user}) => {
     const classes = style()
 
     const [products, setProducts] = useState([])
-    const [loading, setLoading] = useState(false)
     const [code, setCode] = useState('')
     const [itemBuy, setItemBuy] = useState([])
     const [qty, setQty] = useState(1)
+    const [totalPrice, setTotalPrice] = useState(0)
 
     useEffect(() => {
-        setLoading(true)
         const temp = []
         const getData = async () => {
 
@@ -26,7 +25,6 @@ const Pos = () => {
                     branch: 1
                 }
             }).then(async (products) => {
-                console.log(products)
                 products.data.map(product =>
                     temp.push(product)
                 )
@@ -35,9 +33,9 @@ const Pos = () => {
 
         }
 
-        getData().then(ignored=> {})
+        getData().then(ignored => {
+        })
 
-        setLoading(false)
     }, [])
 
     const insert = (item, qty) => {
@@ -46,29 +44,29 @@ const Pos = () => {
             productName: product.name,
             productBrand: product.brand,
             price: product.price,
-            qty
+            qty,
+            code
         }
     }
 
 
-    const buy = (event) => {
+    const buy = async (event) => {
 
         if (event.which === 13) {
             let tempQ = qty
 
             const tempData = [...products]
             let last = null
-
             while (tempQ !== 0) {
                 let current = null;
-
-                const product = tempData.find((e, index) => {
+                const product = await tempData.find((e, index) => {
                     current = index
                     return e.code.toString() === code
                 })
 
-                if (current === null && product !== undefined) {
+                if (current !== null && product !== undefined) {
                     last = tempData.splice(current, 1)
+
                 } else {
                     alert("We don't have enough Supply")
                     break;
@@ -81,6 +79,9 @@ const Pos = () => {
             if (tempQ === 0) {
                 const product = insert(last, qty)
                 const newData = [...itemBuy, product]
+                const newTotalPrice = totalPrice + (last[0].price * qty)
+
+                setTotalPrice(newTotalPrice)
                 setItemBuy(newData)
                 setProducts(tempData)
                 setQty(1)
@@ -90,20 +91,46 @@ const Pos = () => {
 
     }
 
+    const checkOut = () => {
+
+    }
+
+    const logout = () => {
+        localStorage.clear()
+        window.location.reload(true);
+
+    }
+
+    const switchUser = () => {
+
+    }
+
     return (
         <Grid container className={classes.root}>
             <Grid container item md={3} className={classes.left}>
                 <p className={classes.leftText}>Sales And Inventory</p>
                 <Divider className={classes.divider} light/>
 
-                <ItemList items={itemBuy} classes={classes}/>
+                <ItemList
+                    totalPrice={totalPrice}
+                    items={itemBuy}
+                    classes={classes}/>
 
-                <InputItem  qty={qty} setQty={setQty} code={code} setCode={setCode} buy={buy}
-                           classes={classes}/>
+                <InputItem qty={qty}
+                           setQty={setQty}
+                           code={code}
+                           setCode={setCode}
+                           buy={buy}
+                           classes={classes}
+                />
             </Grid>
             <Grid container item md={9} className={classes.right}>
+                <ProductList logout={logout}
+                             checkOut={checkOut}
+                             switchUser={switchUser}
+                             user={user}
 
-                <ProductList loading={loading} data={products}/>
+                             data={products}/>
             </Grid>
         </Grid>
     )
