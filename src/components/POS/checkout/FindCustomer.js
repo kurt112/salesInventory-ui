@@ -11,20 +11,20 @@ import {
 import {useState} from "react";
 import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {
-    storeFind
+    supplierFind
 } from "../../../utils/ServerEndPoint";
 import Response from "../../../utils/Response/Response";
 
 
-const FindStore = (
+const FindCustomer = (
     {
         closeDialog,
         dialog,
-        updateStore,
+        updateSupplier,
         updateClose
     }) => {
 
-    const [code, setCode] = useState('')
+    const [email, setEmail] = useState('')
 
 
     // for snack bar
@@ -37,9 +37,9 @@ const FindStore = (
     const register = async (event) => {
         event.preventDefault()
 
-        await baseUrlWithAuth.post(storeFind, {code}).then(e => {
+        await baseUrlWithAuth.post(supplierFind, {email}).then(e => {
             setError(false)
-            updateStore(e.data[0])
+            updateSupplier(e.data[0])
             closeDialog(false)
         }).catch(error => {
             const response = error.response.data
@@ -51,20 +51,20 @@ const FindStore = (
     }
 
     const cancel = () => {
-        updateClose(false)
+        // updateClose(false)
         closeDialog(false)
     }
 
     return <Dialog
         open={dialog}
         onClose={cancel}
-        aria-labelledby="StoreFind"
+        aria-labelledby="add-student"
         maxWidth={"md"}
         fullWidth
     >
-        <form noValidate={false} onSubmit={register}>
+        <form onSubmit={register}>
 
-            <DialogTitle>Find Store Branch</DialogTitle>
+            <DialogTitle id="add-student">Find Customer</DialogTitle>
             <DialogContent>
 
 
@@ -72,7 +72,7 @@ const FindStore = (
                           errorTitle={errorTitle}
                           errorMessage={errorMessage}
                           showSnackBar={show}
-                          successMessage={"Store Find Success"}
+                          successMessage={"Product Find Success"}
                           closeSnackBar={() => setShow(false)}
                 />
 
@@ -84,12 +84,12 @@ const FindStore = (
                         <TextField
                             autoFocus
                             margin="dense"
-                            label="Enter Store Code"
+                            label="Enter Customer Email"
                             type="text"
                             fullWidth
                             variant="outlined"
-                            value={code}
-                            onChange={(e) => setCode(e.target.value)}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </Grid>
                 </Grid>
@@ -109,4 +109,4 @@ const FindStore = (
 }
 
 
-export default FindStore
+export default FindCustomer

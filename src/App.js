@@ -8,9 +8,9 @@ import {useEffect, Fragment, Suspense, useState, lazy} from 'react'
 import {baseUrlNoAuth} from "./utils/axios/BaseUrl";
 import {tokenData} from "./utils/ServerEndPoint";
 import Skeleton from "@material-ui/lab/Skeleton";
+import Receipt from "./components/POS/checkout/Receipt";
 const MainUi = lazy(() => import(`./components/mainUI/MainUI`));
 const Pos = lazy(() => import(`./components/POS/Pos`))
-
 
 
 const App = () => {
@@ -56,7 +56,7 @@ const App = () => {
 
                             {
                                 posOn === true ?
-                                    <Route exact path="/">
+                                    <Route  path="/">
                                         <Pos  setPosOn={setPosOn} user={user}/>
                                     </Route>
 
