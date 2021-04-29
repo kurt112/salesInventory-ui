@@ -64,7 +64,7 @@ const StoreDelete = (
         <form noValidate={false} onSubmit={register}>
 
 
-            <DialogTitle id="add-student">Remove Store</DialogTitle>
+            <DialogTitle id="add-student">Remove Store Branch</DialogTitle>
             <DialogContent>
 
                 <Response showError={error}

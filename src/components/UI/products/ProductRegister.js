@@ -40,14 +40,14 @@ const ProductRegister = (
     const [store, setStore] = useState('')
     const [photo, setPhoto] = useState('')
     const [code, setCode] = useState('')
-    const [productTypeId,setProductTypeId] = useState()
+    const [productTypeId,setProductTypeId] = useState(0)
 
 
     // for snack bar
     const [showing, setShowing] = useState(false)
     const [error, setError] = useState(false)
     const [errorTitle, setErrorTitle] = useState('')
-    const [errorMessage, setErrorMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useState(type.length >0?type[0].id:null)
 
     // form error
     const [productImagesError, setProductImagesError] = useState(false)
@@ -89,7 +89,7 @@ const ProductRegister = (
             CreateError(setProductNameError, setProductNameErrorMessage, 'Please enter product name')
         }
 
-        if (!productTypeId) {
+        if (productTypeId===null) {
             error = true
             CreateError(setProductTypeError, setProductTypeErrorMessage, 'Please enter a product type')
         }
@@ -232,7 +232,7 @@ const ProductRegister = (
 
                                 required
                                 native
-                                label={'Product Type'}
+                                label={productTypeError? productTypeErrorMessage: 'Product Type'}
                                 inputProps={{
                                     name: 'Product Type',
                                     id: 'role',
@@ -264,7 +264,7 @@ const ProductRegister = (
                             <Autocomplete
                                 size={"small"}
                                 options={stores}
-                                getOptionLabel={(option) => option.name + ' ' + option.state}
+                                getOptionLabel={(option) => option.location}
                                 getOptionSelected={(option, value) => option.id === value.id}
                                 onChange={(event, value) => value === null ? setStore('') : setStore(value)}
                                 renderInput={(params) =>
@@ -283,7 +283,7 @@ const ProductRegister = (
                             <Autocomplete
                                 size={"small"}
                                 options={suppliers}
-                                getOptionLabel={(option) => option.name + ' ' + option.state}
+                                getOptionLabel={(option) => option.name}
                                 getOptionSelected={(option, value) => option.id === value.id}
                                 onChange={(event, value) => value === null ? setSupplier('') : setSupplier(value)}
                                 renderInput={(params) =>

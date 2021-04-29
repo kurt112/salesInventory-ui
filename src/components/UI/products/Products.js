@@ -109,7 +109,7 @@ export const Products = () => {
             }
         }).then((products) => {
             products.data.map(product =>
-                temp.push(insert(product.code, product.brand, product.name, product.ProductType.name, product.price, product.Supplier.name, product.Store.name, product.status))
+                temp.push(insert(product.code, product.brand, product.name, product.ProductType.name, product.price, product.Supplier.name, product.Store.location, product.status))
             )
         }).catch(e => {
             console.log(e)
