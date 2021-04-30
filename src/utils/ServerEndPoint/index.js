@@ -30,8 +30,9 @@ export const
     storeUpdate = 'store/update',
     storeDelete = 'store/delete',
 
-    // User
+    // transaction
     transactionList = 'transaction/list',
+    transactionInsert = 'transaction/insert',
 
     // Sales
     salesList = 'sales/list',
@@ -45,6 +46,8 @@ export const
 
     // Customer
     CustomerList = 'customer/list',
+    CustomerFind = 'customer/find',
+    CustomerInsert = 'customer/insert',
 
     // upload
     productPhoto = 'upload',

@@ -8,7 +8,7 @@ import {
     Grid, InputLabel, Select,
     TextField
 } from "@material-ui/core"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {
     productInsert
@@ -42,12 +42,16 @@ const ProductRegister = (
     const [code, setCode] = useState('')
     const [productTypeId,setProductTypeId] = useState(0)
 
+    useEffect(() => {
+        const id = type.length >0?type[0].id:1
+        setProductTypeId(id)
+    }, [])
 
     // for snack bar
     const [showing, setShowing] = useState(false)
     const [error, setError] = useState(false)
     const [errorTitle, setErrorTitle] = useState('')
-    const [errorMessage, setErrorMessage] = useState(type.length >0?type[0].id:null)
+    const [errorMessage, setErrorMessage] = useState('')
 
     // form error
     const [productImagesError, setProductImagesError] = useState(false)
@@ -89,6 +93,7 @@ const ProductRegister = (
             CreateError(setProductNameError, setProductNameErrorMessage, 'Please enter product name')
         }
 
+
         if (productTypeId===null) {
             error = true
             CreateError(setProductTypeError, setProductTypeErrorMessage, 'Please enter a product type')
@@ -108,7 +113,6 @@ const ProductRegister = (
             error = true
             CreateError(setProductCodeError, setProductCodeErrorMessage, 'Please enter a product code')
         }
-
 
         if (!error) {
             const data = {

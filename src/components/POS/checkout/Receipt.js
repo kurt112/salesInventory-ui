@@ -1,7 +1,7 @@
 import './Receipt.css'
 
 import {useEffect, useRef, Fragment, useState} from "react";
-import {Dialog, DialogActions, DialogContent, DialogTitle, Grid, TableCell, TextField} from "@material-ui/core";
+import {Dialog, TableCell} from "@material-ui/core";
 import TableRow from "@material-ui/core/TableRow";
 import TableHead from "@material-ui/core/TableHead";
 import Table from "@material-ui/core/Table";
@@ -9,25 +9,88 @@ import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import TableBody from "@material-ui/core/TableBody";
 import Button from "@material-ui/core/Button";
-import Response from "../../../utils/Response/Response";
+import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
+import {transactionInsert} from "../../../utils/ServerEndPoint";
+import ShortUniqueId from 'short-unique-id';
 
-var months = ["January", "February", "March", "April", "May", "June",
+
+const months = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"];
 
 const Receipt = ({
                      dialog,
-                     cancel
+                     cancel,
+                     user,
+                     customer,
+                     initialAmount,
+                     item
                  }) => {
 
+    console.log(user)
     const [today, setToday] = useState('')
+    const [discount, setDiscount] = useState(0)
+    const [totalPrice, setTotalPrice] = useState(0)
+    const [step, setStep] = useState(1)
+    const [code, setCode] = useState('')
+    const [valid, setValid] = useState(true)
 
     useEffect(() => {
-        const today = new Date();
-        const dd = String(today.getDate()).padStart(2, '0');
-        const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        const yyyy = today.getFullYear();
+        const codeGenerate = new ShortUniqueId()
+        const c_today = new Date();
+        const dd = String(c_today.getDate()).padStart(2, '0');
+        const mm = String(c_today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        const yyyy = c_today.getFullYear();
         setToday(months[mm - 1] + '/' + dd + '/' + yyyy)
+        const tempCode = `${codeGenerate()}-${mm}-${dd}`
+        setCode(tempCode)
     }, [])
+
+    useEffect(() => {
+        const amount = initialAmount - discount
+        setTotalPrice(amount)
+    }, [discount])
+
+    const back = () => {
+        if (step >= 2) {
+            setStep(step - 1)
+        }
+    }
+
+    const applyDiscount = () => {
+        const tempDiscount = prompt('Enter Discount Value');
+        if(tempDiscount > initialAmount){
+            alert("Make Sure Discount Is Lower Or Equal Than Initial Amount")
+            return
+        }
+
+        setDiscount(tempDiscount)
+
+    }
+
+    const saveTransaction = async () => {
+        setStep(step + 1)
+        const data = {
+            code,
+            amount: initialAmount,
+            discount: discount,
+            CustomerId: customer.id,
+            StoreId: user.StoreId,
+            UserId: user.id
+        }
+        if (valid) {
+            await baseUrlWithAuth.post(transactionInsert, data).then(ignored => {
+                alert("Transaction Save")
+                setValid(false)
+
+            }).catch(error => {
+                console.log(error)
+            })
+            return
+        }
+
+        alert("Transaction Already Save")
+    }
+
 
     const print = () => {
         const mywindow = window.open('', 'PRINT', 'height=400,width=600');
@@ -89,6 +152,12 @@ const Receipt = ({
             '    position: relative;\n' +
             '    vertical-align: middle\n' +
             '}\n' +
+            'table{' +
+            'width:100%' +
+            '}' +
+            'table th{' +
+            'text-align: left' +
+            '}' +
             '\n' +
             '.invoice-price .invoice-price-left .sub-price {\n' +
             '    display: table-cell;\n' +
@@ -153,7 +222,6 @@ const Receipt = ({
             '    justify-content: center;\n' +
             '}\n</style>')
         mywindow.document.write('</head><body >');
-        mywindow.document.write('<h1>' + document.title + '</h1>');
         mywindow.document.write(document.getElementById('receipts').innerHTML);
         mywindow.document.write('</body></html>');
 
@@ -181,7 +249,7 @@ const Receipt = ({
                             {/*begin invoice-company*/}
                             <div className="invoice-company text-inverse f-w-600">
                                 <p><b>Jars Cecullar, Inc</b></p>
-                                <p><b>Assign Cashier</b></p>
+                                <p><b>{user.firstName} {user.lastName}</b></p>
                             </div>
                             {/*end invoice-company */}
                             {/*begin invoice-header */}
@@ -198,16 +266,17 @@ const Receipt = ({
                                 <div className="invoice-to">
                                     <small>To:</small>
                                     <address className="m-t-5 m-b-5">
-                                        <strong className="text-inverse">Customer Name</strong><br/>
-                                        Street Address<br/>
-                                        City, Zip Code<br/>
+                                        <strong className="text-inverse">{customer.name}</strong><br/>
+                                        {customer.address}<br/>
+                                        {customer.city}, {customer.postalCode}<br/>
                                     </address>
                                 </div>
                                 <div className="invoice-date">
                                     <small>Transaction:</small>
                                     <div className="date text-inverse m-t-5">{today}</div>
                                     <div className="invoice-detail">
-                                        transaction id<br/>
+                                        <b>{code}</b>
+                                        <br/>
                                     </div>
                                 </div>
                             </div>
@@ -227,118 +296,19 @@ const Receipt = ({
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            <TableRow>
-                                                <TableCell>
-                                                <span
-                                                    className="text-inverse">Website design &amp; development</span><br/>
-                                                    <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                                                        id
-                                                        sagittis
-                                                        arcu.</small>
-                                                </TableCell>
-                                                <TableCell>39</TableCell>
-                                                <TableCell>$50.00</TableCell>
-                                                <TableCell>50</TableCell>
-                                                <TableCell align="right">$2,500.00</TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell>
-                                                <span
-                                                    className="text-inverse">Website design &amp; development</span><br/>
-                                                    <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                                                        id
-                                                        sagittis
-                                                        arcu.</small>
-                                                </TableCell>
-                                                <TableCell>39</TableCell>
-                                                <TableCell>$50.00</TableCell>
-                                                <TableCell>50</TableCell>
-                                                <TableCell align="right">$2,500.00</TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell>
-                                                <span
-                                                    className="text-inverse">Website design &amp; development</span><br/>
-                                                    <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                                                        id
-                                                        sagittis
-                                                        arcu.</small>
-                                                </TableCell>
-                                                <TableCell>39</TableCell>
-                                                <TableCell>$50.00</TableCell>
-                                                <TableCell>50</TableCell>
-                                                <TableCell align="right">$2,500.00</TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell>
-                                                <span
-                                                    className="text-inverse">Website design &amp; development</span><br/>
-                                                    <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                                                        id
-                                                        sagittis
-                                                        arcu.</small>
-                                                </TableCell>
-                                                <TableCell>39</TableCell>
-                                                <TableCell>$50.00</TableCell>
-                                                <TableCell>50</TableCell>
-                                                <TableCell align="right">$2,500.00</TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell>
-                                                <span
-                                                    className="text-inverse">Website design &amp; development</span><br/>
-                                                    <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                                                        id
-                                                        sagittis
-                                                        arcu.</small>
-                                                </TableCell>
-                                                <TableCell>39</TableCell>
-                                                <TableCell>$50.00</TableCell>
-                                                <TableCell>50</TableCell>
-                                                <TableCell align="right">$2,500.00</TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell>
-                                                <span
-                                                    className="text-inverse">Website design &amp; development</span><br/>
-                                                    <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                                                        id
-                                                        sagittis
-                                                        arcu.</small>
-                                                </TableCell>
-                                                <TableCell>39</TableCell>
-                                                <TableCell>$50.00</TableCell>
-                                                <TableCell>50</TableCell>
-                                                <TableCell align="right">$2,500.00</TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell>
-                                                <span
-                                                    className="text-inverse">Website design &amp; development</span><br/>
-                                                    <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                                                        id
-                                                        sagittis
-                                                        arcu.</small>
-                                                </TableCell>
-                                                <TableCell>39</TableCell>
-                                                <TableCell>$50.00</TableCell>
-                                                <TableCell>50</TableCell>
-                                                <TableCell align="right">$2,500.00</TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell>
-                                                <span
-                                                    className="text-inverse">Website design &amp; development</span><br/>
-                                                    <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                                                        id
-                                                        sagittis
-                                                        arcu.</small>
-                                                </TableCell>
-                                                <TableCell>39</TableCell>
-                                                <TableCell>$50.00</TableCell>
-                                                <TableCell>50</TableCell>
-                                                <TableCell align="right">$2,500.00</TableCell>
-                                            </TableRow>
+
+                                            {
+                                                item.map((item, id) => <TableRow key={id}>
+                                                        <TableCell align={"left"}>
+                                                            <small>{item.productName}</small><br/>
+                                                        </TableCell>
+                                                        <TableCell align={"left"}>{item.code}</TableCell>
+                                                        <TableCell align={"left"}>₱ {item.price}</TableCell>
+                                                        <TableCell align={"left"}>{item.qty}</TableCell>
+                                                        <TableCell align="right">₱ {item.price * item.qty}</TableCell>
+                                                    </TableRow>
+                                                )
+                                            }
                                         </TableBody>
                                     </Table>
                                 </div>
@@ -349,19 +319,19 @@ const Receipt = ({
                                         <div className="invoice-price-row">
                                             <div className="sub-price">
                                                 <small>INITIAL AMOUNT</small>
-                                                <span className="text-inverse">$4,500.00</span>
+                                                <span className="text-inverse">₱ {initialAmount}</span>
                                             </div>
                                             <div className="sub-price">
                                                 <i className="fa fa-plus text-muted"/>
                                             </div>
                                             <div className="sub-price">
                                                 <small>DISCOUNT</small>
-                                                <span className="text-inverse">$108.00</span>
+                                                <span className="text-inverse">₱ {discount}</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="invoice-price-right">
-                                        <small>TOTAL</small> <span className="f-w-600">$4508.00</span>
+                                        <small>TOTAL</small> <span className="f-w-600">₱ {totalPrice}</span>
                                     </div>
                                 </div>
                                 {/*end invoice-price*/}
@@ -372,10 +342,47 @@ const Receipt = ({
                     </div>
                 </Box>
                 <span className="printButton">
-                <Button style={{marginBottom: 20, marginTop: 20}} onClick={print} variant={"contained"}
-                        color={"primary"}>
-                    Print
-                </Button>
+
+                    {
+                        step === 1 ?
+                            <Fragment>
+                                <Button style={{marginBottom: 20, marginTop: 20}} onClick={applyDiscount}
+                                        variant={"contained"}
+                                        color={"primary"}>
+                                    Apply Discount
+                                </Button>
+                                <Button style={{marginBottom: 20, marginTop: 20, marginLeft: 10}} onClick={() => setStep(step+1)}
+                                        variant={"contained"}
+                                        color={"primary"}>
+                                    Next
+                                </Button>
+                            </Fragment> : null
+                    }
+                    {
+                        step === 2 ? <Button style={{marginBottom: 20, marginTop: 20}} onClick={saveTransaction}
+                                             variant={"contained"}
+                                             color={"primary"}>
+                            Save Transaction
+                        </Button> : null
+                    }
+
+                    {
+                        step === 3 ?
+                            <Button style={{marginBottom: 20, marginTop: 20, marginLeft: 10}} onClick={print}
+                                    variant={"contained"}
+                                    color={"primary"}>
+                                Print
+                            </Button> : null
+                    }
+
+                    {
+                        step === 4 ?
+                            <Button style={{marginBottom: 20, marginTop: 20, marginLeft: 10}} onClick={back}
+                                    variant={"contained"}
+                                    color={"primary"}>
+                                Back
+                            </Button> : null
+                    }
             </span>
             </Dialog>
         </Fragment>

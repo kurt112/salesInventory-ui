@@ -20,12 +20,14 @@ const Pos = ({setPosOn, user}) => {
     const [itemBuy, setItemBuy] = useState([])
     const [qty, setQty] = useState(1)
     const [totalPrice, setTotalPrice] = useState(0)
+    const [customer, setCustomer] = useState()
 
     // dialog
     const [checkOutDialog, setCheckOutDialog] = useState(false)
     const [customerFormDialog, setCustomerFormDialog] = useState(false)
     const [findCustomerDialog, setFindCustomerDialog] = useState(false)
     const [printReceipt, setPrintReceipt] = useState(false)
+
 
     useEffect(() => {
         const temp = []
@@ -103,7 +105,6 @@ const Pos = ({setPosOn, user}) => {
     }
 
     const checkOut = () => {
-
         setCheckOutDialog(true)
     }
 
@@ -123,12 +124,13 @@ const Pos = ({setPosOn, user}) => {
 
     const print = () => {
         setPrintReceipt(true)
-        alert("wew")
     }
 
+    console.log(customer)
     return (
         <Fragment>
             <CustomerExistDialog
+                setCustomer={setCustomer}
                 registerCustomer={setCustomerFormDialog}
                 findCustomer={setFindCustomerDialog}
                 dialog={checkOutDialog}
@@ -137,9 +139,15 @@ const Pos = ({setPosOn, user}) => {
 
 
             {
-                printReceipt?   <Receipt dialog={printReceipt} cancel={() => setPrintReceipt(false)}/>: null
+                printReceipt ? <Receipt
+                    item={itemBuy}
+                    customer={customer}
+                    initialAmount={totalPrice}
+                    dialog={printReceipt}
+                    user={user}
+                    cancel={() => setPrintReceipt(false)}/> : null
             }
-            <FindCustomer dialog={findCustomerDialog} closeDialog={() => setFindCustomerDialog(false)}/>
+            <FindCustomer setCustomer={setCustomer} print={print} dialog={findCustomerDialog} closeDialog={() => setFindCustomerDialog(false)}/>
 
             <CustomerForm dialog={customerFormDialog} closeDialog={() => setCustomerFormDialog(false)}/>
 
