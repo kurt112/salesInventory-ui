@@ -69,9 +69,6 @@ const FindUser = (
 
             <DialogTitle id="add-student">Find User</DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    if you have note for this add  or delete it
-                </DialogContentText>
 
                 <Response showError={error}
                           errorTitle={errorTitle}

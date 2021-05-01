@@ -22,7 +22,7 @@ export const Sales = () => {
             const temp = []
             await baseUrlWithAuth.get(salesList).then((sales) => {
                 sales.data.map(sale =>
-                    temp.push(insert(sale.id, sale.Product.name, sale.Product.price, sale.qty, sale.total, sale.Transaction.id, sale.createdAt))
+                    temp.push(insert(sale.Product.code, sale.Product.name, sale.Product.price,  sale.Transaction.code, sale.createdAt))
                 )
             })
             setData(...data, temp)
@@ -46,9 +46,7 @@ export const Sales = () => {
                             </IconButton>
                         </Tooltip>
                     </Box>
-                    <p style={{margin: 0}}>
-                        <b>Total Sales:</b>
-                    </p>
+
                 </Toolbar>
             </Grid>
             <Grid item md={12} component={Paper} className={classes.tableContainerWrapper}>

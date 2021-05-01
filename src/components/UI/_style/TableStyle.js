@@ -1,4 +1,8 @@
 import { makeStyles } from "@material-ui/styles"
+import {Tooltip} from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import EditIcon from "@material-ui/icons/Edit";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 const style = makeStyles(() => ({
     root: {
@@ -37,13 +41,11 @@ export function TableOptions(loading) {
         pagination: true,
         searchPlaceholder: 'Search Anything',
         selectableRowsHideCheckboxes: false,
-        selectableRows: 'none',
+        selectableRows:  'none',
         textLabels: {
             body: {
                 noMatch: loading?"": "Sorry, no matching records found",
             },
-        },
-
-
+        }
     };
 }

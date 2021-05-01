@@ -69,9 +69,6 @@ const DeleteProduct = (
 
             <DialogTitle id="add-student">Delete Product</DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    Delete Product Note
-                </DialogContentText>
 
                 <Response showError={error}
                           errorTitle={errorTitle}

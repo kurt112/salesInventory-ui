@@ -21,7 +21,8 @@ const FindStore = (
         closeDialog,
         dialog,
         updateStore,
-        updateClose
+        updateClose,
+        setStore
     }) => {
 
     const [code, setCode] = useState('')
@@ -31,7 +32,7 @@ const FindStore = (
     const [error, setError] = useState(false)
     const [errorTitle, setErrorTitle] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
-    const [show,setShow] = useState(false)
+    const [show, setShow] = useState(false)
 
 
     const register = async (event) => {
@@ -39,7 +40,12 @@ const FindStore = (
 
         await baseUrlWithAuth.post(storeFind, {code}).then(e => {
             setError(false)
-            updateStore(e.data[0])
+            if (updateStore === undefined) {
+                setStore(e.data[0])
+            } else {
+                updateStore(e.data[0])
+            }
+
             closeDialog(false)
         }).catch(error => {
             const response = error.response.data

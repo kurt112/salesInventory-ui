@@ -33,6 +33,7 @@ export const
     // transaction
     transactionList = 'transaction/list',
     transactionInsert = 'transaction/insert',
+    transactionFind = 'transaction/find',
 
     // Sales
     salesList = 'sales/list',

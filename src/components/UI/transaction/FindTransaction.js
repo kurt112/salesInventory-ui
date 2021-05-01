@@ -10,19 +10,17 @@ import {
 import {useState} from "react";
 import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {
-    productFind,
+    transactionFind
 } from "../../../utils/ServerEndPoint";
 import Response from "../../../utils/Response/Response";
 
 
-const FindProduct = (
+const FindTransaction = (
     {
         closeDialog,
         dialog,
-        updateProduct,
-        updateClose
+        updateTransaction,
     }) => {
-
 
     const [code, setCode] = useState('')
 
@@ -37,12 +35,10 @@ const FindProduct = (
     const register = async (event) => {
         event.preventDefault()
 
-        await baseUrlWithAuth.post(productFind, {code}).then(e => {
-            setCode('')
+        await baseUrlWithAuth.post(transactionFind, {code}).then(e => {
             setError(false)
-            setShow(true)
-            closeDialog(false)
-            updateProduct(e.data[0])
+            setCode('')
+            updateTransaction(e.data)
         }).catch(error => {
             const response = error.response.data
             setErrorMessage(response.message)
@@ -53,7 +49,6 @@ const FindProduct = (
     }
 
     const cancel = () => {
-        updateClose(false)
         closeDialog(false)
     }
 
@@ -66,9 +61,8 @@ const FindProduct = (
     >
         <form onSubmit={register}>
 
-            <DialogTitle id="add-student">Find Product</DialogTitle>
+            <DialogTitle id="add-student">Find Transaction</DialogTitle>
             <DialogContent>
-
                 <Response showError={error}
                           errorTitle={errorTitle}
                           errorMessage={errorMessage}
@@ -76,8 +70,6 @@ const FindProduct = (
                           successMessage={"Product Find Success"}
                           closeSnackBar={() => setShow(false)}
                 />
-
-
                 <br/>
 
                 <Grid container spacing={1}>
@@ -85,7 +77,7 @@ const FindProduct = (
                         <TextField
                             autoFocus
                             margin="dense"
-                            label="Product Code"
+                            label="Enter Transaction Code"
                             type="text"
                             fullWidth
                             variant="outlined"
@@ -110,4 +102,4 @@ const FindProduct = (
 }
 
 
-export default FindProduct
+export default FindTransaction

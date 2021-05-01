@@ -1,6 +1,6 @@
 import './Receipt.css'
 
-import {useEffect, useRef, Fragment, useState} from "react";
+import {useEffect, Fragment, useState} from "react";
 import {Dialog, TableCell} from "@material-ui/core";
 import TableRow from "@material-ui/core/TableRow";
 import TableHead from "@material-ui/core/TableHead";
@@ -12,10 +12,8 @@ import Button from "@material-ui/core/Button";
 import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {transactionInsert} from "../../../utils/ServerEndPoint";
 import ShortUniqueId from 'short-unique-id';
+import {months, MonthsWord} from "../../../utils/date/ConvertMonthWord";
 
-
-const months = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"];
 
 const Receipt = ({
                      dialog,
@@ -23,31 +21,77 @@ const Receipt = ({
                      user,
                      customer,
                      initialAmount,
-                     item
+                     item,
+                     setItem,
+                     posOn,
+                     transaction
                  }) => {
 
-    console.log(user)
     const [today, setToday] = useState('')
     const [discount, setDiscount] = useState(0)
     const [totalPrice, setTotalPrice] = useState(0)
     const [step, setStep] = useState(1)
     const [code, setCode] = useState('')
     const [valid, setValid] = useState(true)
-
+    const [items, setItems] = useState([])
+    const [initAmount, setInitAmount] = useState(initialAmount)
+    console.log(user)
     useEffect(() => {
-        const codeGenerate = new ShortUniqueId()
-        const c_today = new Date();
-        const dd = String(c_today.getDate()).padStart(2, '0');
-        const mm = String(c_today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        const yyyy = c_today.getFullYear();
-        setToday(months[mm - 1] + '/' + dd + '/' + yyyy)
-        const tempCode = `${codeGenerate()}-${mm}-${dd}`
-        setCode(tempCode)
+        if (posOn) {
+            const codeGenerate = new ShortUniqueId()
+            const c_today = new Date();
+            const dd = String(c_today.getDate()).padStart(2, '0');
+            const mm = String(c_today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            const yyyy = c_today.getFullYear();
+            setToday(months[mm - 1] + '/' + dd + '/' + yyyy)
+            const tempCode = `${codeGenerate()}-${mm}-${dd}`
+            setCode(tempCode)
+            setItems(item)
+        } else {
+            setStep(3)
+            setToday(MonthsWord(transaction.createdAt))
+            setTotalPrice(transaction.amount)
+            setCode(transaction.code)
+            setDiscount(transaction.discount)
+            setInitAmount(transaction.amount - transaction.discount)
+            const map = new Map()
+
+            for (let i = 0; i < item.length; i++) {
+                const code = item[i].Product.code
+                if (map.get(code) === undefined) {
+                    map.set(code, 1)
+                    continue
+                }
+
+                map.set(code, map.get(code) + 1)
+            }
+
+            const tempData = item.filter((v, i, a) => a.findIndex(t => (t.code === v.code)) === i)
+            const tempItem = []
+            for (let code of map.keys()) {
+                const product = tempData.find(e => e.Product.code === code)
+                tempItem.push({
+                    productName: product.Product.name,
+                    productBrand: product.Product.brand,
+                    price: product.Product.price,
+                    qty: map.get(code),
+                    code,
+                    id: product.Product.id
+                })
+
+            }
+
+            setItems(tempItem)
+        }
+
     }, [])
 
     useEffect(() => {
-        const amount = initialAmount - discount
-        setTotalPrice(amount)
+        if (posOn) {
+            const amount = initialAmount - discount
+            setTotalPrice(amount)
+        }
+
     }, [discount])
 
     const back = () => {
@@ -58,7 +102,7 @@ const Receipt = ({
 
     const applyDiscount = () => {
         const tempDiscount = prompt('Enter Discount Value');
-        if(tempDiscount > initialAmount){
+        if (tempDiscount > initialAmount) {
             alert("Make Sure Discount Is Lower Or Equal Than Initial Amount")
             return
         }
@@ -75,7 +119,8 @@ const Receipt = ({
             discount: discount,
             CustomerId: customer.id,
             StoreId: user.StoreId,
-            UserId: user.id
+            UserId: user.id,
+            items
         }
         if (valid) {
             await baseUrlWithAuth.post(transactionInsert, data).then(ignored => {
@@ -88,6 +133,7 @@ const Receipt = ({
             return
         }
 
+        setItem([])
         alert("Transaction Already Save")
     }
 
@@ -95,7 +141,7 @@ const Receipt = ({
     const print = () => {
         const mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-        mywindow.document.write('<html><head><title>' + document.title + '</title>');
+        mywindow.document.write('<html lang=""><head><title>' + document.title + '</title>');
         mywindow.document.write('<style>' +
             '@media print {\n' +
             '  body {-webkit-print-color-adjust: exact;}\n' +
@@ -298,7 +344,7 @@ const Receipt = ({
                                         <TableBody>
 
                                             {
-                                                item.map((item, id) => <TableRow key={id}>
+                                                items.map((item, id) => <TableRow key={id}>
                                                         <TableCell align={"left"}>
                                                             <small>{item.productName}</small><br/>
                                                         </TableCell>
@@ -319,7 +365,7 @@ const Receipt = ({
                                         <div className="invoice-price-row">
                                             <div className="sub-price">
                                                 <small>INITIAL AMOUNT</small>
-                                                <span className="text-inverse">₱ {initialAmount}</span>
+                                                <span className="text-inverse">₱ {initAmount}</span>
                                             </div>
                                             <div className="sub-price">
                                                 <i className="fa fa-plus text-muted"/>
@@ -351,7 +397,8 @@ const Receipt = ({
                                         color={"primary"}>
                                     Apply Discount
                                 </Button>
-                                <Button style={{marginBottom: 20, marginTop: 20, marginLeft: 10}} onClick={() => setStep(step+1)}
+                                <Button style={{marginBottom: 20, marginTop: 20, marginLeft: 10}}
+                                        onClick={() => setStep(step + 1)}
                                         variant={"contained"}
                                         color={"primary"}>
                                     Next

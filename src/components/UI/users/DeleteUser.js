@@ -68,9 +68,6 @@ const DeleteUser = (
 
             <DialogTitle id="add-student">Remove User</DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    Insert user Email to delete the user
-                </DialogContentText>
 
                 {
                     error ? <Alert variant="filled" severity="error">

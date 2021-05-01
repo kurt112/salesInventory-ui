@@ -35,7 +35,8 @@ const Pos = ({setPosOn, user}) => {
 
             await baseUrlWithAuth.get(productList, {
                 params: {
-                    branch: 1
+                    branch: user.StoreId,
+                    status:'available'
                 }
             }).then(async (products) => {
                 products.data.map(product =>
@@ -58,7 +59,8 @@ const Pos = ({setPosOn, user}) => {
             productBrand: product.brand,
             price: product.price,
             qty,
-            code
+            code,
+            id: product.id
         }
     }
 
@@ -105,6 +107,10 @@ const Pos = ({setPosOn, user}) => {
     }
 
     const checkOut = () => {
+        if(itemBuy.length ===0){
+            alert("Please Buy First To Checkout")
+            return
+        }
         setCheckOutDialog(true)
     }
 
@@ -141,11 +147,13 @@ const Pos = ({setPosOn, user}) => {
             {
                 printReceipt ? <Receipt
                     item={itemBuy}
+                    setItem={setItemBuy}
                     customer={customer}
                     initialAmount={totalPrice}
                     dialog={printReceipt}
                     user={user}
-                    cancel={() => setPrintReceipt(false)}/> : null
+                    cancel={() => setPrintReceipt(false)}
+                    posOn={true}/> : null
             }
             <FindCustomer setCustomer={setCustomer} print={print} dialog={findCustomerDialog} closeDialog={() => setFindCustomerDialog(false)}/>
 
