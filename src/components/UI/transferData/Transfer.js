@@ -1,14 +1,13 @@
 import style, {TableOptions as options} from '../_style/TableStyle'
 import {Paper, Grid, Box, Toolbar, CircularProgress,Button} from "@material-ui/core";
-import {SalesTable as columns, InsertSales as insert} from '../../../utils/tableColumn/SalesTable'
+import {ProductTransfer as columns, InsertProductTransfer as insert} from '../../../utils/tableColumn/ProductTransfer'
 import MUIDataTable from 'mui-datatables'
 import Typography from "@material-ui/core/Typography";
 import {useEffect, useState} from "react";
 import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {salesList} from "../../../utils/ServerEndPoint";
-import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
-export const Sales = () => {
+ const Transfered = () => {
     const classes = style()
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
@@ -27,11 +26,11 @@ export const Sales = () => {
                 )
             })
             setData(...data, temp)
-            setLoading(false)
-        }
-        
-        getData().then(ignored => {})
 
+        }
+
+        getData().then(ignored => {})
+        setLoading(false)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -40,15 +39,11 @@ export const Sales = () => {
             <Grid item component={Paper} md={12} sm={12} xs={12} className={classes.tableNavbar}>
                 <Toolbar>
                     <Box className={classes.tableNavbarBox}>
-                        <label htmlFor="dateStart">Date Start : </label>
-                        <input style={{marginRight: 10}} value={date1} onChange={e => setDate1(e.target.value)} type="date" id="dateStart" name="dateStart"/>
-
-                        <label htmlFor="dateEnd" >Date End : </label>
-                        <input type="date" id="dateEnd" name="dateEnd" value={date2} onChange={(e) => setDate2(e.target.value)}/>
+                        <Button variant={"contained"} disableElevation color={'primary'}>
+                            Recieve Item
+                        </Button>
                     </Box>
-                    <Button variant={"contained"} disableElevation color={'primary'}>
-                        Print This Data
-                    </Button>
+
                 </Toolbar>
 
 
@@ -57,7 +52,7 @@ export const Sales = () => {
                 <MUIDataTable
                     title={
                         <Typography variant="h6">
-                            Sales List
+                            Transfered List
                             {loading &&
                             <CircularProgress size={24} style={{marginLeft: 15, position: 'relative', top: 4}}/>}
                         </Typography>
@@ -71,4 +66,5 @@ export const Sales = () => {
     )
 }
 
+export default Transfered
 

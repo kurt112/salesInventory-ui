@@ -106,7 +106,7 @@ export default function Sidebar({setPosOn, open, handleDrawerClose, handleDrawer
                             </ListItemIcon>
                             <ListItemText primary="Audit Trail"/>
                         </ListItem>
-                        <ListItem component={NavLink} to="/transfer" button>
+                        <ListItem component={NavLink} to="/transferProducts" button>
                             <ListItemIcon>
                                 <TransferWithinAStationIcon/>
                             </ListItemIcon>

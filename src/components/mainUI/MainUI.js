@@ -19,6 +19,8 @@ import DashBoard from "../UI/DashBoard/DashBoard";
 import AuditTrail from "../UI/AuditTrail/AuditTrail";
 import Settings from "../UI/settings/Settings";
 import CriticalStocks from "../UI/CriticalStock/CriticalStocks";
+import Transfer from "../UI/transferData/Transfer";
+// import Transfer from "../UI/transferData/Transfer";
 
 export default function MainUI({setPosOn,user,setUser}) {
     const classes = style();
@@ -53,6 +55,10 @@ export default function MainUI({setPosOn,user,setUser}) {
                 {
                     <Suspense fallback={<Skeleton/>}>
                         <Switch>
+
+                            <Route path={"/transferProducts"}>
+                                <Transfer user={user}/>
+                            </Route>
                             <Route exact path={'/'}>
                                 <DashBoard user={user}/>
                             </Route>
