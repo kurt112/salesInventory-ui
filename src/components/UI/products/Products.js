@@ -213,8 +213,8 @@ export const Products = () => {
                                     <UpdateIcon fontSize={"large"}/>
                                 </IconButton>
                             </Tooltip>
-                            <Tooltip title={'TransferProduct'} aria-label={'TransferProduct'}>
-                                <IconButton onClick={() => setTransferDialog(true)} aria-label={'TransferProduct'}
+                            <Tooltip title={'Transfer Product'} aria-label={'Transfer Product'}>
+                                <IconButton onClick={() => setTransferDialog(true)} aria-label={'Transfer Product'}
                                             color={"primary"}>
                                     <CompareArrowsIcon fontSize={"large"}/>
                                 </IconButton>

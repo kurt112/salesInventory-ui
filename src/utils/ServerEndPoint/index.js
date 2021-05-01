@@ -65,7 +65,8 @@ export const
     DeleteProductType = 'setting/deleteProductType',
     SetCriticalStock = 'setting/setCriticalStock',
     GetCriticalStock = 'setting/getCriticalStock',
-    ListProductType = 'setting/productTypeList'
+    ListProductType = 'setting/productTypeList',
+    getCriticalStockProduct = 'setting/getCriticalStockProduct'
 
 
 

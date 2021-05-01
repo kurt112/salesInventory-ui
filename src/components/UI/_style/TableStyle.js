@@ -1,13 +1,8 @@
 import { makeStyles } from "@material-ui/styles"
-import {Tooltip} from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import EditIcon from "@material-ui/icons/Edit";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 const style = makeStyles(() => ({
     root: {
         width: '100%',
-        height: '100%'
     },
     tableNavbar: {
         marginBottom: 10,
@@ -18,7 +13,6 @@ const style = makeStyles(() => ({
     },
     tableContainerWrapper: {
         width: '100%',
-        overflowX: 'auto',
     },
     tableHead: {
         fontWeight: 'bold'
@@ -34,7 +28,7 @@ export function TableOptions(loading) {
     return {
         filter: true,
         filterType: "dropdown",
-        tableBodyMaxHeight: '490px',
+        print:false,
         selectableRowsHeader: true,
         rowsPerPageOptions:[10,20,50,100],
         rowsPerPage:10,

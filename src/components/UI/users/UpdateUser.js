@@ -3,7 +3,6 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle, FormControl,
     Grid, InputLabel, Select,
     TextField
@@ -180,9 +179,6 @@ const UpdateUser = (
                     <form noValidate={false} onSubmit={register}>
                         <DialogTitle id="add-student">Update User</DialogTitle>
                         <DialogContent>
-                            <DialogContentText>
-                                Insert if you have any note
-                            </DialogContentText>
 
                             <Response showError={error}
                                       errorTitle={errorTitle}

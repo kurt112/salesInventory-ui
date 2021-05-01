@@ -18,6 +18,7 @@ import {Customers} from "../UI/customer/CustomerTable";
 import DashBoard from "../UI/DashBoard/DashBoard";
 import AuditTrail from "../UI/AuditTrail/AuditTrail";
 import Settings from "../UI/settings/Settings";
+import CriticalStocks from "../UI/CriticalStock/CriticalStocks";
 
 export default function MainUI({setPosOn,user,setUser}) {
     const classes = style();
@@ -81,6 +82,9 @@ export default function MainUI({setPosOn,user,setUser}) {
                             </Route>
                             <Route path={"/audit"}>
                                 <AuditTrail/>
+                            </Route>
+                            <Route path={"/critical"}>
+                                <CriticalStocks/>
                             </Route>
                             <Route path={"/settings"}>
                                 <Settings/>
