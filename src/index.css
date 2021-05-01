@@ -5,9 +5,8 @@ body, html{
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  height: 100%;
-  width: 100%;
-  /*overflow-y: hidden;*/
+  height: 100vh;
+  width: 100%
 }
 
 @media print {

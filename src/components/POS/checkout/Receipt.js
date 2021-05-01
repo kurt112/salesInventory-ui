@@ -1,13 +1,9 @@
 import './Receipt.css'
 
 import {useEffect, Fragment, useState} from "react";
-import {Dialog, TableCell} from "@material-ui/core";
-import TableRow from "@material-ui/core/TableRow";
-import TableHead from "@material-ui/core/TableHead";
-import Table from "@material-ui/core/Table";
+import {Dialog} from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
-import TableBody from "@material-ui/core/TableBody";
 import Button from "@material-ui/core/Button";
 import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {transactionInsert} from "../../../utils/ServerEndPoint";
@@ -134,139 +130,95 @@ const Receipt = ({
         }
 
         setItem([])
-        alert("Transaction Already Save")
     }
 
 
     const print = () => {
         const mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-        mywindow.document.write('<html lang=""><head><title>' + document.title + '</title>');
+        mywindow.document.write('<html lang="" onload="window.print()"><head><title>' + document.title + '</title>');
         mywindow.document.write('<style>' +
-            '@media print {\n' +
-            '  body {-webkit-print-color-adjust: exact;}\n' +
-            '}\n' +
-            '.invoice {\n' +
-            '    width: 100%\n' +
-            '}\n' +
-            '\n' +
-            '.invoice-company {\n' +
-            '    font-size: 20px;\n' +
-            '    display: flex;\n' +
-            '    justify-content: space-between;\n' +
-            '}\n' +
-            '\n' +
-            '.invoice-company p{\n' +
+            '.bodyReceipt{\n' +
+            '    font-family: "Helvetica Neue", Helvetica, Arial;\n' +
+            '    font-size: 14px;\n' +
+            '    line-height: 20px;\n' +
+            '    font-weight: 400;\n' +
+            '    -webkit-font-smoothing: antialiased;\n' +
+            '    font-smoothing: antialiased;\n' +
             '    margin: 0;\n' +
             '}\n' +
             '\n' +
-            '.invoice-header {\n' +
-            '    background: #f0f3f4;\n' +
-            '    padding: 10px;\n' +
+            '.wrapper {\n' +
+            '    margin: 0 auto;\n' +
+            '}\n' +
+            '\n' +
+            '.table {\n' +
+            '    margin: 0 0 40px 0;\n' +
+            '    width: 100%;\n' +
+            '    display: table;\n' +
+            '}\n' +
+            '@media screen and (max-width: 580px) {\n' +
+            '    .table {\n' +
+            '        display: block;\n' +
+            '    }\n' +
+            '}\n' +
+            '\n' +
+            '.row {\n' +
+            '    display: table-row;\n' +
+            '    background: #f6f6f6;\n' +
+            '}\n' +
+            '.row:nth-of-type(odd) {\n' +
+            '    background: #e9e9e9;\n' +
+            '}\n' +
+            '.row.header {\n' +
+            '    font-weight: 900;\n' +
+            '    color: #ffffff;\n' +
+            '    background: #ea6153;\n' +
+            '}\n' +
+            '.row.green {\n' +
+            '    background: #27ae60;\n' +
+            '}\n' +
+            '@media screen and (max-width: 580px) {\n' +
+            '    .row {\n' +
+            '        padding: 8px 0;\n' +
+            '        display: block;\n' +
+            '    }\n' +
+            '}\n' +
+            '\n' +
+            '.cell {\n' +
+            '    padding: 6px 12px;\n' +
+            '    display: table-cell;\n' +
+            '}\n' +
+            '@media screen and (max-width: 580px) {\n' +
+            '    .cell {\n' +
+            '        padding: 2px 12px;\n' +
+            '        display: block;\n' +
+            '    }\n' +
+            '}\n' +
+            '.table_heading{\n' +
             '    display: flex;\n' +
             '    justify-content: space-between;\n' +
             '}\n' +
             '\n' +
-            '\n' +
-            '\n' +
-            '\n' +
-            '.invoice-date .date,\n' +
-            '.invoice-from strong,\n' +
-            '.invoice-to strong {\n' +
-            '    font-size: 16px;\n' +
-            '    font-weight: 600\n' +
-            '}\n' +
-            '\n' +
-            '.invoice-date {\n' +
-            '    text-align: right;\n' +
-            '    padding-left: 20px\n' +
-            '}\n' +
-            '\n' +
-            '.invoice-price {\n' +
-            '    background: #f0f3f4;\n' +
-            '    display: table;\n' +
-            '    width: 100%\n' +
-            '}\n' +
-            '\n' +
-            '.invoice-price .invoice-price-left,\n' +
-            '.invoice-price .invoice-price-right {\n' +
-            '    display: table-cell;\n' +
-            '    padding: 20px;\n' +
-            '    font-size: 20px;\n' +
-            '    font-weight: 600;\n' +
-            '    width: 75%;\n' +
-            '    position: relative;\n' +
-            '    vertical-align: middle\n' +
-            '}\n' +
-            'table{' +
-            'width:100%' +
-            '}' +
-            'table th{' +
-            'text-align: left' +
-            '}' +
-            '\n' +
-            '.invoice-price .invoice-price-left .sub-price {\n' +
-            '    display: table-cell;\n' +
-            '    vertical-align: middle;\n' +
-            '    padding: 0 20px\n' +
-            '}\n' +
-            '\n' +
-            '.invoice-price small {\n' +
-            '    font-size: 12px;\n' +
-            '    font-weight: 400;\n' +
-            '    display: block\n' +
-            '}\n' +
-            '\n' +
-            '.invoice-price .invoice-price-row {\n' +
-            '    display: table;\n' +
-            '    float: left\n' +
-            '}\n' +
-            '\n' +
-            '.invoice-price .invoice-price-right {\n' +
-            '    width: 25%;\n' +
-            '    background: #2d353c;\n' +
-            '    color: #fff;\n' +
-            '    font-size: 28px;\n' +
-            '    text-align: right;\n' +
-            '    vertical-align: bottom;\n' +
-            '    font-weight: 300\n' +
-            '}\n' +
-            '\n' +
-            '.invoice-price .invoice-price-right small {\n' +
-            '    display: block;\n' +
-            '    opacity: .6;\n' +
-            '    position: absolute;\n' +
-            '    top: 10px;\n' +
-            '    left: 10px;\n' +
-            '    font-size: 12px\n' +
-            '}\n' +
-            '\n' +
-            '.invoice-footer {\n' +
-            '    border-top: 1px solid #ddd;\n' +
-            '    padding-top: 10px;\n' +
-            '    font-size: 10px\n' +
-            '}\n' +
-            '\n' +
-            '.invoice-note {\n' +
-            '    color: #999;\n' +
-            '    margin-top: 80px;\n' +
-            '    font-size: 85%\n' +
-            '}\n' +
-            '\n' +
-            '.invoice>div:not(.invoice-footer) {\n' +
-            '    margin-bottom: 20px\n' +
-            '}\n' +
-            '\n' +
-            '.btn.btn-white, .btn.btn-white.disabled, .btn.btn-white.disabled:focus, .btn.btn-white.disabled:hover, .btn.btn-white[disabled], .btn.btn-white[disabled]:focus, .btn.btn-white[disabled]:hover {\n' +
-            '    color: #2d353c;\n' +
-            '    background: #fff;\n' +
-            '    border-color: #d9dfe3;\n' +
-            '}\n' +
-            '\n' +
-            '.printButton{\n' +
+            '.prices{\n' +
             '    display: flex;\n' +
-            '    justify-content: center;\n' +
-            '}\n</style>')
+            '}\n' +
+            '\n' +
+            '.format{\n' +
+            '    font-family:\'Segoe UI,Tahoma, Geneva, Verdana, sans-serif\';\n' +
+            '}\n' +
+            '@media print {\n' +
+            '    body {\n' +
+            '        -webkit-print-color-adjust: exact;\n' +
+            '    }\n' +
+            '}\n' +
+            '\n' +
+            '.transaction_info{\n' +
+            '    display: flex;\n' +
+            '    justify-content: space-between;\n' +
+            '    margin-bottom: 10px;\n' +
+            '}\n' +
+            '</style>')
         mywindow.document.write('</head><body >');
         mywindow.document.write(document.getElementById('receipts').innerHTML);
         mywindow.document.write('</body></html>');
@@ -276,6 +228,7 @@ const Receipt = ({
 
         mywindow.print();
         // mywindow.close();
+        cancel()
 
         return true
     }
@@ -290,99 +243,107 @@ const Receipt = ({
                 fullWidth
             >
                 <Box id="receipts" component={Paper}>
-                    <div className="col-md-12">
-                        <div className="invoice">
-                            {/*begin invoice-company*/}
-                            <div className="invoice-company text-inverse f-w-600">
-                                <p><b>Jars Cecullar, Inc</b></p>
-                                <p><b>{user.firstName} {user.lastName}</b></p>
+                    <div className="col-md-12 bodyReceipt">
+                        <div className="table_heading">
+                            <p><b>Jars Cecullar, Inc</b></p>
+                            <p><b>Cashier Assign: </b>{user.firstName} {user.lastName}</p>
+                        </div>
+                        <div className="transaction_info">
+
+                            <div className="from">
+                                <h4 style={{marginBottom: 0}}>From:</h4>
+                                <address className="">
+                                    <strong className="text-inverse">JAR'S CELLULAR PHONES & ACCESSORIES
+                                        HAUS<sup>-2</sup></strong><br/>
+                                    2nd Flr. San Pablo Shopping Mall<br/>
+                                    San Pablo City<br/>
+                                </address>
                             </div>
-                            {/*end invoice-company */}
-                            {/*begin invoice-header */}
-                            <div className="invoice-header">
-                                <div className="invoice-from">
-                                    <small>From:</small>
-                                    <address className="">
-                                        <strong className="text-inverse">JAR'S CELLULAR PHONES & ACCESSORIES
-                                            HAUS<sup>-2</sup></strong><br/>
-                                        2nd Flr. San Pablo Shopping Mall<br/>
-                                        San Pablo City<br/>
-                                    </address>
+                            <div className="to">
+                                <h4 style={{marginBottom: 0}}>To:</h4>
+
+                                <address className="m-t-5 m-b-5">
+                                    <strong className="text-inverse">{customer.name}</strong><br/>
+                                    {customer.address}<br/>
+                                    {customer.city}, {customer.postalCode}<br/>
+                                </address>
+                            </div>
+
+                            <div className="transaction_data">
+                                <h4 style={{marginBottom: 0}}>Transction:</h4>
+                                <div className="date text-inverse m-t-5">{today}</div>
+                                <div className="invoice-detail">
+                                    <b>{code}</b>
+                                    <br/>
                                 </div>
-                                <div className="invoice-to">
-                                    <small>To:</small>
-                                    <address className="m-t-5 m-b-5">
-                                        <strong className="text-inverse">{customer.name}</strong><br/>
-                                        {customer.address}<br/>
-                                        {customer.city}, {customer.postalCode}<br/>
-                                    </address>
-                                </div>
-                                <div className="invoice-date">
-                                    <small>Transaction:</small>
-                                    <div className="date text-inverse m-t-5">{today}</div>
-                                    <div className="invoice-detail">
-                                        <b>{code}</b>
-                                        <br/>
+                            </div>
+
+
+                        </div>
+                        <div className="wrapper">
+
+                            <div className="table">
+
+                                <div className="row header green">
+                                    <div className="cell">
+                                        Product Name
+                                    </div>
+                                    <div className="cell">
+                                        Product Code
+                                    </div>
+                                    <div className="cell">
+                                        Price
+                                    </div>
+                                    <div className="cell">
+                                        Quantity
+                                    </div>
+                                    <div className="cell" style={{textAlign: 'right'}}>
+                                        Total
                                     </div>
                                 </div>
-                            </div>
-                            {/*end invoice-header*/}
-                            {/*begin invoice-content*/}
-                            <div className="invoice-content">
-                                {/*begin table-responsive*/}
-                                <div className="table-responsive">
-                                    <Table size="small">
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell><b>Product Name</b></TableCell>
-                                                <TableCell><b>Product Code</b></TableCell>
-                                                <TableCell><b>Price</b></TableCell>
-                                                <TableCell><b>Quantity</b></TableCell>
-                                                <TableCell align="right"><b>Total</b></TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
 
-                                            {
-                                                items.map((item, id) => <TableRow key={id}>
-                                                        <TableCell align={"left"}>
-                                                            <small>{item.productName}</small><br/>
-                                                        </TableCell>
-                                                        <TableCell align={"left"}>{item.code}</TableCell>
-                                                        <TableCell align={"left"}>₱ {item.price}</TableCell>
-                                                        <TableCell align={"left"}>{item.qty}</TableCell>
-                                                        <TableCell align="right">₱ {item.price * item.qty}</TableCell>
-                                                    </TableRow>
-                                                )
-                                            }
-                                        </TableBody>
-                                    </Table>
-                                </div>
-                                {/*end table-responsive*/}
-                                {/*begin invoice-price*/}
-                                <div className="invoice-price">
-                                    <div className="invoice-price-left">
-                                        <div className="invoice-price-row">
-                                            <div className="sub-price">
-                                                <small>INITIAL AMOUNT</small>
-                                                <span className="text-inverse">₱ {initAmount}</span>
+                                {
+                                    items.map((item, id) =>
+                                        <div key={id} className="row">
+                                            <div className="cell">
+                                                {item.productName}
                                             </div>
-                                            <div className="sub-price">
-                                                <i className="fa fa-plus text-muted"/>
+                                            <div className="cell">
+                                                {item.code}
                                             </div>
-                                            <div className="sub-price">
-                                                <small>DISCOUNT</small>
-                                                <span className="text-inverse">₱ {discount}</span>
+                                            <div className="cell">
+                                                ₱ {item.price}
+                                            </div>
+                                            <div className="cell">
+                                                {item.qty}
+                                            </div>
+                                            <div className="cell" style={{textAlign: 'right'}}>
+                                                ₱ {item.price * item.qty}
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="invoice-price-right">
-                                        <small>TOTAL</small> <span className="f-w-600">₱ {totalPrice}</span>
-                                    </div>
-                                </div>
-                                {/*end invoice-price*/}
+                                    )
+                                }
+
+                            </div>
+                        </div>
+
+                        <div className="prices">
+                            <div className="format" style={{paddingLeft: 50,backgroundColor: '#e9e9e9'}}>
+                                <p>Initial Amount</p>
+                                <h2>₱ {initAmount}</h2>
                             </div>
 
+                            <div className="format" style={{paddingLeft: 50, flex: 1,backgroundColor:'#e9e9e9'}}>
+                                <p>DISCOUNT</p>
+                                <h2>₱ {discount}</h2>
+                            </div>
+
+                            <div className="format" style={{backgroundColor:'#DEDEDE', width:300,textAlign: 'right'}}>
+                                <div style={{textAlign: 'left',marginLeft:20}}>
+                                    <p style={{width: '100%',fontSize:20 }}><b>Total</b></p>
+                                </div>
+                                <h2 style={{marginRight:20}}>₱ {totalPrice}</h2>
+                            </div>
 
                         </div>
                     </div>

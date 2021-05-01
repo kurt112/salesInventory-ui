@@ -85,7 +85,7 @@ const FindUser = (
                         <TextField
                             autoFocus
                             margin="dense"
-                            label="Enter Supplier Email"
+                            label="Enter User Email"
                             type="text"
                             fullWidth
                             variant="outlined"

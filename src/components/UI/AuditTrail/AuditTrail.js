@@ -20,7 +20,7 @@ export const AuditTrail = () => {
             const temp = []
             await baseUrlWithAuth.get(auditTrailList).then((audits) => {
                 audits.data.map(audit =>
-                    temp.push(insert(audit.id, `${audit.User.lastName} ${audit.User.firstName}`, audit.action, audit.Store.name, audit.createdAt, audit.value))
+                    temp.push(insert(audit.id, `${audit.User.lastName} ${audit.User.firstName}`, audit.action, audit.Store.location, audit.createdAt, audit.value))
                 )
             })
             setData(...data, temp)

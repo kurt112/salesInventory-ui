@@ -33,7 +33,6 @@ const style = makeStyles(() => ({
         flex: 1,
         overflowY: 'auto',
         marginBottom: 10,
-        maxHeight: '70%'
     },
     product: {
         display: 'flex',

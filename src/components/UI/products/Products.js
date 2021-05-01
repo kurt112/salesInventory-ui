@@ -19,7 +19,7 @@ import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import UpdateProduct from "./UpdateProduct";
 
-export const Products = () => {
+export const Products = ({user}) => {
     const classes = style()
 
     // for dialog
@@ -37,14 +37,13 @@ export const Products = () => {
     const [stores, setStores] = useState([])
     const [suppliers, setSuppliers] = useState([])
     const [images, setImages] = useState([])
-    const [branch, setBranch] = useState('0')
     const [productType, setProductType] = useState([])
     const [productStatus, setProductStatus] = useState('Available')
-
+    const [branch, setBranch] = useState(user.StoreId)
+    const role = user.role
     useEffect(() => {
-
         const data = async () => {
-            await changeBranch('0')
+            await changeBranch()
 
             await baseUrlWithAuth.get(storeList).then(e => {
                 setStores(e.data)
@@ -65,7 +64,7 @@ export const Products = () => {
         data().then(ignored => {
         })
 
-    }, [])
+    }, [branch])
 
     useEffect(() => {
         setLoading(true)
@@ -74,7 +73,7 @@ export const Products = () => {
         }).catch(ignored => {
             setLoading(false)
         })
-    }, [branch, productStatus])
+    }, [productStatus])
 
 
     const insertImage = () => {
@@ -153,27 +152,34 @@ export const Products = () => {
         <Fragment>
             {/*Pop up*/}
 
-            <ProductRegister images={images}
-                             stores={stores}
-                             suppliers={suppliers}
-                             dialog={registerDialog}
-                             closeDialog={() => setRegisterDialog(false)}
-                             reload={Reload}
-                             type={productType}
+            <ProductRegister
+                branch={branch}
+                role={role}
+                images={images}
+                stores={stores}
+                suppliers={suppliers}
+                dialog={registerDialog}
+                closeDialog={() => setRegisterDialog(false)}
+                reload={Reload}
+                type={productType}
             />
 
-            <UpdateProduct images={images}
-                           stores={stores}
-                           suppliers={suppliers}
-                           dialog={updateDialog}
-                           closeDialog={() => setUpdateDialog(false)}
-                           reload={Reload}
-                           type={productType}
+            <UpdateProduct
+                branch={branch}
+                role={role}
+                images={images}
+                stores={stores}
+                suppliers={suppliers}
+                dialog={updateDialog}
+                closeDialog={() => setUpdateDialog(false)}
+                reload={Reload}
+                type={productType}
             />
 
             <ProductPhoto insertPicture={insertImage} dialog={photoUpload} closeDialog={() => setPhotoUpload(false)}/>
 
             <DeleteProduct
+                branch={branch}
                 dialog={deleteDialog}
                 closeDialog={() => setDeleteDialog(false)}
                 deleteProduct={deleteProduct}
@@ -255,7 +261,7 @@ export const Products = () => {
                                         name: 'Status',
                                         id: 'Status',
                                     }}
-                                    onChange={(event) => setBranch(event.target.value)}
+                                    onChange={(e) => role === 3 ? setBranch(e.target.value) : null}
                                 >
                                     <option value='0'>All</option>
                                     {
