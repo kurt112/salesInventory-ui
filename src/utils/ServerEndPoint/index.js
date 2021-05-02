@@ -1,5 +1,5 @@
 export const
-    serverEndpoint = 'http://localhost:3001',
+    serverEndpoint = 'https://ue-sales-inventory-server.herokuapp.com',
 
     // Auth
     login = 'login',
