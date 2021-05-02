@@ -59,6 +59,9 @@ export const
 
     // dashboard
     dashBoardData = 'dashboard/data',
+    dashBoardTodayAudit = 'dashboard/audit',
+    dashBoardTodayTransaction = 'dashboard/transaction',
+    dashBoardTopTenSales = 'dashboard/topTenSales',
 
     // setting
     InsertProductType  = 'setting/insertProductType',
