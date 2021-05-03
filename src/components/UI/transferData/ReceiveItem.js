@@ -10,20 +10,18 @@ import {
 import {useState} from "react";
 import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {
-    storeFind
+    ReceiveTransfer,
 } from "../../../utils/ServerEndPoint";
 import Response from "../../../utils/Response/Response";
 
 
-const FindStore = (
+const ReceiveItem = (
     {
         closeDialog,
         dialog,
-        updateStore,
-        updateClose,
-        setStore,
-        branch
+        getData
     }) => {
+
 
     const [code, setCode] = useState('')
 
@@ -38,25 +36,9 @@ const FindStore = (
     const register = async (event) => {
         event.preventDefault()
 
-        await baseUrlWithAuth.post(storeFind, {code}).then(e => {
-            setError(false)
-            if (updateStore === undefined) {
-                if(parseInt(branch) === 0){
-                    alert("Please Select Specific Store")
-                    return
-                }
-
-                if(parseInt(branch) === e.data[0].id){
-                    alert("Can't Transfer With The Same Store")
-                    return
-                }
-                setStore(e.data[0])
-
-            } else {
-                updateStore(e.data[0])
-            }
-
-            closeDialog(false)
+        const data = {code}
+        await baseUrlWithAuth.post(ReceiveTransfer, data).then(ignored => {
+            getData()
         }).catch(error => {
             const response = error.response.data
             setErrorMessage(response.message)
@@ -64,31 +46,26 @@ const FindStore = (
             setError(true)
         })
 
-    }
 
-    const cancel = () => {
-        updateClose(false)
-        closeDialog(false)
     }
 
     return <Dialog
         open={dialog}
-        onClose={cancel}
-        aria-labelledby="StoreFind"
+        onClose={closeDialog}
+        aria-labelledby="add-student"
         maxWidth={"md"}
         fullWidth
     >
-        <form noValidate={false} onSubmit={register}>
+        <form onSubmit={register}>
 
-            <DialogTitle>Find Store Branch</DialogTitle>
+            <DialogTitle id="add-student">Find Transaction Code</DialogTitle>
             <DialogContent>
-
 
                 <Response showError={error}
                           errorTitle={errorTitle}
                           errorMessage={errorMessage}
                           showSnackBar={show}
-                          successMessage={"Store Find Success"}
+                          successMessage={"Product Find Success"}
                           closeSnackBar={() => setShow(false)}
                 />
 
@@ -100,7 +77,7 @@ const FindStore = (
                         <TextField
                             autoFocus
                             margin="dense"
-                            label="Enter Store Code"
+                            label="Transaction Code"
                             type="text"
                             fullWidth
                             variant="outlined"
@@ -114,9 +91,9 @@ const FindStore = (
             <DialogActions>
 
                 <Button type={"submit"} color='primary' onClick={register}>
-                    Next
+                    Receive
                 </Button>
-                <Button onClick={cancel} color='secondary'>
+                <Button onClick={closeDialog} color='secondary'>
                     Cancel
                 </Button>
             </DialogActions>
@@ -125,4 +102,4 @@ const FindStore = (
 }
 
 
-export default FindStore
+export default ReceiveItem

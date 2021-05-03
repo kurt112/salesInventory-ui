@@ -119,9 +119,7 @@ export const Products = ({user}) => {
                 status: productStatus
             }
         }).then((products) => {
-            products.data.map(product =>
-                temp.push(insert(product.code, product.brand, product.name, product.ProductType.name, product.price, product.Supplier.name, product.Store.location, product.status))
-            )
+            products.data.map(product => temp.push(insert(product.code, product.brand, product.name, product.ProductType.name, product.price, product.Supplier.name, product.Store.location, product.status,product.id)))
         }).catch(e => {
             console.log(e)
         })
@@ -186,6 +184,8 @@ export const Products = ({user}) => {
             />
 
             <TransferProduct
+                userId={user.id}
+                branch={branch}
                 data={data}
                 transfer={Reload}
                 dialog={transferDialog}

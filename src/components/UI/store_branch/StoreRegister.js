@@ -11,7 +11,7 @@ import {useState} from "react";
 import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {storeInsert} from "../../../utils/ServerEndPoint";
 import Response from "../../../utils/Response/Response";
-import UniqueWord from "../../../utils/uniqueWord/UniqueWord";
+import {adjectives, animals, colors, uniqueNamesGenerator} from "unique-names-generator";
 
 
 const StoreRegister = (
@@ -35,6 +35,7 @@ const StoreRegister = (
     const [errorTitle, setErrorTitle] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
 
+
     const close = () => {
         setShow(false)
     }
@@ -42,6 +43,12 @@ const StoreRegister = (
 
     const register = (event) => {
 
+        const code = uniqueNamesGenerator({
+            dictionaries: [adjectives, colors, animals],
+            separator: '-',
+            length: 3,
+            style: 'lowerCase'
+        })
 
         event.preventDefault()
 
@@ -49,14 +56,13 @@ const StoreRegister = (
             alert("Please enter store name")
             return
         }
-
         const data = {
             location,
-            code: UniqueWord,
+            code,
             email: email,
-            postalCode: postalCode.length ===0? 1: postalCode,
-            mobile_no: mobileNo.trim().length===0? '': mobileNo,
-            tel_no: telNo.trim().length === 0? '': telNo
+            postalCode: postalCode.length === 0 ? 1 : postalCode,
+            mobile_no: mobileNo.trim().length === 0 ? '' : mobileNo,
+            tel_no: telNo.trim().length === 0 ? '' : telNo
         }
         baseUrlWithAuth.post(storeInsert, data).then(ignored => {
             Reload()
@@ -115,56 +121,56 @@ const StoreRegister = (
 
                     <Grid item md={4} xs={12}>
                         <TextField
-                                   margin="dense"
-                                   id="store-email"
-                                   label="Store Email"
-                                   type="email"
-                                   fullWidth
-                                   variant="outlined"
-                                   name='store-email'
-                                   value={email}
-                                   onChange={(e) => setEmail(e.target.value)}
+                            margin="dense"
+                            id="store-email"
+                            label="Store Email"
+                            type="email"
+                            fullWidth
+                            variant="outlined"
+                            name='store-email'
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </Grid>
 
                     <Grid item md={4} xs={12}>
                         <TextField
-                                   margin="dense"
-                                   label="Postal Code"
-                                   type="text"
-                                   fullWidth
-                                   variant="outlined"
-                                   name='postal'
-                                   value={postalCode}
-                                   onChange={e => setPostalCode(e.target.value)}
+                            margin="dense"
+                            label="Postal Code"
+                            type="text"
+                            fullWidth
+                            variant="outlined"
+                            name='postal'
+                            value={postalCode}
+                            onChange={e => setPostalCode(e.target.value)}
                         />
                     </Grid>
 
                     <Grid item md={6} xs={12}>
                         <TextField
-                                   margin="dense"
-                                   id="mobile-no"
-                                   label="Mobile No."
-                                   type="text"
-                                   fullWidth
-                                   variant="outlined"
-                                   name='mobile-no'
-                                   value={mobileNo}
-                                   onChange={e => setMobileNo(e.target.value)}
+                            margin="dense"
+                            id="mobile-no"
+                            label="Mobile No."
+                            type="text"
+                            fullWidth
+                            variant="outlined"
+                            name='mobile-no'
+                            value={mobileNo}
+                            onChange={e => setMobileNo(e.target.value)}
                         />
                     </Grid>
 
                     <Grid item md={6} xs={12}>
                         <TextField
-                                   margin="dense"
-                                   id="telNo"
-                                   label="Telephone No."
-                                   type="text"
-                                   fullWidth
-                                   variant="outlined"
-                                   name='telNo'
-                                   value={telNo}
-                                   onChange={e => setTelNo(e.target.value)}
+                            margin="dense"
+                            id="telNo"
+                            label="Telephone No."
+                            type="text"
+                            fullWidth
+                            variant="outlined"
+                            name='telNo'
+                            value={telNo}
+                            onChange={e => setTelNo(e.target.value)}
                         />
                     </Grid>
 

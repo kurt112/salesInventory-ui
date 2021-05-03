@@ -3,7 +3,6 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle, FormControl,
     Grid, InputLabel, Select,
     TextField
@@ -38,7 +37,6 @@ const ProductRegister = (
     const [name, setName] = useState('')
     const [productTypeId,setProductTypeId] = useState()
     const [price, setPrice] = useState(1)
-    const [qty, setQty] = useState(1)
     const [supplier, setSupplier] = useState(null)
     const [store, setStore] = useState(null)
     const [photo, setPhoto] = useState(null)
@@ -305,7 +303,7 @@ const ProductRegister = (
                                                 value={store}
                                                 size={"small"}
                                                 options={stores}
-                                                getOptionLabel={(option) => option.name + ' ' + option.state}
+                                                getOptionLabel={(option) => option.location}
                                                 getOptionSelected={(option, value) => option.id === value.id}
                                                 onChange={(event, value) => value === null ? setStore() : setStore(value)}
                                                 renderInput={(params) =>

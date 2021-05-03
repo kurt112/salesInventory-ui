@@ -34,6 +34,6 @@ export const ProductTable = [
     }
 ];
 
-export function InsertProduct(code,brand,productName,type, amount, supplier, store,status) {
-    return {code,brand,productName,type, amount, supplier, store,status}
+export function InsertProduct(code,brand,productName,type, amount, supplier, store,status,id) {
+    return {code,brand,productName,type, amount, supplier, store,status,id}
 }

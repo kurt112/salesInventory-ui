@@ -69,7 +69,14 @@ export const
     SetCriticalStock = 'setting/setCriticalStock',
     GetCriticalStock = 'setting/getCriticalStock',
     ListProductType = 'setting/productTypeList',
-    getCriticalStockProduct = 'setting/getCriticalStockProduct'
+    getCriticalStockProduct = 'setting/getCriticalStockProduct',
+
+    // transfer
+    CreateTransfer = 'transfer/product',
+    ReceiveTransfer = 'transfer/receive',
+    OnTheWayTransfer = 'transfer/onTheWay',
+    TransferDelete = 'transfer/delete',
+    ReceiveList = 'transfer/receiveList'
 
 
 

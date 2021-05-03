@@ -103,6 +103,12 @@ const Receipt = ({
             return
         }
 
+
+        if(tempDiscount <=0){
+            alert("Make Sure Discount Is Greater Than Zero")
+            return
+        }
+
         setDiscount(tempDiscount)
 
     }
