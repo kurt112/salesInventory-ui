@@ -137,7 +137,7 @@ const SupplierRegister = (
                     <Grid item md={8} xs={12}>
                         <TextField
                                    margin="dense"
-                                   label="Home Address"
+                                   label="Company Address"
                                    type="text"
                                    fullWidth
                                    variant="outlined"
@@ -149,12 +149,10 @@ const SupplierRegister = (
                     <Grid item md={2} xs={12}>
                         <TextField
                                    margin="dense"
-                                   id="city"
                                    label="City"
                                    type="text"
                                    fullWidth
                                    variant="outlined"
-                                   name='city'
                                    value={city}
                                    onChange={(e) => setCity(e.target.value)}
                         />
@@ -164,12 +162,10 @@ const SupplierRegister = (
                     <Grid item md={2} xs={12}>
                         <TextField
                                    margin="dense"
-                                   id="postal"
-                                   label="postal code"
+                                   label="Postal Code"
                                    type="text"
                                    fullWidth
                                    variant="outlined"
-                                   name='postal'
                                    value={postalCode}
                                    onChange={e => setPostalCode(e.target.value)}
                         />
@@ -178,12 +174,10 @@ const SupplierRegister = (
                     <Grid item md={6} xs={12}>
                         <TextField
                                    margin="dense"
-                                   id="mobile-no"
-                                   label="Mobile No."
+                                   label="Mobile Number"
                                    type="text"
                                    fullWidth
                                    variant="outlined"
-                                   name='mobile-no'
                                    value={mobileNo}
                                    onChange={e => setMobileNo(e.target.value)}
                         />
@@ -192,12 +186,10 @@ const SupplierRegister = (
                     <Grid item md={6} xs={12}>
                         <TextField
                                    margin="dense"
-                                   id="telNo"
-                                   label="Telephone No."
+                                   label="Telephone Number"
                                    type="text"
                                    fullWidth
                                    variant="outlined"
-                                   name='telNo'
                                    value={telNo}
                                    onChange={e => setTelNo(e.target.value)}
                         />

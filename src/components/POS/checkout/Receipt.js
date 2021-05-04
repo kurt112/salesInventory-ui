@@ -20,7 +20,10 @@ const Receipt = ({
                      item,
                      setItem,
                      posOn,
-                     transaction
+                     transaction,
+                     setPrice,
+                     setCheckOutDialog,
+                     getData
                  }) => {
 
     const [today, setToday] = useState('')
@@ -128,14 +131,15 @@ const Receipt = ({
             await baseUrlWithAuth.post(transactionInsert, data).then(ignored => {
                 alert("Transaction Save")
                 setValid(false)
-
+                setItem([])
+                getData()
+                setPrice(0)
             }).catch(error => {
                 console.log(error)
             })
             return
         }
 
-        setItem([])
     }
 
 
@@ -236,7 +240,7 @@ const Receipt = ({
         // mywindow.close();
         cancel()
 
-        return true
+        setCheckOutDialog(false)
     }
 
     return (

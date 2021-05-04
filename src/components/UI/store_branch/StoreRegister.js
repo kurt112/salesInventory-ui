@@ -123,7 +123,7 @@ const StoreRegister = (
                         <TextField
                             margin="dense"
                             id="store-email"
-                            label="Store Email"
+                            label="Email"
                             type="email"
                             fullWidth
                             variant="outlined"

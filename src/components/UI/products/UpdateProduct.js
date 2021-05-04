@@ -318,7 +318,7 @@ const ProductRegister = (
                                     </Grid>:null
                                 }
 
-                                <Grid item md={4} xs={12}>
+                                <Grid item md={6} xs={12}>
                                     <FormControl variant="outlined" margin='dense' fullWidth>
                                         <Autocomplete
                                             size={"small"}
@@ -338,7 +338,7 @@ const ProductRegister = (
                                     </FormControl>
                                 </Grid>
 
-                                <Grid item md={role ===3? 4: 12} xs={12}>
+                                <Grid item md={6} xs={12}>
                                     <TextField
                                         error={productCodeError}
                                         helperText={productCodeErrorMessage}

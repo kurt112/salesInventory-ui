@@ -51,14 +51,14 @@ export default function Charts() {
                         </Paper>
                     </Grid>
                     {/* Today Sales */}
-                    <Grid item xs={12} md={4} lg={3}>
+                    <Grid item xs={12} md={4} lg={3} alignItems={"flex-end"} style={{textAlign:'right'}}>
                         <Paper className={fixedHeightPaper} >
                             <TodaySales total={total}/>
                         </Paper>
                     </Grid>
                     {/* Recent Transaction */}
-                    <Grid item xs={12}>
-                        <Paper className={classes.paper}>
+                    <Grid item xs={12} >
+                        <Paper className={classes.paper} >
                             <RecentTransaction setTotal={setTotal}/>
                         </Paper>
                     </Grid>

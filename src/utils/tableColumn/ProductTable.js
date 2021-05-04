@@ -1,7 +1,7 @@
 export const ProductTable = [
     {
       name:"code",
-      label: "Item Code"
+      label: "Product Code"
     },
     {
         name: "brand",
@@ -26,7 +26,7 @@ export const ProductTable = [
     },
     {
         name: "store",
-        label: "Branch"
+        label: "Branch Name"
     },
     {
         name: "status",

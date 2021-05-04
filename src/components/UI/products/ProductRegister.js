@@ -323,7 +323,7 @@ const ProductRegister = (
                     <Grid item md={role === 3? 4: 6} xs={12}>
                         <TextField
                             margin="dense"
-                            label="QTY"
+                            label="Quantity"
                             type="number"
                             fullWidth
                             variant="outlined"

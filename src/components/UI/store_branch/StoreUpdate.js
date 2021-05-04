@@ -135,7 +135,7 @@ const StoreUpdate = (
                                 <Grid item md={4} xs={12}>
                                     <TextField
                                         margin="dense"
-                                        label="Store Email"
+                                        label="Email"
                                         type="email"
                                         fullWidth
                                         variant="outlined"

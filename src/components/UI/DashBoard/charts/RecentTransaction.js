@@ -45,7 +45,7 @@ export default function RecentTransaction({setTotal}) {
                 <TableHead>
                     <TableRow>
                         <TableCell>Date</TableCell>
-                        <TableCell>Transaction ID</TableCell>
+                        <TableCell>Transaction Code</TableCell>
                         <TableCell>Branch</TableCell>
                         <TableCell>Assign User</TableCell>
                         <TableCell align="right">Value</TableCell>

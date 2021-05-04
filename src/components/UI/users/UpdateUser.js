@@ -80,7 +80,7 @@ const UpdateUser = (
         RemoveFormError()
         let error = false
 
-        if (password !== reTypePassword || reTypePassword !== password) {
+        if (password !== reTypePassword) {
             CreateError(setPasswordReError, setPasswordReErrorMessage, 'Password Do Not Match')
             CreateError(setPasswordError, setPasswordErrorMessage, 'Password Do Not Match')
 
@@ -303,7 +303,7 @@ const UpdateUser = (
                                             renderInput={(params) =>
                                                 <TextField error={storeError} helperText={storeErrorMessage}
                                                            required {...params}
-                                                           label="Store Branch"
+                                                           label="Branch Name"
                                                            variant="outlined"/>}
                                         />
                                     </FormControl>

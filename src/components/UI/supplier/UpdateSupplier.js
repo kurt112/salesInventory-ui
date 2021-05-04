@@ -132,12 +132,10 @@ const UpdateSupplier = (
                                 <Grid item md={6} xs={12}>
                                     <TextField autoFocus
                                                margin="dense"
-                                               id="supplier-name"
                                                label="Supplier Name"
                                                type="text"
                                                fullWidth
                                                variant="outlined"
-                                               name='supplier-name'
                                                value={name}
                                                onChange={(e) => setName(e.target.value)}
                                     />
@@ -147,12 +145,10 @@ const UpdateSupplier = (
                                 <Grid item md={6} xs={12}>
                                     <TextField
                                         margin="dense"
-                                        id="supplier-email"
                                         label="Supplier Email"
                                         type="email"
                                         fullWidth
                                         variant="outlined"
-                                        name='supplier-email'
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                     />
@@ -161,12 +157,10 @@ const UpdateSupplier = (
                                 <Grid item md={8} xs={12}>
                                     <TextField
                                         margin="dense"
-                                        id="address"
-                                        label="Home Address"
+                                        label="Company Address"
                                         type="text"
                                         fullWidth
                                         variant="outlined"
-                                        name='address'
                                         value={address}
                                         onChange={(e) => setAddress(e.target.value)}
                                     />
@@ -175,12 +169,10 @@ const UpdateSupplier = (
                                 <Grid item md={2} xs={12}>
                                     <TextField
                                         margin="dense"
-                                        id="city"
                                         label="City"
                                         type="text"
                                         fullWidth
                                         variant="outlined"
-                                        name='city'
                                         value={city}
                                         onChange={(e) => setCity(e.target.value)}
                                     />
@@ -190,12 +182,10 @@ const UpdateSupplier = (
                                 <Grid item md={2} xs={12}>
                                     <TextField
                                         margin="dense"
-                                        id="postal"
                                         label="postal code"
                                         type="text"
                                         fullWidth
                                         variant="outlined"
-                                        name='postal'
                                         value={postalCode}
                                         onChange={e => setPostalCode(e.target.value)}
                                     />
@@ -204,12 +194,10 @@ const UpdateSupplier = (
                                 <Grid item md={6} xs={12}>
                                     <TextField
                                         margin="dense"
-                                        id="mobile-no"
-                                        label="Mobile No."
+                                        label="Mobile Number"
                                         type="text"
                                         fullWidth
                                         variant="outlined"
-                                        name='mobile-no'
                                         value={mobileNo}
                                         onChange={e => setMobileNo(e.target.value)}
                                     />
@@ -219,7 +207,7 @@ const UpdateSupplier = (
                                     <TextField
                                         margin="dense"
                                         id="telNo"
-                                        label="Telephone No."
+                                        label="Telephone Number"
                                         type="text"
                                         fullWidth
                                         variant="outlined"

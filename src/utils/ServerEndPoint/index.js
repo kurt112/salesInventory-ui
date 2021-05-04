@@ -22,6 +22,7 @@ export const
     productTransfer = 'product/transfer',
     productFind = 'product/find',
     productDeleteImage = 'product/deleteImage',
+    productFindById = 'product/findById',
 
     // stores
     storeList = 'store/list',
