@@ -35,6 +35,7 @@ export const
     transactionList = 'transaction/list',
     transactionInsert = 'transaction/insert',
     transactionFind = 'transaction/find',
+    transactionReturnItem = 'transaction/returnItem',
 
     // Sales
     salesList = 'sales/list',
