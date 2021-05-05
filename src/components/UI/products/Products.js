@@ -143,7 +143,7 @@ export const Products = ({user}) => {
 
 
     const Reload = async () => {
-        await changeBranch(branch)
+        await changeBranch().then(ignored =>{})
     }
 
 
