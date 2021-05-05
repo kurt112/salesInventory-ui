@@ -35,10 +35,12 @@ const ReceiveItem = (
 
     const register = async (event) => {
         event.preventDefault()
-
         const data = {code}
         await baseUrlWithAuth.post(ReceiveTransfer, data).then(ignored => {
             getData()
+            setError(false)
+            setShow(true)
+            setCode('')
         }).catch(error => {
             const response = error.response.data
             setErrorMessage(response.message)
@@ -58,14 +60,14 @@ const ReceiveItem = (
     >
         <form onSubmit={register}>
 
-            <DialogTitle id="add-student">Find Transaction Code</DialogTitle>
+            <DialogTitle id="add-student">Find Transfer Code</DialogTitle>
             <DialogContent>
 
                 <Response showError={error}
                           errorTitle={errorTitle}
                           errorMessage={errorMessage}
                           showSnackBar={show}
-                          successMessage={"Product Find Success"}
+                          successMessage={"Transfer Success"}
                           closeSnackBar={() => setShow(false)}
                 />
 

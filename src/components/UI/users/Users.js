@@ -16,7 +16,7 @@ import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled'
 import UpdateIcon from '@material-ui/icons/Update'
 import UpdateUser from "./UpdateUser";
 
-export const Users = () => {
+export const Users = ({user}) => {
     const classes = style()
 
     const [dialog, setDialog] = useState(false);
@@ -54,8 +54,8 @@ export const Users = () => {
     return (
         <Fragment>
             <DeleteUser Reload={Reload} dialog={deleteUserDialog} closeDialog={() => setDeleteUserDialog(false)}/>
-            <UserRegister stores={stores} dialog={dialog} closeDialog={() => setDialog(false)}  Reload={Reload}/>
-            <UpdateUser stores={stores} dialog={updateUserDialog} closeDialog={() => setUpdateUserDialog(false)}  Reload={Reload}/>
+            <UserRegister user={user} stores={stores} dialog={dialog} closeDialog={() => setDialog(false)}  Reload={Reload}/>
+            <UpdateUser user ={user} stores={stores} dialog={updateUserDialog} closeDialog={() => setUpdateUserDialog(false)}  Reload={Reload}/>
 
 
             <Grid component="main" className={classes.root}>

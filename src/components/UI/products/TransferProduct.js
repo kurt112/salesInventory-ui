@@ -171,7 +171,6 @@ const TransferProduct = (
         }
 
         await baseUrlWithAuth.post(CreateTransfer, data).then(e => {
-            alert('asdf')
             setRight([])
             alert('Transfer Product Created Code: ' + code)
         }).catch(error => {

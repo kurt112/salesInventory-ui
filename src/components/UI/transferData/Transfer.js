@@ -33,6 +33,7 @@ const Transfered = () => {
                 temp.push(insert(receive.code, receive.from.location,receive.to.location,receive.arrangeBy.email,receive.createdAt)))
         })
         setData(temp)
+        setLoading(false)
 
     }
 
