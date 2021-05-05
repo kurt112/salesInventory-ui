@@ -63,7 +63,7 @@ export const Products = ({user}) => {
         })
         data().then(ignored => {
         })
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [branch])
 
     useEffect(() => {
@@ -73,6 +73,7 @@ export const Products = ({user}) => {
         }).catch(ignored => {
             setLoading(false)
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productStatus])
 
 

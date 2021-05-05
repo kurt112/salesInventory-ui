@@ -1,7 +1,7 @@
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField} from "@material-ui/core";
 import Response from "../../../utils/Response/Response";
 import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
-import {transactionFind, transactionReturnItem} from "../../../utils/ServerEndPoint";
+import {transactionReturnItem} from "../../../utils/ServerEndPoint";
 import {useEffect, useState} from "react";
 import FindTransaction from "./FindTransaction";
 
@@ -21,9 +21,9 @@ const ReturnItem = ({
 
     // for snack bar
     const [showing, setShowing] = useState(false)
-    const [error, setError] = useState(false)
-    const [errorTitle, setErrorTitle] = useState('')
-    const [errorMessage, setErrorMessage] = useState('')
+    const [error] = useState(false)
+    const [errorTitle] = useState('')
+    const [errorMessage] = useState('')
 
     const register = async (event) => {
 

@@ -109,7 +109,7 @@ export const Sales = ({user}) => {
                 productMap.set(data[i].productCode, data[i])
             }
 
-            await map.set(data[i].productCode, map.get(data[i].productCode) + 1)
+             map.set(data[i].productCode, map.get(data[i].productCode) + 1)
         }
 
         const tempPrint = []

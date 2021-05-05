@@ -14,7 +14,6 @@ import Divider from '@material-ui/core/Divider';
 import {useEffect, useState, Fragment} from "react";
 import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {CreateTransfer} from "../../../utils/ServerEndPoint";
-import Response from "../../../utils/Response/Response";
 import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
 
 import StoreFind from "../store_branch/StoreFind";
@@ -170,7 +169,7 @@ const TransferProduct = (
             products: right
         }
 
-        await baseUrlWithAuth.post(CreateTransfer, data).then(e => {
+        await baseUrlWithAuth.post(CreateTransfer, data).then(ignored => {
             setRight([])
             alert('Transfer Product Created Code: ' + code)
         }).catch(error => {
@@ -182,6 +181,7 @@ const TransferProduct = (
         setLeft(data)
         setTempLeft(data)
         setFindDialog(dialog)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dialog])
     return <Fragment>
         {

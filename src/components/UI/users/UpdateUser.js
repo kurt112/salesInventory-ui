@@ -294,7 +294,7 @@ const UpdateUser = (
                                 </Grid>
 
                                 {
-                                    user.role === 3? <Grid item md={user.role ===3?6:12} xs={12}>
+                                    user.role === 3? <Grid item md={6} xs={12}>
                                         <FormControl variant="outlined" margin='dense' fullWidth>
                                             <Autocomplete
                                                 size={"small"}

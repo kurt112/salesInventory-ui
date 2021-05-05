@@ -7,7 +7,6 @@ import Chart from './ChartSales';
 import TodaySales from './TodaySales';
 import RecentTransaction from "./RecentTransaction";
 import RecentAuditTrail from "./AuditTrail";
-import {months, MonthsWord} from "../../../../utils/date/ConvertMonthWord";
 
 
 const useStyles = makeStyles((theme) => ({
