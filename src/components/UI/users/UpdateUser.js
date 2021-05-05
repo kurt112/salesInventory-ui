@@ -24,7 +24,8 @@ const UpdateUser = (
         closeDialog,
         dialog,
         Reload,
-        stores
+        stores,
+        user
     }) => {
 
 
@@ -126,7 +127,7 @@ const UpdateUser = (
                 firstName,
                 lastName,
                 role,
-                StoreId: storeId.id,
+                StoreId: user.role === 3?parseInt(storeId.id): user.StoreId,
                 status: 1
             }
 
@@ -268,7 +269,7 @@ const UpdateUser = (
                                     />
                                 </Grid>
 
-                                <Grid item md={6} xs={12}>
+                                <Grid item md={user.role === 3? 6: 12} xs={12}>
                                     <FormControl variant="outlined" margin='dense' fullWidth>
                                         <InputLabel
                                             htmlFor="role">{'Role'}</InputLabel>
@@ -285,29 +286,33 @@ const UpdateUser = (
                                         >
                                             <option value='1'>Cashier</option>
                                             <option value='2'>Manager</option>
-                                            <option value='3'>Owner</option>
+                                            {
+                                                user.role === 3? <option value='3'>Owner</option>: null
+                                            }
                                         </Select>
                                     </FormControl>
                                 </Grid>
 
-                                <Grid item md={6} xs={12}>
-                                    <FormControl variant="outlined" margin='dense' fullWidth>
-                                        <Autocomplete
-                                            size={"small"}
-                                            id="combo-box-demo"
-                                            value={storeId}
-                                            options={stores}
-                                            getOptionLabel={(option) => option.location}
-                                            getOptionSelected={(option, value) => option.id === value.id}
-                                            onChange={(event, value) => setStoreId(value !== null ? value : '')}
-                                            renderInput={(params) =>
-                                                <TextField error={storeError} helperText={storeErrorMessage}
-                                                           required {...params}
-                                                           label="Branch Name"
-                                                           variant="outlined"/>}
-                                        />
-                                    </FormControl>
-                                </Grid>
+                                {
+                                    user.role === 3? <Grid item md={user.role ===3?6:12} xs={12}>
+                                        <FormControl variant="outlined" margin='dense' fullWidth>
+                                            <Autocomplete
+                                                size={"small"}
+                                                id="combo-box-demo"
+                                                value={storeId}
+                                                options={stores}
+                                                getOptionLabel={(option) => option.location}
+                                                getOptionSelected={(option, value) => option.id === value.id}
+                                                onChange={(event, value) => setStoreId(value !== null ? value : '')}
+                                                renderInput={(params) =>
+                                                    <TextField error={storeError} helperText={storeErrorMessage}
+                                                               required {...params}
+                                                               label="Branch Name"
+                                                               variant="outlined"/>}
+                                            />
+                                        </FormControl>
+                                    </Grid>:null
+                                }
 
                             </Grid>
                         </DialogContent>

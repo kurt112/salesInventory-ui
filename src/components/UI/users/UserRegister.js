@@ -7,7 +7,7 @@ import {
     Grid, InputLabel, Select,
     TextField
 } from "@material-ui/core"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {userInsert} from "../../../utils/ServerEndPoint";
 import {Autocomplete} from "@material-ui/lab";
@@ -21,7 +21,8 @@ const UserRegister = (
         closeDialog,
         dialog,
         Reload,
-        stores
+        stores,
+        user
     }) => {
 
     // user data
@@ -56,6 +57,12 @@ const UserRegister = (
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('')
     const [passwordReErrorMessage, setPasswordReErrorMessage] = useState('')
     const [storeErrorMessage, setStoreErrorMessage] = useState('')
+
+    useEffect(() => {
+        setStoreId(user.StoreId)
+    }, [user.role])
+
+
     const close = () => {
         setShow(false)
     }
@@ -99,6 +106,7 @@ const UserRegister = (
             CreateError(setEmailError, setEmailErrorMessage, 'Please Insert Email')
         }
         if(storeId.length===0){
+            alert("i am here")
             error = true
             CreateError(setStoreError, setStoreErrorMessage,'Please Select Branch')
         }
@@ -112,6 +120,8 @@ const UserRegister = (
             error = true
             CreateError(setPasswordReError, setPasswordReErrorMessage, 'Please Enter Password')
         }
+
+        alert(error)
 
         if (!error) {
             const data = {
@@ -136,10 +146,11 @@ const UserRegister = (
                 setShow(true)
                 RemoveFormError()
             }).catch(error => {
-                const response = error.response.data
-                setErrorMessage(response.message)
-                setErrorTitle(response.title)
-                setError(true)
+                console.log(error)
+                // const response = error.response.data
+                // setErrorMessage(response.message)
+                // setErrorTitle(response.title)
+                // setError(true)
             })
         }
 
@@ -247,7 +258,7 @@ const UserRegister = (
                         />
                     </Grid>
 
-                    <Grid item md={6} xs={12}>
+                    <Grid item md={user.role ===3?6:12} xs={12}>
                         <FormControl variant="outlined" margin='dense' fullWidth>
                             <InputLabel
                                         htmlFor="role">{'Role'}</InputLabel>
@@ -264,27 +275,31 @@ const UserRegister = (
                             >
                                 <option value='1'>Cashier</option>
                                 <option value='2'>Manager</option>
-                                <option value='3'>Owner</option>
+                                {
+                                    user.role ===3?  <option value='3'>Owner</option>: null
+                                }
                             </Select>
                         </FormControl>
                     </Grid>
 
-                    <Grid item md={6} xs={12}>
-                        <FormControl variant="outlined" margin='dense' fullWidth>
-                            <Autocomplete
-                                size={"small"}
-                                id="combo-box-demo"
-                                options={stores}
-                                getOptionLabel={(option) => option.location}
-                                getOptionSelected={(option, value) => option.id === value.id}
-                                onChange={(event, value) => setStoreId(value!==null?value.id:'')}
-                                renderInput={(params) =>
-                                    <TextField error={storeError} helperText={storeErrorMessage} required {...params}
-                                               label="Branch Name"
-                                               variant="outlined"/>}
-                            />
-                        </FormControl>
-                    </Grid>
+                    {
+                        user.role === 3? <Grid item md={6} xs={12}>
+                            <FormControl variant="outlined" margin='dense' fullWidth>
+                                <Autocomplete
+                                    size={"small"}
+                                    id="combo-box-demo"
+                                    options={stores}
+                                    getOptionLabel={(option) => option.location}
+                                    getOptionSelected={(option, value) => option.id === value.id}
+                                    onChange={(event, value) => setStoreId(value!==null?value.id:'')}
+                                    renderInput={(params) =>
+                                        <TextField error={storeError} helperText={storeErrorMessage} required {...params}
+                                                   label="Branch Name"
+                                                   variant="outlined"/>}
+                                />
+                            </FormControl>
+                        </Grid>: null
+                    }
 
                 </Grid>
             </DialogContent>
