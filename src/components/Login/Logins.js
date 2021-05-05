@@ -10,8 +10,8 @@ import SignLogo from '../../assets/img/logo/SignLogo.jpg'
 import {Avatar} from "@material-ui/core";
 import {useState, Fragment} from "react";
 import {login as loginEndpoint} from "../../utils/ServerEndPoint";
-import ForgotPassword from "./ForgotPassword";
 import {baseUrlNoAuth} from "../../utils/axios/BaseUrl";
+import ResetPassword from "./ResetPassword";
 
 const Login = ({setToken, setUser}) => {
 
@@ -21,7 +21,7 @@ const Login = ({setToken, setUser}) => {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
 
-    const [forgotPassword, setForgotPassword] = useState(false)
+    const [step, setStep] = useState(0)
     
 
     const auth = {
@@ -41,7 +41,7 @@ const Login = ({setToken, setUser}) => {
     }
 
     const forgotPasswordClick = () => {
-        setForgotPassword(true)
+        setStep(1)
     }
 
     const changePassword = (e) => {
@@ -55,7 +55,7 @@ const Login = ({setToken, setUser}) => {
     }
 
     return <Fragment>
-        <ForgotPassword closeDialog={() => setForgotPassword(false)} dialog={forgotPassword}/>
+        <ResetPassword step={step} setStep={setStep}/>
         <Grid container component="main" className={classes.root}>
 
             <CssBaseline/>

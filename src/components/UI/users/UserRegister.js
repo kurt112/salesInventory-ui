@@ -61,6 +61,7 @@ const UserRegister = (
 
     useEffect(() => {
         setStoreId(user.StoreId)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user.role])
 
 
@@ -146,11 +147,10 @@ const UserRegister = (
                 setShow(true)
                 RemoveFormError()
             }).catch(error => {
-                console.log(error)
-                // const response = error.response.data
-                // setErrorMessage(response.message)
-                // setErrorTitle(response.title)
-                // setError(true)
+                const response = error.response.data
+                setErrorMessage(response.message)
+                setErrorTitle(response.title)
+                setError(true)
             })
         }
 

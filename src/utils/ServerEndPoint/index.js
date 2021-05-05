@@ -78,7 +78,12 @@ export const
     ReceiveTransfer = 'transfer/receive',
     OnTheWayTransfer = 'transfer/onTheWay',
     TransferDelete = 'transfer/delete',
-    ReceiveList = 'transfer/receiveList'
+    ReceiveList = 'transfer/receiveList',
+
+    // password reset
+    resetPasswordFindBranch='resetPassword/storeFind',
+    resetPasswordFindUser='resetPassword/userFind',
+    resetPasswordUpdateUserPassword='resetPassword/updatePassword'
 
 
 

@@ -37,6 +37,7 @@ export default function RecentTransaction({setTotal}) {
         }
 
         getData().then(ignored => {})
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     return (
         <Fragment>

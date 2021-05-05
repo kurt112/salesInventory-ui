@@ -31,9 +31,8 @@ const Pos = ({setPosOn, user}) => {
 
     useEffect(() => {
 
-        getData().then(ignored => {
-        })
-
+        getData().then(ignored => {})
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
@@ -80,6 +79,7 @@ const Pos = ({setPosOn, user}) => {
             return e.code === code
         })
 
+
         // if the item code is invalid
         if (find === undefined) {
             alert("Product Code Invalid")
@@ -87,9 +87,14 @@ const Pos = ({setPosOn, user}) => {
         }
 
         // deleting item in left side bar
-        const checkoutItem = [...itemBuy]
-        checkoutItem.splice(index, 1)
-        setItemBuy(checkoutItem)
+        let checkoutItem = [...itemBuy]
+        if(find.qty === 1){
+            checkoutItem.splice(index, 1)
+            setItemBuy(checkoutItem)
+        }else{
+           checkoutItem[index].qty = checkoutItem[index].qty - 1
+        }
+
         const currentTotalPrice = totalPrice - find.price;
         setTotalPrice(currentTotalPrice)
         const currentProduct = [...products]
@@ -98,7 +103,6 @@ const Pos = ({setPosOn, user}) => {
         }).catch(error => {
             console.log(error)
         })
-        console.log(currentProduct)
         setProducts(currentProduct)
 
     }

@@ -26,8 +26,8 @@ const convertDateToWord = (date) => {
     const arr_date = date.split('-')
 
     const months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    // alert(months[arr_date[2]] + ' ' + arr_date[1] + ', ' + arr_date[0])
-    return months[parseInt(arr_date[2], 10)] + ' ' + arr_date[1] + ', ' + arr_date[0]
+
+    return months[parseInt(arr_date[1], 10)] + ' ' + arr_date[2] + ', ' + arr_date[0]
 }
 
 export const Sales = ({user}) => {
@@ -46,8 +46,7 @@ export const Sales = ({user}) => {
 
     useEffect(() => {
 
-        getData().then(ignored => {
-        })
+        getData().then(ignored => {})
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [startDate, endDate, branch])
