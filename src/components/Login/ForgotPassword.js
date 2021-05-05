@@ -8,20 +8,16 @@ import {
     TextField
 } from "@material-ui/core"
 import {useState} from "react";
-import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
-import {
-    CustomerFind
-} from "../../../utils/ServerEndPoint";
-import Response from "../../../utils/Response/Response";
+import Response from "../../utils/Response/Response";
 
 
-const FindCustomer = (
+const FindProduct = (
     {
         closeDialog,
         dialog,
-        print,
-        setCustomer
+
     }) => {
+
 
     const [email, setEmail] = useState('')
 
@@ -36,36 +32,33 @@ const FindCustomer = (
     const register = async (event) => {
         event.preventDefault()
 
-        await baseUrlWithAuth.post(CustomerFind, {email}).then(e => {
-            console.log(e.data)
-            setCustomer(e.data)
-            print()
-        }).catch(error => {
-            const response = error.response.data
-            setErrorMessage(response.message)
-            setErrorTitle(response.title)
-            setError(true)
-        })
+        // await baseUrlWithAuth.post(productFind, {code,branch}).then(e => {
+        //     setCode('')
+        //     setError(false)
+        //     setShow(true)
+        //     closeDialog(false)
+        //     updateProduct(e.data[0])
+        // }).catch(error => {
+        //     const response = error.response.data
+        //     setErrorMessage(response.message)
+        //     setErrorTitle(response.title)
+        //     setError(true)
+        // })
 
     }
 
-    const cancel = () => {
-        // updateClose(false)
-        closeDialog(false)
-    }
 
     return <Dialog
         open={dialog}
-        onClose={cancel}
+        onClose={closeDialog}
         aria-labelledby="add-student"
         maxWidth={"md"}
         fullWidth
     >
         <form onSubmit={register}>
 
-            <DialogTitle id="add-student">Find Customer</DialogTitle>
+            <DialogTitle id="add-student">Forgot Password</DialogTitle>
             <DialogContent>
-
 
                 <Response showError={error}
                           errorTitle={errorTitle}
@@ -83,7 +76,7 @@ const FindCustomer = (
                         <TextField
                             autoFocus
                             margin="dense"
-                            label="Enter Customer Email"
+                            label="Email"
                             type="text"
                             fullWidth
                             variant="outlined"
@@ -97,9 +90,9 @@ const FindCustomer = (
             <DialogActions>
 
                 <Button type={"submit"} color='primary' onClick={register}>
-                    Next
+                    Send
                 </Button>
-                <Button onClick={cancel} color='secondary'>
+                <Button onClick={closeDialog} color='secondary'>
                     Cancel
                 </Button>
             </DialogActions>
@@ -108,4 +101,4 @@ const FindCustomer = (
 }
 
 
-export default FindCustomer
+export default FindProduct

@@ -14,6 +14,7 @@ import {Autocomplete} from "@material-ui/lab";
 import Response from "../../../utils/Response/Response";
 import RemoveError from "../../../utils/FormError/RemoveError";
 import CreateError from "../../../utils/FormError/CreateError";
+import CheckEmail from "../../../utils/FormError/CheckEmail";
 
 
 const UserRegister = (
@@ -101,10 +102,10 @@ const UserRegister = (
 
         }
 
-        if(email.trim().length===0){
+        if (!CheckEmail(email,setEmailError,setEmailErrorMessage, 'PLease Input A Valid Email')) {
             error = true
-            CreateError(setEmailError, setEmailErrorMessage, 'Please Insert Email')
         }
+
         if(storeId.length===0){
             alert("i am here")
             error = true
@@ -121,7 +122,6 @@ const UserRegister = (
             CreateError(setPasswordReError, setPasswordReErrorMessage, 'Please Enter Password')
         }
 
-        alert(error)
 
         if (!error) {
             const data = {

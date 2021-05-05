@@ -345,10 +345,10 @@ const Setting = () => {
                                 </IconButton>
                             </Tooltip>
 
-                            <Tooltip onClick={cancel} title="Cancel" aria-label="cancel">
-                                <IconButton aria-label="cancelEdit"
+                            <Tooltip onClick={cancel} title="Exit" aria-label="Exit">
+                                <IconButton aria-label="Exit"
                                             color={"primary"}>
-                                    <CancelIcon aria-label="cancelEdit"
+                                    <CancelIcon aria-label="Exit"
                                                 fontSize={"large"}
                                                 color={"secondary"}/>
                                 </IconButton>

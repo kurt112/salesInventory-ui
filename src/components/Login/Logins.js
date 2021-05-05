@@ -8,9 +8,10 @@ import Typography from '@material-ui/core/Typography';
 import style from './LoginStyle'
 import SignLogo from '../../assets/img/logo/SignLogo.jpg'
 import {Avatar} from "@material-ui/core";
-import {useState} from "react";
-import {baseUrlNoAuth} from "../../utils/axios/BaseUrl";
+import {useState, Fragment} from "react";
 import {login as loginEndpoint} from "../../utils/ServerEndPoint";
+import ForgotPassword from "./ForgotPassword";
+import {baseUrlNoAuth} from "../../utils/axios/BaseUrl";
 
 const Login = ({setToken, setUser}) => {
 
@@ -19,6 +20,9 @@ const Login = ({setToken, setUser}) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+
+    const [forgotPassword, setForgotPassword] = useState(false)
+    
 
     const auth = {
         username: email,
@@ -36,13 +40,22 @@ const Login = ({setToken, setUser}) => {
         })
     }
 
+    const forgotPasswordClick = () => {
+        setForgotPassword(true)
+    }
+
+    const changePassword = (e) => {
+        setPassword(e)
+    }
+
     const enter = (e) => {
         if (e.code === "Enter") {
             login()
         }
     }
 
-    return (
+    return <Fragment>
+        <ForgotPassword closeDialog={() => setForgotPassword(false)} dialog={forgotPassword}/>
         <Grid container component="main" className={classes.root}>
 
             <CssBaseline/>
@@ -74,13 +87,14 @@ const Login = ({setToken, setUser}) => {
                             label="Email Address"
                             name="email"
                             autoComplete="email"
-
                             autoFocus
+                            inputProps={{ className: classes.input, pattern: "[a-z]{1,15}" }}
                         />
+
                         <TextField
                             onKeyPress={e => enter(e)}
                             value={password}
-                            onChange={e => setPassword(e.target.value)}
+                            onChange={e => changePassword(e.target.value)}
                             variant="outlined"
                             margin="normal"
                             required
@@ -105,16 +119,14 @@ const Login = ({setToken, setUser}) => {
                         >
                             Sign In
                         </Button>
-                        {/*<Grid container>*/}
-                        {/*    <Grid item xs>*/}
-                        {/*        <Grid item>*/}
-                        {/*            <Button color="primary">Forgot Password</Button>*/}
-                        {/*        </Grid>*/}
-                        {/*    </Grid>*/}
-                        {/*    <Grid item>*/}
-                        {/*        <Button color="primary">Sign Up</Button>*/}
-                        {/*    </Grid>*/}
-                        {/*</Grid>*/}
+                        <Grid container>
+                            <Grid item xs>
+                                <Grid item>
+                                    <Button onClick={forgotPasswordClick} color="primary">Forgot Password</Button>
+                                </Grid>
+                            </Grid>
+
+                        </Grid>
                         <Box mt={5}>
                             {/*<Copyright/>*/}
                         </Box>
@@ -122,7 +134,7 @@ const Login = ({setToken, setUser}) => {
                 </div>
             </Grid>
         </Grid>
-    );
+    </Fragment>
 }
 
 
