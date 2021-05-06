@@ -99,8 +99,6 @@ export default function MainUI({setPosOn,user,setUser}) {
                             <Route path={"/settings"}>
                                 <Settings user={user}/>
                             </Route>
-
-
                         </Switch>
                     </Suspense>
                 }

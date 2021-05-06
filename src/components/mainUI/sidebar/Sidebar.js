@@ -31,7 +31,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function Sidebar({setPosOn, open, handleDrawerClose, handleDrawerOpen}) {
+export default function Sidebar({setPosOn,user, open, handleDrawerClose, handleDrawerOpen}) {
 
     const classes = useStyles();
 

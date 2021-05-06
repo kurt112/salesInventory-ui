@@ -1,11 +1,14 @@
 import { useEffect, useState} from "react";
 import style, {TableOptions as options} from "../_style/TableStyle";
 import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
-import {getCriticalStockProduct} from "../../../utils/ServerEndPoint";
+import {getCriticalStockProduct, storeCreateRequest} from "../../../utils/ServerEndPoint";
 import {CriticalStockTable as columns, InsertCriticalStock as insert} from "../../../utils/tableColumn/CriticalStocks";
-import {CircularProgress, Grid, Paper} from "@material-ui/core";
+import {Box, CircularProgress, Grid, Paper, Toolbar, Tooltip} from "@material-ui/core";
 import MUIDataTable from "mui-datatables";
 import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import CloudUploadIcon from '@material-ui/icons/CloudUpload'
+import Button from "@material-ui/core/Button";
 const CriticalStocks = () => {
 
 
@@ -35,11 +38,27 @@ const CriticalStocks = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const requestClick = async () => {
+        await baseUrlWithAuth.post(storeCreateRequest).then(e => {
+            alert("Store Stock Request Is Created")
+        }).catch(ignored => {
+            alert("Store Stock Request Is Already Created")
+        })
+    }
 
     return (
         <Grid component="main" className={classes.root}>
             <Grid item component={Paper} md={12} sm={12} xs={12} className={classes.tableNavbar}>
+                <Toolbar>
+                    <Box className={classes.tableNavbarBox}>
+                        <Button onClick={requestClick} variant={"contained"} color={'primary'} disableElevation>
+                            Request Stock
+                        </Button>
 
+
+
+                    </Box>
+                </Toolbar>
             </Grid>
             <Grid item md={12} component={Paper} className={classes.tableContainerWrapper}>
                 <MUIDataTable

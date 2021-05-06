@@ -30,6 +30,8 @@ export const
     storeFind = 'store/find',
     storeUpdate = 'store/update',
     storeDelete = 'store/delete',
+    storeRequest = 'store/requesting',
+    storeCreateRequest = 'store/createRequest',
 
     // transaction
     transactionList = 'transaction/list',
