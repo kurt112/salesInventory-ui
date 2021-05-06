@@ -51,6 +51,7 @@ export const
     CustomerList = 'customer/list',
     CustomerFind = 'customer/find',
     CustomerInsert = 'customer/insert',
+    CustomerUpdate = 'customer/update',
 
     // upload
     productPhoto = 'upload',
@@ -83,7 +84,13 @@ export const
     // password reset
     resetPasswordFindBranch='resetPassword/storeFind',
     resetPasswordFindUser='resetPassword/userFind',
-    resetPasswordUpdateUserPassword='resetPassword/updatePassword'
+    resetPasswordUpdateUserPassword='resetPassword/updatePassword',
+
+    // supplier receipt
+    supplierReceiptCreate = 'supplierReceipt/create',
+    supplierReceiptDelete = 'supplierReceipt/delete',
+    supplierReceiptList = 'supplierReceipt/list'
+
 
 
 
