@@ -60,6 +60,7 @@ const Setting = () => {
     const settingStyle = useStyles()
 
     const [edit, setEdit] = useState(false)
+
     const [productTypes, setProductTypes] = useState([])
     const [productPhoto, setProductPhoto] = useState([])
     const [storeRequesting, setStoreRequesting] = useState([])
