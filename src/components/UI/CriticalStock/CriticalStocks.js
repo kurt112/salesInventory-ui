@@ -3,11 +3,9 @@ import style, {TableOptions as options} from "../_style/TableStyle";
 import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
 import {getCriticalStockProduct, storeCreateRequest} from "../../../utils/ServerEndPoint";
 import {CriticalStockTable as columns, InsertCriticalStock as insert} from "../../../utils/tableColumn/CriticalStocks";
-import {Box, CircularProgress, Grid, Paper, Toolbar, Tooltip} from "@material-ui/core";
+import {Box, CircularProgress, Grid, Paper, Toolbar} from "@material-ui/core";
 import MUIDataTable from "mui-datatables";
 import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import Button from "@material-ui/core/Button";
 const CriticalStocks = () => {
 
@@ -15,17 +13,20 @@ const CriticalStocks = () => {
     const classes = style()
 
     const [data, setData] = useState([])
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const getData = async () => {
             setLoading(true)
             const temp = []
             await baseUrlWithAuth.get(getCriticalStockProduct).then((stocks) => {
+                console.log(stocks)
                 stocks.data.map(stock => temp.push(insert(stock.product.code,stock.product.name,stock.branch.location)))
             }).catch(error => {
+                setLoading(false)
                 console.log(error)
             })
+            setLoading(false)
             setData(temp)
         }
 
@@ -33,7 +34,6 @@ const CriticalStocks = () => {
         getData().then(ignored => {}).catch(error => {
             console.log(error)
         })
-        setLoading(false)
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

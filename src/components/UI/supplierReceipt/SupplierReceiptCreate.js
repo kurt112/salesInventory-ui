@@ -154,7 +154,7 @@ const ProductRegister = (
                     </Grid>
 
 
-                    <Grid item md={6} xs={12}>
+                    <Grid item md={12} xs={12}>
                         <TextField
                             label={'Description'}
                             margin="dense"
