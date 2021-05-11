@@ -1,10 +1,10 @@
 import style, {TableOptions as options} from '../_style/TableStyle'
-import {Paper, Grid, Box, Toolbar, CircularProgress, Tooltip} from "@material-ui/core";
+import {Paper, Grid, Box, Toolbar, CircularProgress, Tooltip, InputLabel, Select, FormControl} from "@material-ui/core";
 import {TransactionTable as columns, InsertTransaction as insert} from '../../../utils/tableColumn/TransactionTable'
 import MUIDataTable from 'mui-datatables'
 import {Fragment, useEffect, useState} from "react";
 import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
-import {transactionList} from "../../../utils/ServerEndPoint";
+import {storeList, transactionList} from "../../../utils/ServerEndPoint";
 import Typography from "@material-ui/core/Typography";
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import IconButton from "@material-ui/core/IconButton";
@@ -13,8 +13,10 @@ import Receipt from "../../POS/checkout/Receipt";
 import FindTransaction from "./FindTransaction";
 import ReturnItemDialog from "./ReturnItemDialog";
 
-export const Transaction = () => {
+export const Transaction = ({user}) => {
+
     const classes = style()
+    const [stores, setStores] = useState([])
     const [dialog, setDialog] = useState(false)
     const [receiptDialog, setReceiptDialog] = useState(false)
     const [returnItemDialog,setReturnItemDialog] = useState(false)
@@ -22,32 +24,52 @@ export const Transaction = () => {
     const [loading, setLoading] = useState(false)
     const [items, setItems] = useState([])
     const [transaction, setTransaction] = useState()
-    const [user, setUser] = useState()
+    const [assignedUser, setAssignedUser] = useState()
+
+    const [branch, setBranch] = useState(user.StoreId)
+    const role = user.role
+    const changeBranch =  (value) => {
+        setData([])
+        setBranch(value)
+    }
+
 
     useEffect(() => {
+
+
         const temp = []
         const get = async () => {
             setLoading(true)
 
-            await baseUrlWithAuth.get(transactionList).then((transactions) => {
+            await baseUrlWithAuth.get(storeList).then(e => {
+                setStores(e.data)
+            })
+
+
+            await baseUrlWithAuth.get(transactionList, {
+                params: {
+                    branch,
+                }
+            }).then((transactions) => {
                 transactions.data.map(transaction =>
                     temp.push(insert(transaction.code, `${transaction.User.firstName} ${transaction.User.lastName}`, transaction.amount,
                         transaction.discount, `${transaction.Customer.name}`, transaction.Store.location, transaction.createdAt))
                 )
+            }).finally(() => {
+                setLoading(false)
             })
             setData(...data, temp)
-            setLoading(false)
         }
         get().then(ignored => {
         })
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [branch])
 
     const updateTransaction = (transaction) => {
         setItems(transaction.sales)
         setTransaction(transaction)
-        setUser(transaction.transaction.User)
+        setAssignedUser(transaction.transaction.User)
         setReceiptDialog(true)
     }
 
@@ -63,7 +85,7 @@ export const Transaction = () => {
                     <Receipt
 
                         customer={transaction.transaction.Customer}
-                        user={user}
+                        user={assignedUser}
                         transaction={transaction.transaction}
                         item={items}
                         posOn={false}
@@ -90,7 +112,30 @@ export const Transaction = () => {
 
                         </Box>
 
+                        <FormControl style={{marginLeft: 10}} variant="outlined" margin='dense' >
+                            <InputLabel htmlFor="Status">Branch</InputLabel>
+                            <Select
+                                native
+                                value={branch}
+                                label="Branch"
+                                inputProps={{
+                                    name: 'Status',
+                                    id: 'Status',
+                                }}
+                                onChange={(e) => role === 3 ? changeBranch(e.target.value) : null}
+                            >
+                                <option value='0'>All</option>
+                                {
+                                    stores.map((e) => {
+                                        return <option key={e.id} value={e.id}>{e.location}</option>
+                                    })
+                                }
+                            </Select>
+                        </FormControl>
+
                     </Toolbar>
+
+
                 </Grid>
                 <Grid item md={12} component={Paper} className={classes.tableContainerWrapper}>
                     <MUIDataTable

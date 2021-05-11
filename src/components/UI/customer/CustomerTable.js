@@ -20,8 +20,36 @@ export const Customers = () => {
     const [findCustomerDialog, setUpdateCustomerDialog] = useState(false)
     const [customerFormDialog, setCustomerFormDialog] = useState(true)
 
-    const [customer, setCustomer] = useState()
     // const [updateC]
+    const [customer, setCustomer] = useState()
+
+
+    // for table
+    const [page,setPage] = useState(0)
+    const [size,setSize] = useState(10)
+    const [search, setSearch] = useState('')
+    const [count,setCount] = useState(10)
+
+    // function for table
+    const changePage = (page) => {
+        setPage(page)
+    }
+
+    const changeSearch = (s) => {
+        if(s === null) {
+            setSearch('')
+            return
+        }
+
+        setData([])
+        setSearch(s)
+    }
+
+    const changeRowsPerPage = (s) => {
+        setPage(0)
+        setData([])
+        setSize(s)
+    }
 
     useEffect(() => {
 
@@ -30,13 +58,20 @@ export const Customers = () => {
         })
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [page,search,size])
 
     const getData = async () => {
         setLoading(true)
         const temp = []
-        await baseUrlWithAuth.get(CustomerList).then((customers) => {
-            customers.data.map(customer =>
+        await baseUrlWithAuth.get(CustomerList, {
+            params: {
+                page,
+                size,
+                search
+            }
+        }).then((customers) => {
+            setCount(customers.data.count)
+            customers.data.rows.map(customer =>
                 temp.push(insert(customer.id, customer.name, customer.email, customer.address, customer.city, customer.state, customer.postalCode, customer.mobile_no, customer.tel_no))
             )
         })
@@ -87,7 +122,7 @@ export const Customers = () => {
                         }
                         data={data}
                         columns={columns}
-                        options={options(loading)}
+                        options={options(loading, page,changePage,changeSearch,changeRowsPerPage,count,size)}
                     />
                 </Grid>
             </Grid>
