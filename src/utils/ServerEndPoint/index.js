@@ -67,6 +67,7 @@ export const
     dashBoardTodayAudit = 'dashboard/audit',
     dashBoardTodayTransaction = 'dashboard/transaction',
     dashBoardTopTenSales = 'dashboard/topTenSales',
+    dashBoardSlowPace = 'dashboard/slowPaceProduct',
 
     // setting
     InsertProductType  = 'setting/insertProductType',

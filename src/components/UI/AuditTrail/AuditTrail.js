@@ -13,17 +13,52 @@ export const AuditTrail = () => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
 
+    // for table
+    const [page,setPage] = useState(0)
+    const [size,setSize] = useState(10)
+    const [search, setSearch] = useState('')
+    const [count,setCount] = useState(10)
+
+    // function for table
+    const changePage = (page) => {
+        setPage(page)
+    }
+
+    const changeSearch = (s) => {
+        if(s === null) {
+            setSearch('')
+            return
+        }
+
+        setData([])
+        setSearch(s)
+    }
+
+    const changeRowsPerPage = (s) => {
+        setPage(0)
+        setData([])
+        setSize(s)
+    }
+
     useEffect(() => {
 
         const getData = async () => {
             setLoading(true)
             const temp = []
-            await baseUrlWithAuth.get(auditTrailList).then((audits) => {
-                audits.data.map(audit =>
-                    temp.push(insert(audit.id, `${audit.User.lastName} ${audit.User.firstName}`, audit.action, audit.Store.location, audit.createdAt, audit.value))
+            await baseUrlWithAuth.get(auditTrailList,{
+                params: {
+                    page,
+                    size,
+                    search
+                }
+            }).then((audits) => {
+                setCount(audits.data.count)
+                audits.data.rows.map(audit =>
+                    temp.push(insert(`${audit.User.lastName} ${audit.User.firstName}`, audit.action, audit.Store.location, audit.createdAt, audit.value))
                 )
             })
-            setData(...data, temp)
+            const tempData = [...data, ...temp]
+            setData(tempData)
             setLoading(false)
         }
 
@@ -31,7 +66,7 @@ export const AuditTrail = () => {
         })
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [search,page,size])
 
 
     return (
@@ -50,7 +85,7 @@ export const AuditTrail = () => {
                     }
                     data={data}
                     columns={columns}
-                    options={options(loading)}
+                    options={options(loading, page,changePage,changeSearch,changeRowsPerPage,count,size)}
                 />
             </Grid>
         </Grid>

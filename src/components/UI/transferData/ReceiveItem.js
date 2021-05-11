@@ -79,7 +79,7 @@ const ReceiveItem = (
                         <TextField
                             autoFocus
                             margin="dense"
-                            label="Transaction Code"
+                            label="Transfer Code"
                             type="text"
                             fullWidth
                             variant="outlined"

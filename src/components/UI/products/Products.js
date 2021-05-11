@@ -116,7 +116,7 @@ export const Products = ({user}) => {
                 search
             }
         }).then((products) => {
-            console.log(products)
+
             setCount(products.data.count)
 
             products.data.rows.map(product => temp.push(insert(product.code, product.brand, product.name, product.ProductType.name, product.price, product.Supplier.name, product.Store.location, product.status,product.id, product.createdAt)))

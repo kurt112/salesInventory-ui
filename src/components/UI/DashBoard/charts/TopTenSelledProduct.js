@@ -2,25 +2,8 @@ import React, {Fragment, useEffect, useState} from 'react';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
 
 import Title from './Title';
-import {baseUrlWithAuth} from "../../../mainUI/BaseUrlWithAuth";
-import {dashBoardTopTenSales} from "../../../../utils/ServerEndPoint";
 
-export default function ChartSales() {
-
-    const [data,setData] = useState([])
-
-    useEffect(() => {
-        const getData = async () => {
-            await baseUrlWithAuth.get(dashBoardTopTenSales).then(e => {
-                let temp = e.data
-                setData(temp)
-            }).catch(error => {
-                console.log(error)
-            })
-        }
-
-        getData().then(ignored => {})
-    }, [])
+export default function TopTenSelledProduct({data}) {
 
     return (
         <Fragment>

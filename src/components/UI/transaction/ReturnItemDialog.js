@@ -7,7 +7,8 @@ import FindTransaction from "./FindTransaction";
 
 const ReturnItem = ({
                         dialog,
-                        closeDialog
+                        closeDialog,
+                        get
                     }) => {
 
     const [code, setCode] = useState('')
@@ -25,31 +26,31 @@ const ReturnItem = ({
     const [errorTitle] = useState('')
     const [errorMessage] = useState('')
 
-    const register = async (event) => {
+    const returnItem = async (event) => {
 
         event.preventDefault()
         let itemId = 0
         const result = sales.find(e => {
 
-            itemId = e.id
+            itemId = e.Product.id
 
-            return e.Product.code === parseInt(code)
+            return e.Product.code ===code
         })
 
         if(result === undefined){
             alert("Product Code Is Not In The Transaction")
             return
         }
+
         const data = {
             ProductId:itemId,
             TransactionId: transactionCode.id,
             code: transactionCode.code,
             reason
         }
-
-        await baseUrlWithAuth.post(transactionReturnItem,data).then(e => {
-            setShowing(transactionCode)
-            console.log(e)
+        await baseUrlWithAuth.post(transactionReturnItem,data).then(ignored => {
+            setShowing(true)
+            get()
         }).catch(error => {
             console.log(error)
         })
@@ -81,7 +82,7 @@ const ReturnItem = ({
             maxWidth={"md"}
             fullWidth
         >
-            <form onSubmit={register}>
+            <form onSubmit={returnItem}>
 
                 <DialogTitle id="add-student">Please Input The Product Code And Reason</DialogTitle>
                 <DialogContent>
@@ -100,7 +101,7 @@ const ReturnItem = ({
                                 autoFocus
                                 margin="dense"
                                 label="Enter Product Code"
-                                type="number"
+                                type="text"
                                 fullWidth
                                 variant="outlined"
                                 value={code}
@@ -124,7 +125,7 @@ const ReturnItem = ({
 
                 <DialogActions>
 
-                    <Button type={"submit"} color='primary' onClick={register}>
+                    <Button type={"submit"} color='primary' onClick={returnItem}>
                         Return
                     </Button>
                     <Button onClick={cancel} color='secondary'>

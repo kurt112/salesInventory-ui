@@ -19,7 +19,7 @@ export const Transaction = ({user}) => {
     const [stores, setStores] = useState([])
     const [dialog, setDialog] = useState(false)
     const [receiptDialog, setReceiptDialog] = useState(false)
-    const [returnItemDialog,setReturnItemDialog] = useState(false)
+    const [returnItemDialog, setReturnItemDialog] = useState(false)
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const [items, setItems] = useState([])
@@ -28,43 +28,74 @@ export const Transaction = ({user}) => {
 
     const [branch, setBranch] = useState(user.StoreId)
     const role = user.role
-    const changeBranch =  (value) => {
+    const changeBranch = (value) => {
         setData([])
         setBranch(value)
+    }
+
+    // for table
+    const [page,setPage] = useState(0)
+    const [size,setSize] = useState(10)
+    const [search, setSearch] = useState('')
+    const [count,setCount] = useState(10)
+
+    // function for table
+    const changePage = (page) => {
+        setPage(page)
+    }
+
+    const changeSearch = (s) => {
+        if(s === null) {
+            setSearch('')
+            return
+        }
+
+        setData([])
+        setSearch(s)
+    }
+
+    const changeRowsPerPage = (s) => {
+        setPage(0)
+        setData([])
+        setSize(s)
     }
 
 
     useEffect(() => {
 
-
-        const temp = []
-        const get = async () => {
-            setLoading(true)
-
-            await baseUrlWithAuth.get(storeList).then(e => {
-                setStores(e.data)
-            })
-
-
-            await baseUrlWithAuth.get(transactionList, {
-                params: {
-                    branch,
-                }
-            }).then((transactions) => {
-                transactions.data.map(transaction =>
-                    temp.push(insert(transaction.code, `${transaction.User.firstName} ${transaction.User.lastName}`, transaction.amount,
-                        transaction.discount, `${transaction.Customer.name}`, transaction.Store.location, transaction.createdAt))
-                )
-            }).finally(() => {
-                setLoading(false)
-            })
-            setData(...data, temp)
-        }
+        baseUrlWithAuth.get(storeList).then(e => {
+            setStores(e.data)
+        })
         get().then(ignored => {
         })
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [branch])
+    }, [branch,page,size,search])
+
+    const get = async () => {
+
+        const temp = []
+        setLoading(true)
+
+        await baseUrlWithAuth.get(transactionList, {
+            params: {
+                branch,
+                page,
+                size,
+                search
+            }
+        }).then((transactions) => {
+            setCount(transactions.data.count)
+            transactions.data.rows.map(transaction =>
+                temp.push(insert(transaction.code, `${transaction.User.firstName} ${transaction.User.lastName}`, transaction.amount,
+                    transaction.discount, `${transaction.Customer.name}`, transaction.Store.location, transaction.createdAt))
+            )
+        }).finally(() => {
+            setLoading(false)
+        })
+
+        setData(temp)
+    }
 
     const updateTransaction = (transaction) => {
         setItems(transaction.sales)
@@ -74,12 +105,11 @@ export const Transaction = ({user}) => {
     }
 
 
-
     return (
         <Fragment>
             <FindTransaction dialog={dialog} closeDialog={setDialog}
                              updateTransaction={updateTransaction}/>
-            <ReturnItemDialog dialog={returnItemDialog}  closeDialog={setReturnItemDialog}/>
+            <ReturnItemDialog setData={setData} get={get} dialog={returnItemDialog} closeDialog={setReturnItemDialog}/>
             {
                 receiptDialog === true ?
                     <Receipt
@@ -112,7 +142,7 @@ export const Transaction = ({user}) => {
 
                         </Box>
 
-                        <FormControl style={{marginLeft: 10}} variant="outlined" margin='dense' >
+                        <FormControl style={{marginLeft: 10}} variant="outlined" margin='dense'>
                             <InputLabel htmlFor="Status">Branch</InputLabel>
                             <Select
                                 native
@@ -148,7 +178,7 @@ export const Transaction = ({user}) => {
                         }
                         data={data}
                         columns={columns}
-                        options={options(loading)}
+                        options={options(loading, page,changePage,changeSearch,changeRowsPerPage,count,size)}
                     />
                 </Grid>
             </Grid>

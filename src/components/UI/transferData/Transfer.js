@@ -15,21 +15,55 @@ const Transfered = () => {
     const [loading, setLoading] = useState(false)
     const [dialog,setDialog] = useState(false)
 
+
+    // for table
+    const [page,setPage] = useState(0)
+    const [size,setSize] = useState(10)
+    const [search, setSearch] = useState('')
+    const [count,setCount] = useState(10)
+
+    // function for table
+    const changePage = (page) => {
+        setPage(page)
+    }
+
+    const changeSearch = (s) => {
+        if(s === null) {
+            setSearch('')
+            return
+        }
+
+        setData([])
+        setSearch(s)
+    }
+
+    const changeRowsPerPage = (s) => {
+        setPage(0)
+        setData([])
+        setSize(s)
+    }
+
     useEffect(() => {
 
 
         getData().then(ignored => {})
         setLoading(false)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [page,size,search])
 
 
     const getData = async () => {
         setLoading(true)
         const temp = []
-        await baseUrlWithAuth.get(ReceiveList).then((receives) => {
-            console.log(receives)
-            receives.data.map(receive =>
+        await baseUrlWithAuth.get(ReceiveList, {
+            params: {
+                page,
+                size,
+                search
+            }
+        }).then((receives) => {
+            setCount(receives.data.count)
+            receives.data.rows.map(receive =>
                 temp.push(insert(receive.code, receive.from.location,receive.to.location,receive.arrangeBy.email,receive.createdAt)))
         })
         setData(temp)
@@ -64,7 +98,7 @@ const Transfered = () => {
                         }
                         data={data}
                         columns={columns}
-                        options={options(loading)}
+                        options={options(loading, page,changePage,changeSearch,changeRowsPerPage,count,size)}
                     />
                 </Grid>
             </Grid>
