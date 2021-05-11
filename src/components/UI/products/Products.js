@@ -41,9 +41,37 @@ export const Products = ({user}) => {
     const [productStatus, setProductStatus] = useState('Available')
     const [branch, setBranch] = useState(user.StoreId)
     const role = user.role
+
+    // for table
+    const [page,setPage] = useState(0)
+    const [size,setSize] = useState(10)
+    const [search, setSearch] = useState('')
+    const [count,setCount] = useState(10)
+
+    // function for table
+    const changePage = (page) => {
+        setPage(page)
+    }
+
+    const changeSearch = (s) => {
+        if(s === null) {
+            setSearch('')
+            return
+        }
+
+        setData([])
+        setSearch(s)
+    }
+
+    const changeRowsPerPage = (s) => {
+        setPage(0)
+        setData([])
+        setSize(s)
+    }
+
+
     useEffect(() => {
         const data = async () => {
-            await changeBranch()
 
             await baseUrlWithAuth.get(storeList).then(e => {
                 setStores(e.data)
@@ -59,30 +87,46 @@ export const Products = ({user}) => {
 
         }
 
-        getProductType().then(ignored => {
-        })
-        data().then(ignored => {
-        })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [branch])
+        getProductType().then(ignored => {})
+        data().then(ignored => {})
+    }, [])
 
     useEffect(() => {
-        setLoading(true)
-        changeBranch().then(ignored => {
-            setLoading(false)
-        }).catch(ignored => {
-            setLoading(false)
-        })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [productStatus])
+        getProducts().then(ignored => {})
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[page, branch, size, search, productStatus])
 
     const insertImage = () => {
 
         baseUrlWithAuth.get(productImages).then(e => {
             setImages(e.data)
         })
+    }
 
+    const getProducts = async () => {
+        setLoading(true)
+        const temp = []
+        await baseUrlWithAuth.get(productList, {
+            params: {
+                branch,
+                status: productStatus,
+                page,
+                size,
+                search
+            }
+        }).then((products) => {
+            console.log(products)
+            setCount(products.data.count)
+
+            products.data.rows.map(product => temp.push(insert(product.code, product.brand, product.name, product.ProductType.name, product.price, product.Supplier.name, product.Store.location, product.status,product.id, product.createdAt)))
+        }).catch(e => {
+            console.log(e)
+        }).finally(() => {
+            setLoading(false)
+        })
+        const tempData = [...data, ...temp]
+        setData(tempData)
 
     }
 
@@ -111,22 +155,16 @@ export const Products = ({user}) => {
     }
 
 
-    const changeBranch = async () => {
-        setLoading(true)
-        const temp = []
-        await baseUrlWithAuth.get(productList, {
-            params: {
-                branch,
-                status: productStatus
-            }
-        }).then((products) => {
-            products.data.map(product => temp.push(insert(product.code, product.brand, product.name, product.ProductType.name, product.price, product.Supplier.name, product.Store.location, product.status,product.id)))
-        }).catch(e => {
-            console.log(e)
-        })
-        setData(temp)
-        setLoading(false)
+    const changeBranch =  (value) => {
+        setData([])
+        setBranch(value)
+    }
 
+
+    const changeProductStatus = (status) => {
+        setData([])
+        setPage(0)
+        setProductStatus(status)
     }
 
     const getProductType = async () => {
@@ -143,7 +181,7 @@ export const Products = ({user}) => {
 
 
     const Reload = async () => {
-        await changeBranch().then(ignored =>{})
+        await getProducts().then(ignored =>{})
     }
 
 
@@ -246,7 +284,7 @@ export const Products = ({user}) => {
                                         name: 'branch',
                                         id: 'Branch',
                                     }}
-                                    onChange={(e) => setProductStatus(e.target.value)}
+                                    onChange={(e) => changeProductStatus(e.target.value)}
                                 >
                                     <option value={'Available'}>Available</option>
                                     <option value={'Sold'}>Sold</option>
@@ -263,7 +301,7 @@ export const Products = ({user}) => {
                                         name: 'Status',
                                         id: 'Status',
                                     }}
-                                    onChange={(e) => role === 3 ? setBranch(e.target.value) : null}
+                                    onChange={(e) => role === 3 ? changeBranch(e.target.value) : null}
                                 >
                                     <option value='0'>All</option>
                                     {
@@ -288,7 +326,7 @@ export const Products = ({user}) => {
                         }
                         data={data}
                         columns={columns}
-                        options={options(loading)}
+                        options={options(loading, page,changePage,changeSearch,changeRowsPerPage,count,size)}
                     />
                 </Grid>
             </Grid>

@@ -1,3 +1,5 @@
+import {MonthsWord} from "../date/ConvertMonthWord";
+
 export const ProductTable = [
     {
       name:"code",
@@ -31,9 +33,13 @@ export const ProductTable = [
     {
         name: "status",
         label: "Status"
+    },
+    {
+        name: "date",
+        label: "Date Arrive"
     }
 ];
 
-export function InsertProduct(code,brand,productName,type, amount, supplier, store,status,id) {
-    return {code,brand,productName,type, amount, supplier, store,status,id}
+export function InsertProduct(code,brand,productName,type, amount, supplier, store,status,id,dateTime) {
+    return {code,brand,productName,type, amount, supplier, store,status,id,date: MonthsWord(dateTime)}
 }

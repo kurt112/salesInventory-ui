@@ -23,19 +23,23 @@ const style = makeStyles(() => ({
 export default style;
 // just override this function if you have a unique function
 // in your table
-export function TableOptions(loading) {
-
+export function TableOptions(loading,page,changePage,changeSearch,onChangeRowsPerPage,count,size) {
     return {
         filter: true,
         filterType: "dropdown",
         print:false,
         selectableRowsHeader: true,
         rowsPerPageOptions:[10,20,50,100],
-        rowsPerPage:10,
+        rowsPerPage:size,
         pagination: true,
         searchPlaceholder: 'Search Anything',
         selectableRowsHideCheckboxes: false,
         selectableRows:  'none',
+        page: page,
+        onChangeRowsPerPage:onChangeRowsPerPage,
+        onSearchChange: changeSearch,
+        count: count,
+        onChangePage:changePage,
         textLabels: {
             body: {
                 noMatch: loading?"": "Sorry, no matching records found",
