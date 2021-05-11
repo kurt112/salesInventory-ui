@@ -3,7 +3,7 @@ import {Paper, Grid, Box, Toolbar, CircularProgress, Tooltip} from "@material-ui
 import {UserTable as columns, InsertUser as insert} from '../../../utils/tableColumn/UserTable'
 import MUIDataTable from 'mui-datatables'
 import {baseUrlWithAuth} from '../../mainUI/BaseUrlWithAuth'
-import {useEffect, useState,Fragment} from "react";
+import {useEffect, useState, Fragment} from "react";
 import Typography from "@material-ui/core/Typography";
 import UserRegister from "./UserRegister";
 import {storeList, userList} from "../../../utils/ServerEndPoint";
@@ -20,17 +20,46 @@ export const Users = ({user}) => {
     const classes = style()
 
     const [dialog, setDialog] = useState(false);
-    const [data,setData] = useState([])
+    const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const [updateUserDialog, setUpdateUserDialog] = useState(false)
     const [deleteUserDialog, setDeleteUserDialog] = useState(false)
 
-    // for auto compelte
+    // for auto complete
     const [stores, setStore] = useState([])
+
+    // for table
+    const [page, setPage] = useState(0)
+    const [size, setSize] = useState(10)
+    const [search, setSearch] = useState('')
+    const [count, setCount] = useState(10)
+
+    // function for table
+    const changePage = (page) => {
+        setPage(page)
+    }
+
+    const changeSearch = (s) => {
+        if (s === null) {
+            setSearch('')
+            return
+        }
+
+        setData([])
+        setSearch(s)
+    }
+
+    const changeRowsPerPage = (s) => {
+        setPage(0)
+        setData([])
+        setSize(s)
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect( ()  => {
-        Reload().then(ignored => {})
-    }, [])
+    useEffect(() => {
+        Reload().then(ignored => {
+        })
+    }, [search, page, size])
 
 
     const Reload = async () => {
@@ -38,10 +67,21 @@ export const Users = ({user}) => {
 
         const item = []
 
-        await baseUrlWithAuth.get(userList).then(e =>
-            e.data.map(user =>
-                item.push(insert(user.id,user.email,user.firstName,user.lastName,user.role, user.Store.location, user.status))
-            )
+        await baseUrlWithAuth.get(userList, {
+            params: {
+                page,
+                size,
+                search
+            }
+        }).then(users => {
+                setCount(users.data.count)
+            console.log(users)
+                users.data.rows.map(user =>
+                    item.push(insert(user.id, user.email, user.firstName, user.lastName, user.role, user.Store.location, user.status))
+                )
+
+
+            }
         )
 
         await baseUrlWithAuth.get(storeList).then(e => setStore(e.data)
@@ -54,8 +94,10 @@ export const Users = ({user}) => {
     return (
         <Fragment>
             <DeleteUser Reload={Reload} dialog={deleteUserDialog} closeDialog={() => setDeleteUserDialog(false)}/>
-            <UserRegister user={user} stores={stores} dialog={dialog} closeDialog={() => setDialog(false)}  Reload={Reload}/>
-            <UpdateUser user ={user} stores={stores} dialog={updateUserDialog} closeDialog={() => setUpdateUserDialog(false)}  Reload={Reload}/>
+            <UserRegister user={user} stores={stores} dialog={dialog} closeDialog={() => setDialog(false)}
+                          Reload={Reload}/>
+            <UpdateUser user={user} stores={stores} dialog={updateUserDialog}
+                        closeDialog={() => setUpdateUserDialog(false)} Reload={Reload}/>
 
 
             <Grid component="main" className={classes.root}>
@@ -70,7 +112,7 @@ export const Users = ({user}) => {
                             </Tooltip>
 
                             <Tooltip title="Remove User" aria-label="add">
-                                <IconButton  onClick={() => setDeleteUserDialog(true)} aria-label="addProduct"
+                                <IconButton onClick={() => setDeleteUserDialog(true)} aria-label="addProduct"
                                             color={"secondary"}>
                                     <PersonAddDisabledIcon fontSize={"large"}/>
                                 </IconButton>
@@ -92,12 +134,13 @@ export const Users = ({user}) => {
                         title={
                             <Typography variant="h6">
                                 User List
-                                {loading && <CircularProgress size={24} style={{ marginLeft: 15, position: 'relative', top: 4 }} />}
+                                {loading &&
+                                <CircularProgress size={24} style={{marginLeft: 15, position: 'relative', top: 4}}/>}
                             </Typography>
                         }
                         data={data}
                         columns={columns}
-                        options={options(loading)}
+                        options={options(loading, page, changePage, changeSearch, changeRowsPerPage, count, size)}
                     />
                 </Grid>
             </Grid>
