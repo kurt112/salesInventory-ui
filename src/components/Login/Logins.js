@@ -36,7 +36,7 @@ const Login = ({setToken, setUser}) => {
             setError('')
             setUser(e.data.user)
         }).catch(error => {
-            setError(`Account ${error.response.data}`)
+            setError(`${error.response.data.message}`)
         })
     }
 
@@ -107,7 +107,7 @@ const Login = ({setToken, setUser}) => {
                         />
                         <Box className={classes.util}>
                             {
-                                error.length === 0 ? null : <p style={{margin: 0, marginTop: 10}}>No Account Found</p>
+                                error.length === 0 ? null : <p style={{margin: 0, marginTop: 10}}>{error}</p>
                             }
                         </Box>
                         <Button
