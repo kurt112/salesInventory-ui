@@ -21,7 +21,7 @@ export const SalesTable = [
 
     {
         name: "date",
-        label: "Date"
+        label: "Date Sold"
     },
 ];
 

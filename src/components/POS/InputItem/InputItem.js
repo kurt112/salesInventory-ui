@@ -11,6 +11,7 @@ const InputItem = ({classes, buy, code, setCode,qty,setQty}) => {
             <TextField style={{width: '90px',backgroundColor:'white'}}
                        value={qty}
                        onKeyPress={e => buy(e)}
+                       type={'number'}
                        onChange={(e) =>setQty(e.target.value <0?1: e.target.value)}
                        placeholder="QTY" variant="outlined"/>
         </div>

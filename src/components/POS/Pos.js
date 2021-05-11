@@ -5,13 +5,13 @@ import ProductList from "./ProductList/ProductList";
 import {style} from "./PosStyle";
 import {useEffect, useState, Fragment, lazy} from "react";
 import {baseUrlWithAuth} from "../mainUI/BaseUrlWithAuth";
-import {productFindById, productList} from "../../utils/ServerEndPoint";
+import {productList} from "../../utils/ServerEndPoint";
 
 const CustomerExistDialog = lazy(() => import(`./checkout/CustomerExistDialog`))
 const CustomerForm = lazy(() => import(`./checkout/CustomerForm`))
 const FindCustomer = lazy(() => import(`./checkout/FindCustomer`))
 const Receipt = lazy(() => import(`./checkout/Receipt`))
-
+const productMap = new Map()
 const Pos = ({setPosOn, user}) => {
     const classes = style()
 
@@ -29,25 +29,35 @@ const Pos = ({setPosOn, user}) => {
     const [printReceipt, setPrintReceipt] = useState(false)
 
 
+    // for search in product list
+    const [loading,setLoading] = useState(false)
+    const [search, setSearch] = useState('')
+
+
     useEffect(() => {
 
         getData().then(ignored => {})
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [search])
 
 
     const getData = async () => {
+        setLoading(true)
         const temp = []
         await baseUrlWithAuth.get(productList, {
             params: {
                 branch: user.StoreId,
-                status: 'available'
+                status: 'available',
+                search
             }
         }).then(async (products) => {
-            products.data.map(product =>
+            console.log(products.data.rows)
+            products.data.rows.map(product =>
                 temp.push(product)
             )
             setProducts(temp)
+        }).finally(() => {
+            setLoading(false)
         })
 
     }
@@ -97,13 +107,7 @@ const Pos = ({setPosOn, user}) => {
 
         const currentTotalPrice = totalPrice - find.price;
         setTotalPrice(currentTotalPrice)
-        const currentProduct = [...products]
-        await baseUrlWithAuth.get(productFindById, {id: find.id}).then(e => {
-            currentProduct.push(e.data)
-        }).catch(error => {
-            console.log(error)
-        })
-        setProducts(currentProduct)
+        getData().then(ignored => {})
 
     }
 
@@ -117,41 +121,40 @@ const Pos = ({setPosOn, user}) => {
 
     const buy = async (event) => {
 
+        if(parseInt(qty) === 0){
+            alert("Please Have A Quantity Greater Than Zero")
+            return
+        }
+
         if (event.which === 13) {
-            let tempQ = qty
-
-            const tempData = [...products]
-            let last = null
-            while (tempQ !== 0) {
-                let current = null;
-                const product = await tempData.find((e, index) => {
-                    current = index
-                    return e.code.toString() === code
-                })
-
-                if (current !== null && product !== undefined) {
-                    last = tempData.splice(current, 1)
-
-                } else {
-                    alert("We don't have enough Supply")
-                    break;
+            await baseUrlWithAuth.get(productList, {
+                params: {
+                    branch: user.StoreId,
+                    status: 'available',
+                    search: code,
+                    size: qty
                 }
+            }).then( (products) => {
+                if(products.data.rows.length !== parseInt(qty)){
+                    alert('Quantity Is Not Enough')
+                }else{
+                    const code = products.data.rows[0].code
+                    if(productMap.get(code) !== undefined && parseInt(productMap.get(code)) + parseInt(qty) > parseInt(products.data.count)){
+                        alert('Quantity Is Not Enough')
+                        return
+                    }
+                    const product = insert(products.data.rows, qty)
+                    const newData = [...itemBuy, product]
+                    const newTotalPrice = totalPrice + (products.data.rows[0].price * qty)
+                    setTotalPrice(newTotalPrice)
+                    setItemBuy(newData)
+                    setQty(1)
+                    setCode('')
+                    if(productMap.get(code) === undefined) productMap.set(code, 0)
+                    productMap.set(code,productMap.get(code)+parseInt(qty))
+                }
+            })
 
-                tempQ--
-            }
-
-
-            if (tempQ === 0) {
-                const product = insert(last, qty)
-                const newData = [...itemBuy, product]
-                const newTotalPrice = totalPrice + (last[0].price * qty)
-
-                setTotalPrice(newTotalPrice)
-                setItemBuy(newData)
-                setProducts(tempData)
-                setQty(1)
-                setCode('')
-            }
         }
 
     }
@@ -233,6 +236,9 @@ const Pos = ({setPosOn, user}) => {
                 </Grid>
                 <Grid container item md={9} className={classes.right}>
                     <ProductList
+                        loading={loading}
+                        search={search}
+                        setSearch={setSearch}
                         cancelTransaction={cancelTransaction}
                         logout={logout}
                         checkOut={checkOut}

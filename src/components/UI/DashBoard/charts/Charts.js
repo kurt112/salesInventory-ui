@@ -49,10 +49,17 @@ export default function Charts() {
                             <Chart/>
                         </Paper>
                     </Grid>
+
                     {/* Today Sales */}
                     <Grid item xs={12} md={4} lg={3} alignItems={"flex-end"} style={{textAlign:'right'}}>
                         <Paper className={fixedHeightPaper} >
                             <TodaySales total={total}/>
+                        </Paper>
+                    </Grid>
+
+                    <Grid item xs={12} md={8} lg={9}>
+                        <Paper className={fixedHeightPaper} style={{height: 400}}>
+                            <Chart/>
                         </Paper>
                     </Grid>
                     {/* Recent Transaction */}
