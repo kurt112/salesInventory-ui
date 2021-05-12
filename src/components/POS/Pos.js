@@ -121,6 +121,11 @@ const Pos = ({setPosOn, user}) => {
 
     const buy = async (event) => {
 
+        if(code.length === 0){
+            alert("Please Enter A Valid Code")
+            return
+        }
+
         if(parseInt(qty) === 0){
             alert("Please Have A Quantity Greater Than Zero")
             return

@@ -49,10 +49,10 @@ const Receipt = ({
         } else {
             setStep(3)
             setToday(MonthsWord(transaction.createdAt))
-            setTotalPrice(transaction.amount)
+            setInitAmount(transaction.amount)
             setCode(transaction.code)
             setDiscount(transaction.discount)
-            setInitAmount(transaction.amount - transaction.discount)
+            setTotalPrice(transaction.amount - transaction.discount)
             const map = new Map()
 
             for (let i = 0; i < item.length; i++) {
@@ -280,7 +280,7 @@ const Receipt = ({
                             </div>
 
                             <div className="transaction_data">
-                                <h4 style={{marginBottom: 0}}>Transction:</h4>
+                                <h4 style={{marginBottom: 0}}>Transaction:</h4>
                                 <div className="date text-inverse m-t-5">{today}</div>
                                 <div className="invoice-detail">
                                     <b>{code}</b>
