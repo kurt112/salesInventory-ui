@@ -63,7 +63,7 @@ const TopTenSlowPaceProduct = ({data}) => {
                                    type="number"
                                    dataKey="index"
                                    height={10}
-                                   width={100}
+                                   width={e.date.length + 80}
                                    tick={false}
                                    tickLine={false}
                                    axisLine={false}
