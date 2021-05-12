@@ -12,7 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
-import {productImages, storeList, supplierList, supplierReceiptList} from "../../../utils/ServerEndPoint";
+import {supplierList, supplierReceiptList} from "../../../utils/ServerEndPoint";
 import SupplierReceiptCreate from "./SupplierReceiptCreate";
 import SupplierReceiptDelete from "./SupplierReceiptDelete";
 
