@@ -15,7 +15,7 @@ import Response from "../../../utils/Response/Response";
 import RemoveError from "../../../utils/FormError/RemoveError";
 import CreateError from "../../../utils/FormError/CreateError";
 import CheckEmail from "../../../utils/FormError/CheckEmail";
-
+import {CheckPasswordStrength} from "../../../utils/FormError/CheckPasswordStrength";
 
 const UserRegister = (
     {
@@ -60,7 +60,7 @@ const UserRegister = (
     const [storeErrorMessage, setStoreErrorMessage] = useState('')
 
     useEffect(() => {
-        setStoreId(user.role ===2?user.StoreId:'')
+        setStoreId(user.role === 2 ? user.StoreId : '')
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user.role])
 
@@ -70,12 +70,12 @@ const UserRegister = (
     }
 
     const RemoveFormError = () => {
-        RemoveError(setFirstNameError,setFirstNameErrorMessage);
+        RemoveError(setFirstNameError, setFirstNameErrorMessage);
         RemoveError(setLastNameError, setLastNameErrorMessage)
-        RemoveError(setEmailError,setEmailErrorMessage)
-        RemoveError(setStoreError,setStoreErrorMessage)
-        RemoveError(setPasswordError,setPasswordErrorMessage)
-        RemoveError(setPasswordReError,setPasswordReErrorMessage)
+        RemoveError(setEmailError, setEmailErrorMessage)
+        RemoveError(setStoreError, setStoreErrorMessage)
+        RemoveError(setPasswordError, setPasswordErrorMessage)
+        RemoveError(setPasswordReError, setPasswordReErrorMessage)
 
     }
 
@@ -84,41 +84,50 @@ const UserRegister = (
         RemoveFormError()
         let error = false
 
+        if (!CheckPasswordStrength(password, setPasswordError, setPasswordErrorMessage,
+            'Password Should Contain 8 Characters, One Upper Case, One Lower Case, One Digit')) {
+            error = true
+        }
+
+        if (!CheckPasswordStrength(reTypePassword, setPasswordReError, setPasswordReErrorMessage,
+            'Password Should Contain 8 Characters, One Upper Case, One Lower Case, One Digit')) {
+            error = true
+        }
+
         if (password !== reTypePassword) {
-            CreateError(setPasswordReError,setPasswordReErrorMessage,'Password Do Not Match')
-            CreateError(setPasswordError,setPasswordErrorMessage,'Password Do Not Match')
+            CreateError(setPasswordReError, setPasswordReErrorMessage, 'Password Do Not Match')
+            CreateError(setPasswordError, setPasswordErrorMessage, 'Password Do Not Match')
 
             error = true
         }
 
-        if(firstName.trim().length === 0){
+        if (firstName.trim().length === 0) {
             error = true
-            CreateError(setFirstNameError,setFirstNameErrorMessage, 'Please Insert Firstname')
+            CreateError(setFirstNameError, setFirstNameErrorMessage, 'Please Insert Firstname')
 
         }
 
-        if(lastName.trim().length === 0){
+        if (lastName.trim().length === 0) {
             error = true
-            CreateError(setLastNameError,setLastNameErrorMessage,'Please Insert LastName')
+            CreateError(setLastNameError, setLastNameErrorMessage, 'Please Insert LastName')
 
         }
 
-        if (!CheckEmail(email,setEmailError,setEmailErrorMessage, 'PLease Input A Valid Email')) {
+        if (!CheckEmail(email, setEmailError, setEmailErrorMessage, 'PLease Input A Valid Email')) {
             error = true
         }
 
-        if(storeId.length===0){
-            alert("i am here")
+        if (storeId.length === 0) {
             error = true
-            CreateError(setStoreError, setStoreErrorMessage,'Please Select Branch')
+            CreateError(setStoreError, setStoreErrorMessage, 'Please Select Branch')
         }
 
-        if(password.trim().length ===0){
-            error =true
+        if (password.trim().length === 0) {
+            error = true
             CreateError(setPasswordError, setPasswordErrorMessage, 'Please Enter Password')
         }
 
-        if(reTypePassword.length===0){
+        if (reTypePassword.length === 0) {
             error = true
             CreateError(setPasswordReError, setPasswordReErrorMessage, 'Please Enter Password')
         }
@@ -258,10 +267,10 @@ const UserRegister = (
                         />
                     </Grid>
 
-                    <Grid item md={user.role ===3?6:12} xs={12}>
+                    <Grid item md={user.role === 3 ? 6 : 12} xs={12}>
                         <FormControl variant="outlined" margin='dense' fullWidth>
                             <InputLabel
-                                        htmlFor="role">{'Role'}</InputLabel>
+                                htmlFor="role">{'Role'}</InputLabel>
                             <Select
                                 required
                                 native
@@ -276,14 +285,14 @@ const UserRegister = (
                                 <option value='1'>Cashier</option>
                                 <option value='2'>Manager</option>
                                 {
-                                    user.role ===3?  <option value='3'>Owner</option>: null
+                                    user.role === 3 ? <option value='3'>Owner</option> : null
                                 }
                             </Select>
                         </FormControl>
                     </Grid>
 
                     {
-                        user.role === 3? <Grid item md={6} xs={12}>
+                        user.role === 3 ? <Grid item md={6} xs={12}>
                             <FormControl variant="outlined" margin='dense' fullWidth>
                                 <Autocomplete
                                     size={"small"}
@@ -291,14 +300,15 @@ const UserRegister = (
                                     options={stores}
                                     getOptionLabel={(option) => option.location}
                                     getOptionSelected={(option, value) => option.id === value.id}
-                                    onChange={(event, value) => setStoreId(value!==null?value.id:'')}
+                                    onChange={(event, value) => setStoreId(value !== null ? value.id : '')}
                                     renderInput={(params) =>
-                                        <TextField error={storeError} helperText={storeErrorMessage} required {...params}
+                                        <TextField error={storeError} helperText={storeErrorMessage}
+                                                   required {...params}
                                                    label="Branch Name"
                                                    variant="outlined"/>}
                                 />
                             </FormControl>
-                        </Grid>: null
+                        </Grid> : null
                     }
 
                 </Grid>

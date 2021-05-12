@@ -22,7 +22,10 @@ export const SupplierReceiptTable = [
         name: 'contactPerson',
         label: 'Contact Person'
     },
-
+    {
+      name:'receive',
+      label:'Receive'
+    },
     {
         name: "receipt",
         label: "Receipt",
@@ -46,6 +49,6 @@ export const SupplierReceiptTable = [
 ];
 
 
-export function InsertSupplierReceipt(code,description, name,email, contactPerson,receipt) {
-    return {code,description, name,email, contactPerson,receipt}
+export function InsertSupplierReceipt(code,description, name,email, contactPerson,receive,receipt) {
+    return {code,description, name,email, contactPerson,receive,receipt}
 }

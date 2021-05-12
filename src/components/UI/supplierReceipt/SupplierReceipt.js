@@ -16,7 +16,7 @@ import {storeList, supplierList, supplierReceiptList} from "../../../utils/Serve
 import SupplierReceiptCreate from "./SupplierReceiptCreate";
 import SupplierReceiptDelete from "./SupplierReceiptDelete";
 
-export const SupplierReceipt = ({user}) => {
+export const SupplierReceipt = () => {
     const classes = style()
 
     // for dialog
@@ -27,14 +27,15 @@ export const SupplierReceipt = ({user}) => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const [suppliers, setSuppliers] = useState([])
-    const [stores,setStores] = useState([])
+    const [stores, setStores] = useState([])
     useEffect(() => {
-         baseUrlWithAuth.get(storeList).then(e => {
+        baseUrlWithAuth.get(storeList).then(e => {
             setStores(e.data)
         })
 
 
-        getData().then(ignored=>{})
+        getData().then(ignored => {
+        })
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -46,11 +47,12 @@ export const SupplierReceipt = ({user}) => {
             setSuppliers(e.data)
         })
 
-        await baseUrlWithAuth.get(supplierReceiptList).then(receipts => {
-            receipts.data.map(receipt => temp.push(insert(receipt.code,receipt.description,receipt.Supplier.name, receipt.Supplier.email,receipt.Supplier.contactPerson,receipt.image)))
-        }).catch(ignored => {
-        })
+        await baseUrlWithAuth.get(supplierReceiptList).then(receipts => receipts.data.map(receipt => temp.push(insert(receipt.code, receipt.description, receipt.Supplier.name, receipt.Supplier.email, receipt.Supplier.contactPerson, receipt.Store.location, receipt.image))))
+            .catch(ignored => {
+                console.log(ignored)
+            })
 
+        console.log(temp)
         setLoading(false)
 
         setData(temp)
@@ -59,7 +61,8 @@ export const SupplierReceipt = ({user}) => {
     return (
         <Fragment>
             {/*Pop up*/}
-            <SupplierReceiptDelete getData={getData} dialog={supplierReceiptDeleteDialog} closeDialog={() => setSupplierReceiptDeleteDialog(false)}/>
+            <SupplierReceiptDelete getData={getData} dialog={supplierReceiptDeleteDialog}
+                                   closeDialog={() => setSupplierReceiptDeleteDialog(false)}/>
 
             <SupplierReceiptCreate
                 getData={getData}

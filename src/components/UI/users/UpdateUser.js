@@ -18,6 +18,7 @@ import {Autocomplete} from "@material-ui/lab";
 import CreateError from "../../../utils/FormError/CreateError";
 import RemoveError from "../../../utils/FormError/RemoveError";
 import CheckEmail from "../../../utils/FormError/CheckEmail";
+import {CheckPasswordStrength} from "../../../utils/FormError/CheckPasswordStrength";
 
 
 const UpdateUser = (
@@ -81,6 +82,16 @@ const UpdateUser = (
 
         RemoveFormError()
         let error = false
+        const pass = password.split('$').length
+        if (pass <=4 &&!CheckPasswordStrength(password, setPasswordError, setPasswordErrorMessage,
+            'Password Should Contain 8 Characters, One Upper Case, One Lower Case, One Digit')) {
+            error = true
+        }
+
+        if (pass <=4&&!CheckPasswordStrength(reTypePassword, setPasswordReError, setPasswordReErrorMessage,
+            'Password Should Contain 8 Characters, One Upper Case, One Lower Case, One Digit')) {
+            error = true
+        }
 
         if (password !== reTypePassword) {
             CreateError(setPasswordReError, setPasswordReErrorMessage, 'Password Do Not Match')
@@ -148,6 +159,8 @@ const UpdateUser = (
 
     useEffect(() => {
         setFindUserDialog(dialog)
+
+        RemoveFormError()
     }, [dialog])
 
     // update

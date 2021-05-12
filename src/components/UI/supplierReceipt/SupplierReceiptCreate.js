@@ -93,6 +93,7 @@ const ProductRegister = (
             formData.append('code', code)
             formData.append('SupplierId', supplier.id)
             formData.append('description', description)
+            formData.append('StoreId',parseInt(store.id))
             await baseUrlWithAuth.post(supplierReceiptCreate, formData).then(ignored => {
                 getData().then(ignored => {
                 })
