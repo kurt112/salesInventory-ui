@@ -12,7 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {baseUrlWithAuth} from "../../mainUI/BaseUrlWithAuth";
-import {supplierList, supplierReceiptList} from "../../../utils/ServerEndPoint";
+import {storeList, supplierList, supplierReceiptList} from "../../../utils/ServerEndPoint";
 import SupplierReceiptCreate from "./SupplierReceiptCreate";
 import SupplierReceiptDelete from "./SupplierReceiptDelete";
 
@@ -25,21 +25,22 @@ export const SupplierReceipt = ({user}) => {
 
 
     const [data, setData] = useState([])
-
     const [loading, setLoading] = useState(false)
-
     const [suppliers, setSuppliers] = useState([])
-
+    const [stores,setStores] = useState([])
     useEffect(() => {
+         baseUrlWithAuth.get(storeList).then(e => {
+            setStores(e.data)
+        })
 
 
-
-        getData().then()
+        getData().then(ignored=>{})
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const getData = async () => {
+        setLoading(true)
         const temp = []
         await baseUrlWithAuth.get(supplierList).then(e => {
             setSuppliers(e.data)
@@ -49,6 +50,8 @@ export const SupplierReceipt = ({user}) => {
             receipts.data.map(receipt => temp.push(insert(receipt.code,receipt.description,receipt.Supplier.name, receipt.Supplier.email,receipt.Supplier.contactPerson,receipt.image)))
         }).catch(ignored => {
         })
+
+        setLoading(false)
 
         setData(temp)
     }
@@ -61,6 +64,7 @@ export const SupplierReceipt = ({user}) => {
             <SupplierReceiptCreate
                 getData={getData}
                 suppliers={suppliers}
+                stores={stores}
                 dialog={supplierReceiptCreateDialog}
                 closeDialog={() => setSupplierReceiptCreateDialog(false)}/>
             {/*Table*/}

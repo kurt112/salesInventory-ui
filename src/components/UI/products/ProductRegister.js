@@ -150,7 +150,6 @@ const ProductRegister = (
     }
 
     const RemoveFormError = () => {
-        RemoveError(setStoreIdError, setStoreIdErrorMessage)
         RemoveError(setProductImagesError, setProductImagesErrorMessage)
         RemoveError(setProductBrandError, setProductBrandErrorMessage)
         RemoveError(setProductNameError, setProductNameErrorMessage)
@@ -279,7 +278,7 @@ const ProductRegister = (
                                             error={storeIdError}
                                             helperText={storeIdErrorMessage}
                                             {...params}
-                                            label="Store"
+                                            label="Location"
                                             variant="outlined"/>}
                                 />
                             </FormControl>

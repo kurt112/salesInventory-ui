@@ -22,7 +22,8 @@ const ProductRegister = (
         closeDialog,
         dialog,
         suppliers,
-        getData
+        getData,
+        stores
     }) => {
 
 
@@ -30,7 +31,7 @@ const ProductRegister = (
     const [supplier, setSupplier] = useState('')
     const [file, setFile] = useState('')
     const [description, setDescription] = useState('')
-
+    const [store, setStore] = useState('')
 
     // for snack bar
     const [showing, setShowing] = useState(false)
@@ -39,19 +40,20 @@ const ProductRegister = (
     const [errorMessage, setErrorMessage] = useState('')
 
     // form error
-
+    const [storeIdError, setStoreIdError] = useState(false)
     const [supplierIdError, setSupplierIdError] = useState(false)
 
 
     // form errorMessage
     const [supplierIdErrorMessage, setSupplierIdErrorMessage] = useState('')
+    const [storeIdErrorMessage, setStoreIdErrorMessage] = useState('')
 
     const register = async (event) => {
 
         event.preventDefault()
         let error = false
 
-        if(file.length === 0){
+        if (file.length === 0) {
             alert("Please Input A File")
             return
         }
@@ -62,6 +64,19 @@ const ProductRegister = (
         } else {
             RemoveError(setSupplierIdError, setSupplierIdErrorMessage)
         }
+
+        if (!store) {
+            error = true
+            CreateError(setStoreIdError, setStoreIdErrorMessage, 'Please select a branch')
+        }else{
+            RemoveError(setStoreIdError, setStoreIdErrorMessage)
+        }
+
+        if(description.length ===0){
+            error = true
+            alert("Please Input a Short Description")
+        }
+
 
 
         if (!error) {
@@ -122,7 +137,7 @@ const ProductRegister = (
 
                 <Grid container spacing={1}>
 
-                    <Grid item md={6} xs={12}>
+                    <Grid item md={4} xs={12}>
                         <FormControl variant="outlined" margin='dense' fullWidth>
                             <Autocomplete
                                 size={"small"}
@@ -142,7 +157,7 @@ const ProductRegister = (
                         </FormControl>
                     </Grid>
 
-                    <Grid item md={6} xs={12}>
+                    <Grid item md={4} xs={12}>
                         <TextField
 
                             margin="dense"
@@ -150,13 +165,32 @@ const ProductRegister = (
                             fullWidth
                             variant="outlined"
                             onChange={(e) => change(e)}
+                            inputProps={{ accept:"image/*"}}
                         />
                     </Grid>
 
+                    <Grid item md={4} xs={12}>
+                        <FormControl variant="outlined" margin='dense' fullWidth>
+                            <Autocomplete
+                                size={"small"}
+                                options={stores}
+                                getOptionLabel={(option) => option.location}
+                                getOptionSelected={(option, value) => option.id === value.id}
+                                onChange={(event, value) => value === null ? setStore('') : setStore(value)}
+                                renderInput={(params) =>
+                                    <TextField
+                                        error={storeIdError}
+                                        helperText={storeIdErrorMessage}
+                                        {...params}
+                                        label="Branch Destination"
+                                        variant="outlined"/>}
+                            />
+                        </FormControl>
+                    </Grid>
 
                     <Grid item md={12} xs={12}>
                         <TextField
-                            label={'Description'}
+                            label={'Short Description'}
                             margin="dense"
                             type="text"
                             fullWidth

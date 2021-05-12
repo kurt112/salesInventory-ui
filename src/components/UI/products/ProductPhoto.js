@@ -88,6 +88,7 @@ const SupplierRegister = (
                                    variant="outlined"
                                    name='product_photo'
                                    onChange={(e) => change(e)}
+                                   inputProps={{ accept:"image/*"}}
                         />
 
                     </Grid>
