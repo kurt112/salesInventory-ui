@@ -17,7 +17,7 @@ const DeleteProduct = (
     {
         closeDialog,
         dialog,
-        deleteProduct,
+        Reload,
         branch
     }) => {
 
@@ -48,7 +48,7 @@ const DeleteProduct = (
         baseUrlWithAuth.post(productDelete, data).then(ignored => {
             setError(false)
             setShow(true)
-            deleteProduct(data)
+            Reload()
         }).catch(error => {
             const response = error.response.data
             setErrorMessage(response.message)

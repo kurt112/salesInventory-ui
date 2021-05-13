@@ -75,8 +75,6 @@ export const
     SetCriticalStock = 'setting/setCriticalStock',
     GetCriticalStock = 'setting/getCriticalStock',
     ListProductType = 'setting/productTypeList',
-    getCriticalStockProduct = 'setting/getCriticalStockProduct',
-
     // transfer
     CreateTransfer = 'transfer/product',
     ReceiveTransfer = 'transfer/receive',
@@ -92,7 +90,11 @@ export const
     // supplier receipt
     supplierReceiptCreate = 'supplierReceipt/create',
     supplierReceiptDelete = 'supplierReceipt/delete',
-    supplierReceiptList = 'supplierReceipt/list'
+    supplierReceiptList = 'supplierReceipt/list',
+
+    // critical stock route
+    getCriticalStockProduct = 'critical/list'
+
 
 
 

@@ -93,7 +93,7 @@ export default function MainUI({setPosOn,user,setUser}) {
                             <Route path={"/audit"}>
                                 <AuditTrail user={user}/>
                             </Route>
-                            <Route path={"/critical"}>
+                            <Route path={"/status"}>
                                 <CriticalStocks user={user}/>
                             </Route>
                             <Route path={"/settings"}>

@@ -119,11 +119,11 @@ export default function Sidebar({setPosOn,user, open, handleDrawerClose, handleD
                             </ListItemIcon>
                             <ListItemText primary="Transfer Product"/>
                         </ListItem>
-                        <ListItem component={NavLink} to="/critical" button>
+                        <ListItem component={NavLink} to="/status" button>
                             <ListItemIcon>
                                 <ErrorIcon/>
                             </ListItemIcon>
-                            <ListItemText primary="Critical Stock"/>
+                            <ListItemText primary="Product Status"/>
                         </ListItem>
                         <ListItem component={NavLink} to="/settings" button>
                             <ListItemIcon>

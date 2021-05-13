@@ -54,6 +54,8 @@ export const Products = ({user}) => {
     }
 
     const changeSearch = (s) => {
+
+        setPage(0)
         if(s === null) {
             setSearch('')
             return
@@ -131,32 +133,9 @@ export const Products = ({user}) => {
     }
 
 
-    const deleteProduct = (item) => {
-
-        const tempData = [...data]
-        let tempQ = item.qty
-        const code = item.code
-
-        while (tempQ !== 0) {
-            let current = 0;
-
-            tempData.find((e, index) => {
-                current = index
-                return e.code.toString() === code
-            })
-
-            tempData.splice(current, 1)
-
-            tempQ--
-
-        }
-
-        setData(tempData)
-    }
-
-
     const changeBranch =  (value) => {
         setData([])
+        setPage(0)
         setBranch(value)
     }
 
@@ -180,8 +159,10 @@ export const Products = ({user}) => {
     }
 
 
-    const Reload = async () => {
-        await getProducts().then(ignored =>{})
+    const Reload = () => {
+        setData([])
+        setPage(0)
+        getProducts().then(ignored => {})
     }
 
 
@@ -220,7 +201,7 @@ export const Products = ({user}) => {
                 branch={branch}
                 dialog={deleteDialog}
                 closeDialog={() => setDeleteDialog(false)}
-                deleteProduct={deleteProduct}
+                Reload={Reload}
             />
 
             <TransferProduct

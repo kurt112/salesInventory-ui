@@ -21,7 +21,7 @@ const CriticalStocks = () => {
             const temp = []
             await baseUrlWithAuth.get(getCriticalStockProduct).then((stocks) => {
                 console.log(stocks)
-                stocks.data.map(stock => temp.push(insert(stock.product.code,stock.product.name,stock.branch.location)))
+                stocks.data.map(stock => temp.push(insert(stock.productCode,stock.Store.location,stock.status)))
             }).catch(error => {
                 setLoading(false)
                 console.log(error)

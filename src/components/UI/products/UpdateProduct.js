@@ -121,7 +121,7 @@ const ProductRegister = (
                 name,
                 ProductTypeId: productTypeId,
                 price:price,
-                status: 'Available',
+                // status: 'Available',
                 photo,
                 SupplierId: parseInt(supplier.id),
                 StoreId: role ===3?parseInt(store.id):branch,

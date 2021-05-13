@@ -260,7 +260,7 @@ const ProductRegister = (
                             fullWidth
                             variant="outlined"
                             value={price}
-                            onChange={(e) => setPrice(e.target.value < 1 ? 1 : e.target.value)}
+                            onChange={(e) => setPrice(e.target.value < 0 ? 1 : e.target.value)}
                         />
                     </Grid>
 
@@ -328,7 +328,7 @@ const ProductRegister = (
                             fullWidth
                             variant="outlined"
                             value={qty}
-                            onChange={e => setQty(e.target.value <= 0 ? 1 : e.target.value)}
+                            onChange={e => setQty(e.target.value < 0 ? 1 : e.target.value)}
                         />
                     </Grid>
                 </Grid>
