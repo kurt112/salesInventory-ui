@@ -93,7 +93,8 @@ export const
     supplierReceiptList = 'supplierReceipt/list',
 
     // critical stock route
-    getCriticalStockProduct = 'critical/list'
+    getCriticalStockProduct = 'critical/list',
+    getCriticalStockUpdate ='critical/update'
 
 
 

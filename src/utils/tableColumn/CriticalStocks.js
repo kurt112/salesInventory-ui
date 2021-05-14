@@ -1,6 +1,4 @@
-import {serverEndpoint} from "../ServerEndPoint";
-import Button from "@material-ui/core/Button";
-import {Avatar, Chip} from "@material-ui/core";
+import {Chip} from "@material-ui/core";
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied'
 import MoodBadIcon from '@material-ui/icons/MoodBad';
 import SentimentDissatisfiedIcon from '@material-ui/icons/SentimentDissatisfied';
