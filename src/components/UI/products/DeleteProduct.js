@@ -17,8 +17,7 @@ const DeleteProduct = (
     {
         closeDialog,
         dialog,
-        Reload,
-        branch
+        Reload
     }) => {
 
     const [qty, setQty] = useState(1)
@@ -41,8 +40,7 @@ const DeleteProduct = (
 
         const data = {
             code,
-            qty: parseInt(qty),
-            branch
+            qty: parseInt(qty)
         }
 
         baseUrlWithAuth.post(productDelete, data).then(ignored => {
