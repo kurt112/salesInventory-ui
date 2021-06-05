@@ -46,7 +46,7 @@ export default function Sidebar({setPosOn,user, open, handleDrawerClose, handleD
         >
             <div className={classes.list}>
                 <div className={classes.toolbar}>
-                    <h3>Jars Invetory</h3>
+                    <h3>Welcome</h3>
                 </div>
                 <Divider/>
                 <List>
@@ -119,7 +119,7 @@ export default function Sidebar({setPosOn,user, open, handleDrawerClose, handleD
                             </ListItemIcon>
                             <ListItemText primary="Transfer Product"/>
                         </ListItem>
-                        <ListItem component={NavLink} to="/status" button>
+                            <ListItem component={NavLink} to="/status" button>
                             <ListItemIcon>
                                 <ErrorIcon/>
                             </ListItemIcon>

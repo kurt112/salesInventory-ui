@@ -64,13 +64,11 @@ const Setting = () => {
     const [productTypes, setProductTypes] = useState([])
     const [productPhoto, setProductPhoto] = useState([])
     const [storeRequesting, setStoreRequesting] = useState([])
-    const [criticalStock, setCriticalStock] = useState(0)
     const [otwProduct, setOtwProduct] = useState([])
 
     useEffect(() => {
         getProductType().then(ignored => {})
         getPhoto().then(ignored => {})
-        getCriticalStock().then(ignored => {})
         getOtwTransfer().then(ignored => {})
         getStoreRequest().then(ignored => {})
 
@@ -103,24 +101,13 @@ const Setting = () => {
         setEdit(false)
     }
 
-    const submit = () => {
-        const data = {value: criticalStock}
-        baseUrlWithAuth.post(SetCriticalStock, data)
-            .then((ignored) => {
-                alert('Update Success')
-            }).catch(error => {
-            alert(error.response.data)
-        })
-    }
+
 
     const editClick = () => {
         alert('Edit Mode Is On')
         setEdit(true)
     }
 
-    const changeCriticalStock = (value) => {
-        if (edit) setCriticalStock(value)
-    }
 
     const addProductTypeClick = () => {
         const value = window.prompt('Enter Product Type')
@@ -188,11 +175,7 @@ const Setting = () => {
             })
     }
 
-    const getCriticalStock = async () => {
-        await baseUrlWithAuth.get(GetCriticalStock).then(e => {
-            setCriticalStock(e.data.stock.critical_stock)
-        })
-    }
+
 
     const transferDeleteClick = async () => {
         const value = window.prompt('Enter Product Type')
@@ -211,19 +194,6 @@ const Setting = () => {
                 <h1>Settings</h1>
                 <Divider/>
                 <form noValidate={false}>
-                    <h2>Stock Management</h2>
-
-                    <Grid item md={12} xs={12}>
-                        <TextField
-                            onChange={e => changeCriticalStock(e.target.value)}
-                            value={criticalStock}
-                            autoFocus
-                            label="Critical Stock"
-                            type="number"
-                            fullWidth
-                            variant="filled"
-                        />
-                    </Grid>
                     <h2>Product Management</h2>
                     <Divider/>
                     <Grid container spacing={5}>
@@ -371,15 +341,6 @@ const Setting = () => {
                 {
                     edit ?
                         <Fragment>
-                            <Tooltip onClick={submit} title="Submit" aria-label="submit">
-                                <IconButton aria-label="submit"
-                                            color={"primary"}>
-                                    <PublishIcon aria-label="submit"
-                                                 fontSize={"large"}
-                                                 color={"primary"}/>
-                                </IconButton>
-                            </Tooltip>
-
                             <Tooltip onClick={cancel} title="Exit" aria-label="Exit">
                                 <IconButton aria-label="Exit"
                                             color={"primary"}>

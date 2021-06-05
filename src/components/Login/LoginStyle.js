@@ -1,17 +1,23 @@
 import {makeStyles} from "@material-ui/core/styles";
-// import ue from '../../assets/img/logo/ue.png'
-import bg from '../../assets/img/logo/leftLogo.jpg'
+import bg from '../../assets/img/logo/sample.jpg'
+
 const useStyles = makeStyles((theme) => ({
     root: {
         height: '100vh',
     },
+    left:{
+        display:'flex',
+        alignItems:'center',
+        justifyContent:'center'
+    },
     image: {
+        height:'100%',
+        width: '90%',
         backgroundImage: `url(${bg})`,
         backgroundRepeat: 'no-repeat',
-        backgroundColor:
-            theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundSize: 'contain',
+        backgroundPosition: 'left center',
+        // paddingRight: 100
     },
     paper: {
         margin: theme.spacing(8, 4),
@@ -46,11 +52,11 @@ const useStyles = makeStyles((theme) => ({
         border: '4px solid rgba(0, 0, 0, 0.08)'
     },
 
-    text:{
+    text: {
         fontFamily: 'Oswald,sans-serif',
         fontSize: 25,
         fontWeight: "bold",
-        color:'black'
+        color: 'black'
     }
 
 }));

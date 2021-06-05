@@ -6,13 +6,12 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import style from './LoginStyle'
-import SignLogo from '../../assets/img/logo/SignLogo.jpg'
 import {Avatar} from "@material-ui/core";
 import {useState, Fragment} from "react";
 import {login as loginEndpoint} from "../../utils/ServerEndPoint";
 import {baseUrlNoAuth} from "../../utils/axios/BaseUrl";
 import ResetPassword from "./ResetPassword";
-
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 const Login = ({setToken, setUser}) => {
 
     const classes = style();
@@ -60,19 +59,16 @@ const Login = ({setToken, setUser}) => {
 
             <CssBaseline/>
 
-            <Grid item xs={false} sm={false} md={8} className={classes.image}>
-
+            <Grid item xs={false} sm={false} md={8} className={classes.left} >
+                <div className={classes.image}>
+                </div>
             </Grid>
-            <Grid item xs={12} sm={12} md={4} component={Paper} elevation={0} square>
-
-
+            <Grid item xs={12} sm={12} md={4} component={Paper} elevation={2} square>
                 <div className={classes.paper}>
-                    <Avatar alt="Cindy Baker" className={classes.avatarLarge} src={SignLogo}/>
-
+                    <AccountCircleIcon color={"primary"} style={{fontSize: 60}}/>
                     <Typography component="h1" variant="h5" className={classes.text}>
                         Login Now
                     </Typography>
-
 
                     <form className={classes.form} noValidate>
                         <TextField
@@ -81,7 +77,6 @@ const Login = ({setToken, setUser}) => {
                             onChange={e => setEmail(e.target.value)}
                             variant="outlined"
                             margin="normal"
-                            required
                             fullWidth
                             id="email"
                             label="Email Address"
@@ -97,7 +92,6 @@ const Login = ({setToken, setUser}) => {
                             onChange={e => changePassword(e.target.value)}
                             variant="outlined"
                             margin="normal"
-                            required
                             fullWidth
                             name="password"
                             label="Password"
